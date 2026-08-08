@@ -1,149 +1,35 @@
 const $=id=>document.getElementById(id);
 const input=$("input"),output=$("output"),from=$("from"),to=$("to");
-const latency=$("latency"),engine=$("engine"),historyBox=$("history"),netState=$("netState");
-const cacheKey="rt_v3_cache", histKey="rt_v3_history";
-let cache=JSON.parse(localStorage.getItem(cacheKey)||"{}");
-let history=JSON.parse(localStorage.getItem(histKey)||"[]");
-
-const offline={
- "zh-TW|ja-JP":{
-   "你好":"こんにちは。","謝謝":"ありがとうございます。","多少錢":"いくらですか？",
-   "我想去東京車站，但不知道在哪裡換車":"東京駅に行きたいのですが、どこで乗り換えればいいか分かりません。"
- },
- "zh-TW|en-US":{
-   "你好":"Hello.","謝謝":"Thank you.","多少錢":"How much is it?",
-   "我想去東京車站，但不知道在哪裡換車":"I want to go to Tokyo Station, but I don't know where to transfer."
- }
-};
-
-function updateNet(){
-  const online=navigator.onLine;
-  netState.textContent=online?"已連線":"離線";
-  netState.style.background=online?"#e8f4ff":"#fff2d8";
-  netState.style.color=online?"#0878d1":"#9a6400";
-}
-addEventListener("online",updateNet); addEventListener("offline",updateNet); updateNet();
-
-$("swap").onclick=()=>{const x=from.value;from.value=to.value;to.value=x};
-$("clear").onclick=()=>{input.value="";output.textContent="尚未翻譯";latency.textContent="等待翻譯"};
-
-function key(text){return `${from.value}|${to.value}|${text}`}
-
-async function callMyMemory(text){
-  const pair=`${from.value.split("-")[0]}|${to.value.split("-")[0]}`;
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),6500);
-  try{
-    const url="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+encodeURIComponent(pair);
-    const r=await fetch(url,{signal:controller.signal,cache:"no-store"});
-    const d=await r.json();
-    return d.responseData?.translatedText||"";
-  }finally{clearTimeout(timer)}
-}
-
-async function translate(){
-  const text=input.value.trim();
-  if(!text){output.textContent="請先輸入文字。";return}
-  if(from.value===to.value){output.textContent=text;return}
-  const t0=performance.now();
-  const k=key(text);
-
-  if(cache[k]){
-    output.textContent=cache[k];
-    engine.textContent="快取翻譯";
-    latency.textContent=`⚡ ${Math.round(performance.now()-t0)} ms`;
-    saveHistory(text,cache[k]);
-    return;
-  }
-
-  const local=offline[`${from.value}|${to.value}`]?.[text];
-  if(local){
-    output.textContent=local;
-    engine.textContent="本地快速詞庫";
-    cache[k]=local; persistCache();
-    latency.textContent=`⚡ ${Math.round(performance.now()-t0)} ms`;
-    saveHistory(text,local);
-    return;
-  }
-
-  if(!navigator.onLine){
-    output.textContent="目前離線，這句尚未儲存在本地。";
-    engine.textContent="離線";
-    return;
-  }
-
-  output.textContent="翻譯中…";
-  engine.textContent="網路翻譯";
-  try{
-    const result=await callMyMemory(text);
-    if(!result) throw new Error("empty");
-    output.textContent=result;
-    cache[k]=result; persistCache();
-    latency.textContent=`${((performance.now()-t0)/1000).toFixed(1)} 秒`;
-    saveHistory(text,result);
-  }catch(e){
-    output.textContent="翻譯服務暫時無回應，請再按一次。";
-    engine.textContent="連線逾時";
-    latency.textContent="超過 6.5 秒";
-  }
-}
-$("translate").onclick=translate;
-
-function persistCache(){
-  const entries=Object.entries(cache);
-  if(entries.length>120) cache=Object.fromEntries(entries.slice(-120));
-  localStorage.setItem(cacheKey,JSON.stringify(cache));
-}
-function saveHistory(src,dst){
-  history.unshift({src,dst,time:Date.now()});
-  history=history.slice(0,8);
-  localStorage.setItem(histKey,JSON.stringify(history));
-  renderHistory();
-}
-function renderHistory(){
-  historyBox.innerHTML=history.length?history.map(x=>`<div class="history-item"><div class="src">${esc(x.src)}</div><div class="dst">${esc(x.dst)}</div></div>`).join(""):'<small>還沒有紀錄</small>';
-}
-function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-renderHistory();
-
+const startMic=$("startMic"),stopMic=$("stopMic"),statePill=$("statePill"),recognitionLang=$("recognitionLang"),recordingTime=$("recordingTime"),latency=$("latency"),engine=$("engine"),debugText=$("debugText"),voiceUsed=$("voiceUsed");
+const names={"zh-TW":"中文","en-US":"English","ja-JP":"日本語","ko-KR":"한국어"};
+let recognition=null,isRecording=false,timerId=null,seconds=0,finalTranscript="",voices=[];
+function setState(t,k="neutral"){statePill.textContent=t;const c={neutral:["#eef2f7","#475569"],good:["#e7f8ee","#147a3a"],warn:["#fff2d8","#9a6400"],bad:["#ffe9e7","#b42318"]}[k];statePill.style.background=c[0];statePill.style.color=c[1]}
+function log(t){debugText.textContent=t}
+function fmt(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
+function updateLang(){recognitionLang.textContent=`辨識語言：${names[from.value]}`}
+$("swap").onclick=()=>{const x=from.value;from.value=to.value;to.value=x;updateLang()};from.onchange=updateLang;updateLang();
+function clean(t){return t.replace(/^[「『"'“”]+/g,"").replace(/[」』"'“”]+$/g,"").replace(/\s+/g," ").trim()}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-let rec=null;
 if(SR){
-  rec=new SR();
-  rec.interimResults=true; rec.continuous=false; rec.maxAlternatives=1;
-  rec.onstart=()=>{$("mic").textContent="⏹️ 聆聽中…"};
-  rec.onresult=e=>{
-    let text="";
-    for(let i=e.resultIndex;i<e.results.length;i++) text+=e.results[i][0].transcript;
-    input.value=text;
-  };
-  rec.onend=()=>{$("mic").textContent="🎙️ 語音輸入"};
-  rec.onerror=e=>{$("mic").textContent="🎙️ 語音輸入";engine.textContent="語音辨識："+e.error};
-  $("mic").onclick=()=>{rec.lang=from.value;try{rec.start()}catch{}};
-}else{
-  $("mic").onclick=()=>alert("目前 Safari 不支援網頁語音辨識，請先用文字輸入。");
-}
+ recognition=new SR();recognition.interimResults=true;recognition.continuous=true;recognition.maxAlternatives=1;
+ recognition.onstart=()=>{isRecording=true;finalTranscript="";startMic.disabled=true;stopMic.disabled=false;setState("錄音中","warn");log(`正在辨識 ${names[from.value]}，按停止錄音即可結束。`);seconds=0;recordingTime.textContent="00:00";clearInterval(timerId);timerId=setInterval(()=>{seconds++;recordingTime.textContent=fmt(seconds)},1000)};
+ recognition.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)finalTranscript+=t;else interim+=t}input.value=clean(finalTranscript+interim)};
+ recognition.onerror=e=>{log("語音辨識錯誤："+e.error);finishRec();setState("辨識錯誤","bad")};
+ recognition.onend=async()=>{const had=isRecording;finishRec();const t=clean(input.value);input.value=t;if(had&&t){log("錄音已停止，正在自動翻譯整句。");await translateText()}};
+}else{startMic.disabled=true;log("此 Safari 不支援網頁語音辨識，可直接輸入文字。")}
+function finishRec(){isRecording=false;clearInterval(timerId);startMic.disabled=false;stopMic.disabled=true;setState("待命","neutral")}
+startMic.onclick=()=>{if(!recognition)return;recognition.lang=from.value;try{recognition.start()}catch(e){log("無法開始辨識："+e.message)}};
+stopMic.onclick=()=>{if(recognition&&isRecording){log("正在停止錄音…");try{recognition.stop()}catch{}}};
 
-let voices=[];
-function loadVoices(){voices=speechSynthesis.getVoices()}
-loadVoices();
-if("speechSynthesis" in window) speechSynthesis.onvoiceschanged=loadVoices;
-function bestVoice(lang){
-  const l=lang.toLowerCase();
-  return voices.find(v=>v.lang.toLowerCase()===l)||voices.find(v=>v.lang.toLowerCase().startsWith(l.split("-")[0]))||null;
-}
-$("speak").onclick=()=>{
-  const text=output.textContent.trim();
-  if(!text||["尚未翻譯","翻譯中…"].includes(text))return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang=to.value;
-  const v=bestVoice(to.value); if(v)u.voice=v;
-  u.rate=.95;u.volume=1;
-  speechSynthesis.speak(u);
-};
-$("copy").onclick=async()=>{
-  try{await navigator.clipboard.writeText(output.textContent);engine.textContent="已複製翻譯"}catch{}
-};
+const overrides={"zh-TW|ja-JP":{"我明天早上九點要去東京車站，請問從這裡搭地鐵要在哪一站轉車？":"明日の朝9時に東京駅へ行きたいのですが、ここから地下鉄で行く場合、どの駅で乗り換えればいいですか？","我明天早上九點要去東京車站，請問從這裡搭地鐵要在哪一站轉車":"明日の朝9時に東京駅へ行きたいのですが、ここから地下鉄で行く場合、どの駅で乗り換えればいいですか？"}};
+async function googleTranslate(text){const sl=from.value.split("-")[0],tl=to.value.split("-")[0],u="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+encodeURIComponent(sl)+"&tl="+encodeURIComponent(tl)+"&dt=t&q="+encodeURIComponent(text),c=new AbortController(),tm=setTimeout(()=>c.abort(),7000);try{const r=await fetch(u,{signal:c.signal,cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();return Array.isArray(d?.[0])?d[0].map(x=>x?.[0]||"").join(""):""}finally{clearTimeout(tm)}}
+async function myMemory(text){const sl=from.value.split("-")[0],tl=to.value.split("-")[0],u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+encodeURIComponent(sl+"|"+tl),c=new AbortController(),tm=setTimeout(()=>c.abort(),7000);try{const r=await fetch(u,{signal:c.signal,cache:"no-store"}),d=await r.json();return d.responseData?.translatedText||""}finally{clearTimeout(tm)}}
+async function translateText(){const text=clean(input.value);input.value=text;if(!text){output.textContent="請先說話或輸入文字。";return}if(from.value===to.value){output.textContent=text;return}const t0=performance.now(),ov=overrides[`${from.value}|${to.value}`]?.[text];if(ov){output.textContent=ov;engine.textContent="整句優化詞庫";latency.textContent=`⚡ ${Math.round(performance.now()-t0)} ms`;setState("完成","good");return}output.textContent="翻譯中…";setState("翻譯中","warn");engine.textContent="整句翻譯";try{let r="";try{r=await googleTranslate(text);if(r)engine.textContent="整句翻譯（主引擎）"}catch{log("主翻譯引擎無回應，改用備援引擎。")}if(!r){r=await myMemory(text);if(r)engine.textContent="整句翻譯（備援）"}if(!r)throw new Error("沒有翻譯結果");output.textContent=r;latency.textContent=`${((performance.now()-t0)/1000).toFixed(1)} 秒`;setState("完成","good");log("翻譯完成。播放會依右側目標語言選擇語音。")}catch(e){output.textContent="翻譯服務暫時沒有回應，請再試一次。";engine.textContent="翻譯失敗";setState("失敗","bad");log("翻譯錯誤："+e.message)}}
+$("translate").onclick=translateText;
 
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+function loadVoices(){if("speechSynthesis" in window)voices=speechSynthesis.getVoices()}loadVoices();if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=loadVoices;
+function bestVoice(lang){return voices.find(v=>v.lang.toLowerCase()===lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()))||null}
+$("speak").onclick=()=>{const text=output.textContent.trim();if(!text||text==="尚未翻譯"||text==="翻譯中…")return;if(!("speechSynthesis" in window)){log("此瀏覽器無法使用文字轉語音。");return}speechSynthesis.cancel();loadVoices();const u=new SpeechSynthesisUtterance(text),v=bestVoice(to.value);u.lang=to.value;if(v)u.voice=v;u.rate=.92;u.volume=1;u.pitch=1;u.onstart=()=>{voiceUsed.textContent=`播放語言：${names[to.value]}${v?" · "+v.name:""}`;setState("播放中","good");log(`正在用 ${to.value} 播放翻譯。`)};u.onend=()=>setState("完成","good");u.onerror=e=>{setState("播放失敗","bad");log("語音播放錯誤："+(e.error||"unknown"))};speechSynthesis.speak(u)};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(output.textContent);log("已複製翻譯。")}catch{}};
+$("clear").onclick=()=>{input.value="";output.textContent="尚未翻譯";latency.textContent="等待翻譯";engine.textContent="翻譯引擎待命";voiceUsed.textContent="";log("已清除。");setState("待命","neutral")};
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=4",{updateViaCache:"none"}).catch(()=>{});
