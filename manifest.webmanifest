@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V6.6 危險分級＋緊急聯絡人＋天氣",
+  "name": "即時譯 V6.7 Google Maps 導航版",
   "short_name": "即時譯",
-  "start_url": "./?v=66",
+  "start_url": "./?v=67",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF",

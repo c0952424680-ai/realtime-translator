@@ -566,7 +566,7 @@ const safetyData={
 };
 
 function telHref(n){return "tel:"+n.replace(/[^\d+]/g,"")}
-function mapsHref(address){return "https://maps.apple.com/?q="+encodeURIComponent(address)}
+function mapsHref(address){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(address)}
 
 function renderSafetyOffice(){
   const d=safetyData[$("safetyCountry").value];
@@ -587,7 +587,7 @@ function renderSafetyOffice(){
     '<div class="office-actions">'+
       '<a href="'+telHref(d.phone)+'">☎️ 辦公室電話</a>'+
       '<a class="emergency" href="'+telHref(d.emergency)+'">🆘 急難電話</a>'+
-      '<a href="'+mapsHref(d.address)+'" target="_blank" rel="noopener">📍 Apple 導航</a>'+
+      '<a href="'+mapsHref(d.address)+'" target="_blank" rel="noopener">📍 Google Maps 導航</a>'+
       '<a href="'+d.website+'" target="_blank" rel="noopener">🏛️ 官方網站</a>'+
       '<a href="mailto:'+d.email+'">✉️ 官方 Email</a>'+
       '<a href="tel:+886800085095">🇹🇼 外交部緊急中心</a>'+
