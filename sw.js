@@ -1,4 +1,10 @@
-const CACHE="rt-v4-voice-translate-fix";const CORE=["./?v=4","./index.html?v=4","./style.css?v=4","./app.js?v=4","./manifest.webmanifest"];
-self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).catch(()=>{}))});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
-self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;const u=new URL(e.request.url);if(e.request.mode==="navigate"||/\.(html|js|css)$/.test(u.pathname)){e.respondWith(fetch(e.request,{cache:"no-store"}).then(r=>{const cp=r.clone();caches.open(CACHE).then(c=>c.put(e.request,cp)).catch(()=>{});return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match("./?v=4"))));return}e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})
+self.addEventListener("install",()=>self.skipWaiting());
+self.addEventListener("activate",event=>{
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.map(k=>caches.delete(k)));
+    await self.registration.unregister();
+    const clients=await self.clients.matchAll();
+    clients.forEach(c=>c.navigate(c.url));
+  })());
+});

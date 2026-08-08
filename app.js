@@ -1,35 +1,181 @@
 const $=id=>document.getElementById(id);
 const input=$("input"),output=$("output"),from=$("from"),to=$("to");
-const startMic=$("startMic"),stopMic=$("stopMic"),statePill=$("statePill"),recognitionLang=$("recognitionLang"),recordingTime=$("recordingTime"),latency=$("latency"),engine=$("engine"),debugText=$("debugText"),voiceUsed=$("voiceUsed");
+const statePill=$("statePill"),latency=$("latency"),engine=$("engine");
+const debugText=$("debugText"),voiceUsed=$("voiceUsed");
+const autoTranslate=$("autoTranslate"),autoSpeak=$("autoSpeak"),rateSel=$("rate");
+
 const names={"zh-TW":"中文","en-US":"English","ja-JP":"日本語","ko-KR":"한국어"};
-let recognition=null,isRecording=false,timerId=null,seconds=0,finalTranscript="",voices=[];
-function setState(t,k="neutral"){statePill.textContent=t;const c={neutral:["#eef2f7","#475569"],good:["#e7f8ee","#147a3a"],warn:["#fff2d8","#9a6400"],bad:["#ffe9e7","#b42318"]}[k];statePill.style.background=c[0];statePill.style.color=c[1]}
+let debounceTimer=null;
+let requestSeq=0;
+let voices=[];
+let audioUnlocked=false;
+
+function setState(t){statePill.textContent=t}
 function log(t){debugText.textContent=t}
-function fmt(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
-function updateLang(){recognitionLang.textContent=`辨識語言：${names[from.value]}`}
-$("swap").onclick=()=>{const x=from.value;from.value=to.value;to.value=x;updateLang()};from.onchange=updateLang;updateLang();
-function clean(t){return t.replace(/^[「『"'“”]+/g,"").replace(/[」』"'“”]+$/g,"").replace(/\s+/g," ").trim()}
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(SR){
- recognition=new SR();recognition.interimResults=true;recognition.continuous=true;recognition.maxAlternatives=1;
- recognition.onstart=()=>{isRecording=true;finalTranscript="";startMic.disabled=true;stopMic.disabled=false;setState("錄音中","warn");log(`正在辨識 ${names[from.value]}，按停止錄音即可結束。`);seconds=0;recordingTime.textContent="00:00";clearInterval(timerId);timerId=setInterval(()=>{seconds++;recordingTime.textContent=fmt(seconds)},1000)};
- recognition.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)finalTranscript+=t;else interim+=t}input.value=clean(finalTranscript+interim)};
- recognition.onerror=e=>{log("語音辨識錯誤："+e.error);finishRec();setState("辨識錯誤","bad")};
- recognition.onend=async()=>{const had=isRecording;finishRec();const t=clean(input.value);input.value=t;if(had&&t){log("錄音已停止，正在自動翻譯整句。");await translateText()}};
-}else{startMic.disabled=true;log("此 Safari 不支援網頁語音辨識，可直接輸入文字。")}
-function finishRec(){isRecording=false;clearInterval(timerId);startMic.disabled=false;stopMic.disabled=true;setState("待命","neutral")}
-startMic.onclick=()=>{if(!recognition)return;recognition.lang=from.value;try{recognition.start()}catch(e){log("無法開始辨識："+e.message)}};
-stopMic.onclick=()=>{if(recognition&&isRecording){log("正在停止錄音…");try{recognition.stop()}catch{}}};
+function clean(t){return t.replace(/\s+/g," ").trim()}
 
-const overrides={"zh-TW|ja-JP":{"我明天早上九點要去東京車站，請問從這裡搭地鐵要在哪一站轉車？":"明日の朝9時に東京駅へ行きたいのですが、ここから地下鉄で行く場合、どの駅で乗り換えればいいですか？","我明天早上九點要去東京車站，請問從這裡搭地鐵要在哪一站轉車":"明日の朝9時に東京駅へ行きたいのですが、ここから地下鉄で行く場合、どの駅で乗り換えればいいですか？"}};
-async function googleTranslate(text){const sl=from.value.split("-")[0],tl=to.value.split("-")[0],u="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+encodeURIComponent(sl)+"&tl="+encodeURIComponent(tl)+"&dt=t&q="+encodeURIComponent(text),c=new AbortController(),tm=setTimeout(()=>c.abort(),7000);try{const r=await fetch(u,{signal:c.signal,cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();return Array.isArray(d?.[0])?d[0].map(x=>x?.[0]||"").join(""):""}finally{clearTimeout(tm)}}
-async function myMemory(text){const sl=from.value.split("-")[0],tl=to.value.split("-")[0],u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+encodeURIComponent(sl+"|"+tl),c=new AbortController(),tm=setTimeout(()=>c.abort(),7000);try{const r=await fetch(u,{signal:c.signal,cache:"no-store"}),d=await r.json();return d.responseData?.translatedText||""}finally{clearTimeout(tm)}}
-async function translateText(){const text=clean(input.value);input.value=text;if(!text){output.textContent="請先說話或輸入文字。";return}if(from.value===to.value){output.textContent=text;return}const t0=performance.now(),ov=overrides[`${from.value}|${to.value}`]?.[text];if(ov){output.textContent=ov;engine.textContent="整句優化詞庫";latency.textContent=`⚡ ${Math.round(performance.now()-t0)} ms`;setState("完成","good");return}output.textContent="翻譯中…";setState("翻譯中","warn");engine.textContent="整句翻譯";try{let r="";try{r=await googleTranslate(text);if(r)engine.textContent="整句翻譯（主引擎）"}catch{log("主翻譯引擎無回應，改用備援引擎。")}if(!r){r=await myMemory(text);if(r)engine.textContent="整句翻譯（備援）"}if(!r)throw new Error("沒有翻譯結果");output.textContent=r;latency.textContent=`${((performance.now()-t0)/1000).toFixed(1)} 秒`;setState("完成","good");log("翻譯完成。播放會依右側目標語言選擇語音。")}catch(e){output.textContent="翻譯服務暫時沒有回應，請再試一次。";engine.textContent="翻譯失敗";setState("失敗","bad");log("翻譯錯誤："+e.message)}}
-$("translate").onclick=translateText;
+$("swap").addEventListener("click",()=>{
+  const x=from.value;from.value=to.value;to.value=x;
+  if(clean(input.value) && autoTranslate.checked) scheduleTranslate(100);
+});
 
-function loadVoices(){if("speechSynthesis" in window)voices=speechSynthesis.getVoices()}loadVoices();if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=loadVoices;
-function bestVoice(lang){return voices.find(v=>v.lang.toLowerCase()===lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()))||null}
-$("speak").onclick=()=>{const text=output.textContent.trim();if(!text||text==="尚未翻譯"||text==="翻譯中…")return;if(!("speechSynthesis" in window)){log("此瀏覽器無法使用文字轉語音。");return}speechSynthesis.cancel();loadVoices();const u=new SpeechSynthesisUtterance(text),v=bestVoice(to.value);u.lang=to.value;if(v)u.voice=v;u.rate=.92;u.volume=1;u.pitch=1;u.onstart=()=>{voiceUsed.textContent=`播放語言：${names[to.value]}${v?" · "+v.name:""}`;setState("播放中","good");log(`正在用 ${to.value} 播放翻譯。`)};u.onend=()=>setState("完成","good");u.onerror=e=>{setState("播放失敗","bad");log("語音播放錯誤："+(e.error||"unknown"))};speechSynthesis.speak(u)};
-$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(output.textContent);log("已複製翻譯。")}catch{}};
-$("clear").onclick=()=>{input.value="";output.textContent="尚未翻譯";latency.textContent="等待翻譯";engine.textContent="翻譯引擎待命";voiceUsed.textContent="";log("已清除。");setState("待命","neutral")};
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=4",{updateViaCache:"none"}).catch(()=>{});
+$("focusInput").addEventListener("click",()=>{
+  input.focus();
+  setState("請開始聽寫");
+  log("鍵盤出現後，請按 iPhone 鍵盤上的 🎙️ 麥克風開始聽寫。");
+});
+
+input.addEventListener("input",()=>{
+  setState("聽寫中");
+  latency.textContent="正在接收文字…";
+  if(autoTranslate.checked) scheduleTranslate(750);
+});
+
+function scheduleTranslate(ms){
+  clearTimeout(debounceTimer);
+  debounceTimer=setTimeout(()=>translateText(),ms);
+}
+
+async function translateText(){
+  const text=clean(input.value);
+  if(!text){output.textContent="尚未翻譯";return}
+  if(from.value===to.value){output.textContent=text;if(autoSpeak.checked)speakCurrent();return}
+
+  const seq=++requestSeq;
+  const t0=performance.now();
+  output.textContent="翻譯中…";
+  setState("翻譯中");
+  engine.textContent="整句翻譯";
+
+  const sl=from.value.split("-")[0];
+  const tl=to.value.split("-")[0];
+  const url="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+encodeURIComponent(sl)+"&tl="+encodeURIComponent(tl)+"&dt=t&q="+encodeURIComponent(text);
+
+  try{
+    const r=await fetch(url,{cache:"no-store"});
+    const d=await r.json();
+    if(seq!==requestSeq)return;
+    const result=Array.isArray(d?.[0])?d[0].map(x=>x?.[0]||"").join(""):"";
+    output.textContent=result||"翻譯失敗";
+    latency.textContent=((performance.now()-t0)/1000).toFixed(1)+" 秒";
+    engine.textContent="整句翻譯完成";
+    setState("完成");
+    if(result && autoSpeak.checked) speakCurrent();
+  }catch(e){
+    if(seq!==requestSeq)return;
+    output.textContent="翻譯服務暫時沒有回應";
+    engine.textContent="翻譯失敗";
+    setState("失敗");
+  }
+}
+
+$("translate").addEventListener("click",translateText);
+
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  voices=speechSynthesis.getVoices();
+}
+loadVoices();
+if("speechSynthesis" in window) speechSynthesis.onvoiceschanged=loadVoices;
+
+// iPhone 常見較自然女聲名稱；若裝置沒有則退回同語言系統聲音。
+const preferredFemale={
+  "zh-TW":["Mei-Jia","美佳","Ting-Ting","婷婷"],
+  "ja-JP":["Kyoko","O-ren","Hattori"],
+  "en-US":["Samantha","Ava","Allison","Susan","Zoe"],
+  "ko-KR":["Yuna"]
+};
+
+function pickVoice(lang){
+  loadVoices();
+  const prefs=preferredFemale[lang]||[];
+  for(const p of prefs){
+    const v=voices.find(x=>x.lang.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()) && x.name.toLowerCase().includes(p.toLowerCase()));
+    if(v)return v;
+  }
+  return voices.find(v=>v.lang.toLowerCase()===lang.toLowerCase())
+      || voices.find(v=>v.lang.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()))
+      || null;
+}
+
+function speakText(text,lang){
+  if(!("speechSynthesis" in window)){log("此瀏覽器不支援語音播放。");return}
+  if(!audioUnlocked){
+    log("請先按一次「啟用自動語音」，iPhone 才允許後續自動播放。");
+    return;
+  }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const v=pickVoice(lang);
+  u.lang=lang;
+  if(v)u.voice=v;
+  u.rate=Number(rateSel.value||0.88);
+  u.volume=1;
+  u.pitch=1.04;
+  u.onstart=()=>{
+    setState("播放中");
+    voiceUsed.textContent=`${names[lang]} · ${v?.name||"系統女聲優先"}`;
+  };
+  u.onend=()=>setState("完成");
+  u.onerror=e=>log("語音播放失敗："+(e.error||"unknown"));
+  speechSynthesis.speak(u);
+}
+
+function speakCurrent(){
+  const text=output.textContent.trim();
+  if(!text || text==="尚未翻譯" || text==="翻譯中…")return;
+  speakText(text,to.value);
+}
+
+$("speak").addEventListener("click",()=>{
+  if(!audioUnlocked) audioUnlocked=true;
+  speakCurrent();
+});
+
+$("stopSpeak").addEventListener("click",()=>{
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+  setState("已停止");
+});
+
+$("unlockAudio").addEventListener("click",()=>{
+  audioUnlocked=true;
+  loadVoices();
+  // 用極短、低音量測試句解鎖 iOS 使用者手勢限制
+  const u=new SpeechSynthesisUtterance("語音已啟用");
+  const v=pickVoice("zh-TW");
+  u.lang="zh-TW"; if(v)u.voice=v; u.rate=.9;u.volume=1;
+  u.onend=()=>{
+    $("unlockAudio").textContent="✅ 自動語音已啟用";
+    $("unlockAudio").disabled=true;
+    voiceUsed.textContent=`已啟用 · ${v?.name||"系統語音"}`;
+    log("自動語音已啟用。之後聽寫完成後會自動翻譯並朗讀。");
+  };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+});
+
+$("clear").addEventListener("click",()=>{
+  clearTimeout(debounceTimer);
+  requestSeq++;
+  input.value="";
+  output.textContent="尚未翻譯";
+  latency.textContent="等待輸入";
+  engine.textContent="翻譯引擎待命";
+  setState("待命");
+  input.focus();
+});
+
+// V5 不再註冊 Service Worker，避免舊版快取干擾。
+// 首次載入時主動移除舊 SW / Cache。
+(async()=>{
+  try{
+    if("serviceWorker" in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if("caches" in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+  }catch{}
+})();
