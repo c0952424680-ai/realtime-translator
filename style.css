@@ -170,3 +170,15 @@ button:disabled{opacity:.55}
   .voice-panel{align-items:stretch;flex-direction:column}
   .actions{grid-template-columns:1fr}
 }
+h2{margin:2px 0 0;font-size:28px}
+.safety{background:white;border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 5px 18px #00000009}
+.safety-title{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.verified{background:#e9f8ee;color:#16723a;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.safety-note{font-size:13px;background:#fff7e8;border-radius:14px;padding:11px;margin:12px 0;color:#6a4a00}
+.wide{width:100%}.office-card{margin-top:12px;border:1px solid #e2e7ee;border-radius:16px;padding:13px;line-height:1.55}
+.office-card h3{margin:0 0 5px}.office-card .meta{font-size:13px;color:#596273}
+.office-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.office-actions a{text-decoration:none;text-align:center;border-radius:13px;padding:11px;font-weight:800;border:1px solid #dbe1ea;color:#111}
+.office-actions .emergency{background:#ff3b30;color:white;border-color:#ff3b30}
+.steps{margin-top:14px;background:#f7f9fc;border-radius:14px;padding:12px}.steps ol{padding-left:22px;margin-bottom:0}.steps li{margin:8px 0}
+.emergency-card{margin-top:14px;border:2px solid #ffcf70;border-radius:16px;padding:12px}.big-phrase{font-size:24px;font-weight:800;line-height:1.45;padding:16px 4px;min-height:90px}

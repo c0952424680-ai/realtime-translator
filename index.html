@@ -7,15 +7,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="即時譯">
-  <link rel="manifest" href="manifest.webmanifest?v=55">
-  <link rel="stylesheet" href="style.css?v=55">
-  <title>即時譯 V5.5 FINAL</title>
+  <link rel="manifest" href="manifest.webmanifest?v=62">
+  <link rel="stylesheet" href="style.css?v=62">
+  <title>即時譯 V6.2 官方聯絡資料查核版</title>
 </head>
 <body>
 <main class="app">
   <header>
     <div>
-      <div class="eyebrow">V5.5 · FINAL · KEYBOARD DICTATION</div>
+      <div class="eyebrow">V6.2 · OFFICIAL VERIFIED CONTACTS</div>
       <h1>即時譯</h1>
       <p>鍵盤聽寫即時顯示 → 自動翻譯 → 女聲自動朗讀</p>
     </div>
@@ -30,6 +30,7 @@
       <option value="ko-KR">🇰🇷 한국어</option>
       <option value="th-TH">🇹🇭 ไทย</option>
       <option value="vi-VN">🇻🇳 Tiếng Việt</option>
+      <option value="mn-MN">🇲🇳 Монгол</option>
     </select>
 
     <button id="swap" type="button" aria-label="交換語言">⇄</button>
@@ -41,6 +42,7 @@
       <option value="ko-KR">🇰🇷 한국어</option>
       <option value="th-TH">🇹🇭 ไทย</option>
       <option value="vi-VN">🇻🇳 Tiếng Việt</option>
+      <option value="mn-MN">🇲🇳 Монгол</option>
     </select>
   </section>
 
@@ -112,12 +114,71 @@
     <small id="engine">翻譯引擎待命</small>
   </section>
 
+
+  <section class="safety">
+    <div class="safety-title"><div><div class="label">台灣旅客專用</div><h2>🆘 旅外安全</h2></div><span class="verified">政府資料</span></div>
+    <p class="safety-note">遇到立即生命危險時，先聯絡所在地警察／救護單位。下列台灣駐外館處資料以中華民國外交部官方資料建置。</p>
+
+    <label class="label" for="safetyCountry">所在國家／地區</label>
+    <select id="safetyCountry" class="wide">
+      <option value="th">🇹🇭 泰國</option>
+      <option value="vn-hn">🇻🇳 越南－北部／河內</option>
+      <option value="vn-hcm">🇻🇳 越南－南部／胡志明市</option>
+      <option value="my">🇲🇾 馬來西亞</option>
+      <option value="sg">🇸🇬 新加坡</option>
+      <option value="id-jkt">🇮🇩 印尼－雅加達及轄區</option>
+      <option value="id-sub">🇮🇩 印尼－泗水／峇里島等轄區</option>
+      <option value="ph">🇵🇭 菲律賓</option>
+      <optgroup label="東北亞">
+        <option value="jp-tokyo">🇯🇵 日本－東京／東日本</option>
+        <option value="jp-osaka">🇯🇵 日本－大阪／關西等轄區</option>
+        <option value="jp-fukuoka">🇯🇵 日本－福岡／九州</option>
+        <option value="jp-sapporo">🇯🇵 日本－北海道</option>
+        <option value="jp-naha">🇯🇵 日本－沖繩</option>
+        <option value="kr-seoul">🇰🇷 韓國－首爾及北／中部轄區</option>
+        <option value="kr-busan">🇰🇷 韓國－釜山／南部及濟州</option>
+        <option value="mn-ub">🇲🇳 蒙古－烏蘭巴托</option>
+      </optgroup>
+    </select>
+
+    <div id="officeCard" class="office-card"></div>
+
+    <div class="steps">
+      <strong>發生急難時怎麼做</strong>
+      <ol>
+        <li><b>先確保人身安全</b>：離開危險現場，到警察局、醫院、飯店或人多安全處。</li>
+        <li><b>需要立即救援</b>：先聯絡所在地警察／救護單位；本 Beta 版不放未完成政府查核的當地緊急號碼。</li>
+        <li><b>聯絡台灣駐外館處</b>：重大急難使用紅色「急難電話」；一般護照、簽證問題請使用辦公室電話。</li>
+        <li><b>說不通時</b>：使用下方「緊急翻譯卡」，把大字文字給警察、醫護或飯店人員看，並可播放當地語音。</li>
+        <li><b>館處聯絡不上</b>：可聯絡外交部緊急聯絡中心 +886-800-085-095（海外撥打可能產生國際電話費）。</li>
+      </ol>
+    </div>
+
+    <div class="emergency-card">
+      <div class="label">緊急翻譯卡</div>
+      <select id="emergencyPhrase" class="wide">
+        <option value="help">我是台灣旅客，我需要幫助。</option>
+        <option value="police">請幫我聯絡警察。</option>
+        <option value="hospital">我需要去醫院，請幫我叫救護車。</option>
+        <option value="passport">我的護照遺失了。</option>
+        <option value="office">請幫我聯絡台灣駐外代表處。</option>
+      </select>
+      <div id="emergencyOutput" class="big-phrase">請先選擇句子</div>
+      <div class="actions">
+        <button id="translateEmergency" type="button">🌐 翻譯求助句</button>
+        <button id="speakEmergency" type="button">🔊 播放求助句</button>
+      </div>
+    </div>
+
+    <small id="safetyVerified">資料查核：中華民國外交部／外交部領事事務局；V6 建置查核日 2026-08-09。緊急資料仍應以官方最新公告為準。</small>
+  </section>
+
   <section class="debug">
     <strong>狀態</strong>
     <div id="debugText">第一次使用請先按「啟用自動語音」。之後聽寫文字停止變動約 0.8 秒，會自動翻譯並嘗試自動朗讀。</div>
   </section>
 </main>
 
-<script src="app.js?v=55"></script>
+<script src="app.js?v=62"></script>
 </body>
 </html>
