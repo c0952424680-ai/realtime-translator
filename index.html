@@ -6,106 +6,63 @@
   <meta name="theme-color" content="#0A84FF">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="即時譯">
-  <link rel="manifest" href="manifest.webmanifest?v=51">
-  <link rel="stylesheet" href="style.css?v=51">
-  <title>即時譯 V5.1</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <title>即時譯</title>
 </head>
 <body>
-<main class="app">
-  <header>
-    <div>
-      <div class="eyebrow">V5.1 · VIETNAM + THAI</div>
-      <h1>即時譯</h1>
-      <p>聽寫即時顯示 → 自動翻譯 → 自動朗讀</p>
-    </div>
-    <span id="statePill" class="pill">待命</span>
-  </header>
-
-  <section class="langs">
-    <select id="from" aria-label="來源語言">
-      <option value="zh-TW">🇹🇼 中文</option>
-      <option value="en-US">🇺🇸 English</option>
-      <option value="ja-JP">🇯🇵 日本語</option>
-      <option value="ko-KR">🇰🇷 한국어</option>
-    </select>
-    <button id="swap" type="button" aria-label="交換語言">⇄</button>
-    <select id="to" aria-label="目標語言">
-      <option value="ja-JP">🇯🇵 日本語</option>
-      <option value="en-US">🇺🇸 English</option>
-      <option value="zh-TW">🇹🇼 中文</option>
-      <option value="ko-KR">🇰🇷 한국어</option>
-    </select>
-  </section>
-
-  <section class="card">
-    <label class="label" for="input">你說的話</label>
-    <textarea id="input"
-      inputmode="text"
-      autocomplete="off"
-      autocorrect="on"
-      spellcheck="true"
-      placeholder="點這裡後，用 iPhone 鍵盤上的 🎙️ 聽寫。文字會即時顯示在這裡。"></textarea>
-
-    <div class="hint">
-      <b>🎙️ 使用 iPhone 原生聽寫</b>
-      <span>點輸入框 → 鍵盤麥克風 → 開始說話</span>
-    </div>
-
-    <div class="settings-row">
-      <label class="switch-line">
-        <input id="autoTranslate" type="checkbox" checked>
-        <span>自動翻譯</span>
-      </label>
-      <label class="switch-line">
-        <input id="autoSpeak" type="checkbox" checked>
-        <span>自動播放</span>
-      </label>
-    </div>
-
-    <div class="actions">
-      <button id="focusInput" class="primary" type="button">⌨️ 開啟聽寫輸入</button>
-      <button id="translate" type="button">⚡ 立即翻譯</button>
-    </div>
-
-    <div class="minirow">
-      <button id="clear" type="button">清除</button>
-      <span id="latency">等待輸入</span>
-    </div>
-  </section>
-
-  <section class="result">
-    <div class="label">翻譯結果</div>
-    <div id="output" aria-live="polite">尚未翻譯</div>
-
-    <div class="voice-panel">
+  <main class="app">
+    <header>
       <div>
-        <b>女聲朗讀</b>
-        <small id="voiceUsed">等待載入 iPhone 語音</small>
+        <div class="eyebrow">VOICE FIX V2</div>
+        <h1>即時譯</h1>
       </div>
-      <label>
-        <span>語速</span>
-        <select id="rate">
-          <option value="0.88">自然</option>
-          <option value="0.82">清晰慢速</option>
-          <option value="0.96">活潑</option>
-        </select>
-      </label>
-    </div>
+      <span id="audioState" class="pill">音訊待檢查</span>
+    </header>
 
-    <div class="actions">
-      <button id="speak" type="button">🔊 播放翻譯</button>
-      <button id="stopSpeak" type="button">⏹ 停止播放</button>
-    </div>
+    <section class="langs">
+      <select id="from">
+        <option value="zh-TW">🇹🇼 中文</option>
+        <option value="en-US">🇺🇸 English</option>
+        <option value="ja-JP">🇯🇵 日本語</option>
+        <option value="ko-KR">🇰🇷 한국어</option>
+      </select>
+      <button id="swap">⇄</button>
+      <select id="to">
+        <option value="ja-JP">🇯🇵 日本語</option>
+        <option value="en-US">🇺🇸 English</option>
+        <option value="zh-TW">🇹🇼 中文</option>
+        <option value="ko-KR">🇰🇷 한국어</option>
+      </select>
+    </section>
 
-    <button id="unlockAudio" class="full" type="button">🔈 啟用自動語音</button>
-    <small id="engine">翻譯引擎待命</small>
-  </section>
+    <section class="card">
+      <textarea id="input" placeholder="輸入文字，或按麥克風說話…"></textarea>
+      <div class="meter-wrap">
+        <div class="meter"><div id="meterBar"></div></div>
+        <small id="meterText">尚未取得麥克風</small>
+      </div>
+      <div class="actions">
+        <button id="mic" class="primary">🎙️ 啟用麥克風</button>
+        <button id="translate">翻譯</button>
+      </div>
+    </section>
 
-  <section class="debug">
-    <strong>使用方式</strong>
-    <div id="debugText">第一次請先按「啟用自動語音」，之後聽寫完成會自動翻譯並朗讀。</div>
-  </section>
-</main>
-<script src="app.js?v=51"></script>
+    <section class="result">
+      <div class="label">翻譯結果</div>
+      <div id="output">尚未翻譯</div>
+      <div class="actions">
+        <button id="speak">🔊 播放翻譯</button>
+        <button id="testVoice">🧪 測試聲音</button>
+      </div>
+      <small id="voiceInfo">尚未載入語音</small>
+    </section>
+
+    <section class="debug">
+      <strong>音訊狀態</strong>
+      <div id="debugText">準備中…</div>
+    </section>
+  </main>
+<script src="app.js"></script>
 </body>
 </html>

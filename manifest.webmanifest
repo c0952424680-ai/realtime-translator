@@ -1,8 +1,8 @@
 {
-  "name": "即時譯 V5.1",
+  "name": "即時譯",
   "short_name": "即時譯",
-  "start_url": "./?v=51",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#f3f6fb",
+  "background_color": "#f5f7fb",
   "theme_color": "#0A84FF"
 }
