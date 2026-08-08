@@ -4,7 +4,7 @@ const statePill=$("statePill"),latency=$("latency"),engine=$("engine");
 const debugText=$("debugText"),voiceUsed=$("voiceUsed");
 const autoTranslate=$("autoTranslate"),autoSpeak=$("autoSpeak"),rateSel=$("rate");
 
-const names={"zh-TW":"中文","en-US":"English","ja-JP":"日本語","ko-KR":"한국어"};
+const names={"zh-TW":"中文","en-US":"English","ja-JP":"日本語","ko-KR":"한국어","vi-VN":"Tiếng Việt","th-TH":"ไทย"};
 let debounceTimer=null;
 let requestSeq=0;
 let voices=[];
@@ -83,7 +83,9 @@ const preferredFemale={
   "zh-TW":["Mei-Jia","美佳","Ting-Ting","婷婷"],
   "ja-JP":["Kyoko","O-ren","Hattori"],
   "en-US":["Samantha","Ava","Allison","Susan","Zoe"],
-  "ko-KR":["Yuna"]
+  "ko-KR":["Yuna"],
+  "vi-VN":["Linh","Thanh","HoaiMy"],
+  "th-TH":["Kanya","Narisa","Kamon"]
 };
 
 function pickVoice(lang){
