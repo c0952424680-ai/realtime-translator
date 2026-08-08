@@ -182,3 +182,48 @@ h2{margin:2px 0 0;font-size:28px}
 .office-actions .emergency{background:#ff3b30;color:white;border-color:#ff3b30}
 .steps{margin-top:14px;background:#f7f9fc;border-radius:14px;padding:12px}.steps ol{padding-left:22px;margin-bottom:0}.steps li{margin:8px 0}
 .emergency-card{margin-top:14px;border:2px solid #ffcf70;border-radius:16px;padding:12px}.big-phrase{font-size:24px;font-weight:800;line-height:1.45;padding:16px 4px;min-height:90px}
+
+.emergency-services{background:#fffaf3}
+.emergency-service-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #eceff3}
+.emergency-service-row small{display:block;color:#667085;margin-top:3px}
+.emergency-service-row a{min-width:76px;text-align:center;text-decoration:none;background:#ff3b30;color:white;padding:10px;border-radius:12px;font-weight:800}
+
+.danger-zone-section{background:white;border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 5px 18px #00000009}
+.danger-card{border-radius:16px;padding:14px;margin-top:12px;border:1px solid #e2e7ee}
+.risk-banner{border-radius:14px;padding:12px;margin-bottom:10px;font-weight:800}
+.risk-banner.red{background:#ffe7e5;color:#9f1710}
+.risk-banner.orange{background:#fff0dc;color:#944e00}
+.risk-banner.yellow{background:#fff8d8;color:#775e00}
+.risk-banner.gray{background:#f0f2f5;color:#4b5563}
+.risk-banner.health{background:#eaf5ff;color:#075985}
+.risk-item{padding:11px 0;border-bottom:1px solid #edf0f4}
+.risk-item:last-child{border-bottom:0}
+.risk-item b{display:block;margin-bottom:4px}
+.risk-item small{display:block;color:#667085}
+.risk-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.risk-tag{font-size:12px;border-radius:999px;padding:5px 8px;background:#f3f5f8}
+.risk-legend{margin-top:12px;background:#f7f9fc;border-radius:14px;padding:12px;font-size:13px;line-height:1.7}
+.risk-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.risk-dot.red{background:#dc2626}.risk-dot.orange{background:#f97316}.risk-dot.yellow{background:#eab308}.risk-dot.gray{background:#9ca3af}.risk-dot.health{background:#0284c7}
+
+.risk-scale-card{background:#f7f9fc;border-radius:14px;padding:12px;margin:12px 0}
+.risk-scale-row{display:grid;grid-template-columns:70px 1fr;gap:8px;align-items:start;padding:7px 0;font-size:13px}
+.risk-grade{display:inline-block;text-align:center;border-radius:999px;padding:5px 8px;font-weight:800}
+.grade-5{background:#7f1d1d;color:white}.grade-4{background:#f97316;color:white}.grade-3{background:#eab308;color:#4a3b00}.grade-2{background:#bae6fd;color:#075985}.grade-1{background:#e5e7eb;color:#374151}
+.weather-safety,.personal-emergency{background:white;border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 5px 18px #00000009}
+.weather-hazards{margin-top:12px;background:#f7f9fc;border-radius:14px;padding:12px}
+.contact-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.contact-form label{font-size:12px;color:#6b7280}
+.contact-form input,.contact-form select,.contact-form textarea{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid #dce2ea;border-radius:12px;background:#fff;color:#111}
+.contact-form textarea{min-height:90px;font-size:15px}
+.full-field{grid-column:1/-1}
+.contact-list{margin-top:12px}
+.contact-item{border:1px solid #e3e8ef;border-radius:14px;padding:12px;margin-top:8px}
+.contact-item h3{margin:0 0 4px}
+.contact-item .meta{font-size:13px;color:#667085;margin-top:3px}
+.contact-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.contact-actions a,.contact-actions button{text-decoration:none;text-align:center;border:1px solid #dbe1ea;border-radius:12px;padding:10px;background:white;color:#111;font-weight:700}
+.contact-actions .call{background:#0A84FF;color:white;border-color:#0A84FF}
+.emergency-checklist{margin-top:14px;background:#fff7e8;border-radius:14px;padding:12px}
+.emergency-checklist ol{padding-left:22px;margin-bottom:0}.emergency-checklist li{margin:7px 0}
+@media(max-width:430px){.contact-form{grid-template-columns:1fr}.full-field{grid-column:auto}}

@@ -7,15 +7,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="即時譯">
-  <link rel="manifest" href="manifest.webmanifest?v=62">
-  <link rel="stylesheet" href="style.css?v=62">
-  <title>即時譯 V6.2 官方聯絡資料查核版</title>
+  <link rel="manifest" href="manifest.webmanifest?v=66">
+  <link rel="stylesheet" href="style.css?v=66">
+  <title>即時譯 V6.6 危險分級＋緊急聯絡人＋天氣</title>
 </head>
 <body>
 <main class="app">
   <header>
     <div>
-      <div class="eyebrow">V6.2 · OFFICIAL VERIFIED CONTACTS</div>
+      <div class="eyebrow">V6.6 · RISK + CONTACTS + WEATHER</div>
       <h1>即時譯</h1>
       <p>鍵盤聽寫即時顯示 → 自動翻譯 → 女聲自動朗讀</p>
     </div>
@@ -24,25 +24,39 @@
 
   <section class="langs">
     <select id="from" aria-label="來源語言">
-      <option value="zh-TW">🇹🇼 中文</option>
-      <option value="en-US">🇺🇸 English</option>
-      <option value="ja-JP">🇯🇵 日本語</option>
-      <option value="ko-KR">🇰🇷 한국어</option>
-      <option value="th-TH">🇹🇭 ไทย</option>
-      <option value="vi-VN">🇻🇳 Tiếng Việt</option>
-      <option value="mn-MN">🇲🇳 Монгол</option>
+      <option value="zh-TW">🇹🇼 中文（繁體中文）</option>
+      <option value="en-US">🇺🇸 English（英文）</option>
+      <option value="ja-JP">🇯🇵 日本語（日文）</option>
+      <option value="ko-KR">🇰🇷 한국어（韓文）</option>
+      <option value="th-TH">🇹🇭 ไทย（泰文）</option>
+      <option value="vi-VN">🇻🇳 Tiếng Việt（越南文）</option>
+      <option value="ms-MY">🇲🇾 Bahasa Melayu（馬來文）</option>
+      <option value="id-ID">🇮🇩 Bahasa Indonesia（印尼文）</option>
+      <option value="fil-PH">🇵🇭 Filipino（菲律賓文／他加祿語）</option>
+      <option value="km-KH">🇰🇭 ខ្មែរ（高棉文／柬埔寨）</option>
+      <option value="lo-LA">🇱🇦 ລາວ（寮文）</option>
+      <option value="my-MM">🇲🇲 မြန်မာ（緬甸文）</option>
+      <option value="ta-IN">🇸🇬 தமிழ்（坦米爾文／新加坡官方語言）</option>
+      <option value="mn-MN">🇲🇳 Монгол（蒙古文）</option>
     </select>
 
     <button id="swap" type="button" aria-label="交換語言">⇄</button>
 
     <select id="to" aria-label="目標語言">
-      <option value="ja-JP">🇯🇵 日本語</option>
-      <option value="en-US">🇺🇸 English</option>
-      <option value="zh-TW">🇹🇼 中文</option>
-      <option value="ko-KR">🇰🇷 한국어</option>
-      <option value="th-TH">🇹🇭 ไทย</option>
-      <option value="vi-VN">🇻🇳 Tiếng Việt</option>
-      <option value="mn-MN">🇲🇳 Монгол</option>
+      <option value="ja-JP">🇯🇵 日本語（日文）</option>
+      <option value="en-US">🇺🇸 English（英文）</option>
+      <option value="zh-TW">🇹🇼 中文（繁體中文）</option>
+      <option value="ko-KR">🇰🇷 한국어（韓文）</option>
+      <option value="th-TH">🇹🇭 ไทย（泰文）</option>
+      <option value="vi-VN">🇻🇳 Tiếng Việt（越南文）</option>
+      <option value="ms-MY">🇲🇾 Bahasa Melayu（馬來文）</option>
+      <option value="id-ID">🇮🇩 Bahasa Indonesia（印尼文）</option>
+      <option value="fil-PH">🇵🇭 Filipino（菲律賓文／他加祿語）</option>
+      <option value="km-KH">🇰🇭 ខ្មែរ（高棉文／柬埔寨）</option>
+      <option value="lo-LA">🇱🇦 ລາວ（寮文）</option>
+      <option value="my-MM">🇲🇲 မြန်မာ（緬甸文）</option>
+      <option value="ta-IN">🇸🇬 தமிழ்（坦米爾文／新加坡官方語言）</option>
+      <option value="mn-MN">🇲🇳 Монгол（蒙古文）</option>
     </select>
   </section>
 
@@ -115,6 +129,101 @@
   </section>
 
 
+
+  <section class="danger-zone-section">
+    <div class="safety-title">
+      <div>
+        <div class="label">官方風險標示</div>
+        <h2>⚠️ 危險地區與生命安全</h2>
+      </div>
+      <span class="verified">外交部／疾管署</span>
+    </div>
+
+    <p class="safety-note">
+      只使用政府官方發布的旅遊警示與旅遊疫情資料。外交部「紅／橙／黃／灰」與疾管署疫情等級分開顯示，不自行合成分數。
+    </p>
+
+
+    <div class="risk-scale-card">
+      <strong>危險程度分類</strong>
+      <div class="risk-scale-row"><span class="risk-grade grade-5">極高</span><span>戰爭、武裝衝突、綁架、人口販運、重大災害或政府紅色警示；可能直接危及生命。</span></div>
+      <div class="risk-scale-row"><span class="risk-grade grade-4">高</span><span>橙色警示、重大治安、邊境衝突、嚴重詐騙、颱風／洪水／地震等重大天候災害；應避免前往。</span></div>
+      <div class="risk-scale-row"><span class="risk-grade grade-3">中高</span><span>黃色情勢、明顯犯罪／詐騙／疾病／高溫／豪雨／空污等風險；需提高警覺並準備替代方案。</span></div>
+      <div class="risk-scale-row"><span class="risk-grade grade-2">注意</span><span>一般治安、衛生、蚊媒疾病、交通、環境或季節性天氣風險；注意防護。</span></div>
+      <div class="risk-scale-row"><span class="risk-grade grade-1">一般</span><span>目前沒有本 App 已查核的重大紅橙警示，但仍須查看官方最新公告與天氣預報。</span></div>
+    </div>
+
+    <label class="label" for="dangerCountry">查看國家／地區</label>
+    <select id="dangerCountry" class="wide">
+      <option value="mm">🇲🇲 緬甸</option>
+      <option value="kh">🇰🇭 柬埔寨</option>
+      <option value="th">🇹🇭 泰國</option>
+      <option value="mn">🇲🇳 蒙古</option>
+    </select>
+
+    <div id="dangerCard"></div>
+
+    <div class="risk-legend">
+      <div><span class="risk-dot red"></span><b>第四級 紅色</b>：外交部建議儘速離境／切勿前往</div>
+      <div><span class="risk-dot orange"></span><b>第三級 橙色</b>：避免非必要旅行／避免前往</div>
+      <div><span class="risk-dot yellow"></span><b>第二級 黃色</b>：提高警覺、特別注意</div>
+      <div><span class="risk-dot gray"></span><b>第一級 灰色</b>：一般提醒</div>
+      <div><span class="risk-dot health"></span><b>健康警示</b>：衛福部疾管署旅遊疫情建議，與外交部治安／戰爭警示分開</div>
+    </div>
+
+    <small>
+      查核日期：2026-08-09。危險情勢與疫情可能快速變動，出發前及旅途中應再次查看官方最新公告。
+    </small>
+  </section>
+
+
+  <section class="weather-safety">
+    <div class="safety-title">
+      <div>
+        <div class="label">天然災害與天氣</div>
+        <h2>🌦️ 天氣與環境安全</h2>
+      </div>
+      <span class="verified">官方氣象</span>
+    </div>
+
+    <p class="safety-note">
+      颱風、暴雨、洪水、高溫、雷暴、地震、火山、空氣品質等都可能危及旅行安全。此頁提供各國官方氣象／災害機關入口；出發前與旅途中請查看即時警報。
+    </p>
+
+    <label class="label" for="weatherCountry">查看國家／地區</label>
+    <select id="weatherCountry" class="wide">
+      <option value="th">🇹🇭 泰國</option>
+      <option value="vn">🇻🇳 越南</option>
+      <option value="my">🇲🇾 馬來西亞</option>
+      <option value="sg">🇸🇬 新加坡</option>
+      <option value="id">🇮🇩 印尼</option>
+      <option value="ph">🇵🇭 菲律賓</option>
+      <option value="kh">🇰🇭 柬埔寨</option>
+      <option value="la">🇱🇦 寮國</option>
+      <option value="mm">🇲🇲 緬甸</option>
+      <option value="bn">🇧🇳 汶萊</option>
+      <option value="jp">🇯🇵 日本</option>
+      <option value="kr">🇰🇷 韓國</option>
+      <option value="mn">🇲🇳 蒙古</option>
+    </select>
+
+    <div id="weatherSafetyCard" class="office-card"></div>
+
+    <div class="weather-hazards">
+      <strong>可能造成生命危險的天氣／環境因素</strong>
+      <div class="risk-tags">
+        <span class="risk-tag">🌀 颱風／熱帶氣旋</span>
+        <span class="risk-tag">🌧️ 豪雨／洪水／土石流</span>
+        <span class="risk-tag">⚡ 雷暴／強風</span>
+        <span class="risk-tag">🔥 極端高溫／熱傷害</span>
+        <span class="risk-tag">🌫️ 空污／煙霾</span>
+        <span class="risk-tag">🌋 火山／火山灰</span>
+        <span class="risk-tag">🌊 海嘯／風暴潮</span>
+        <span class="risk-tag">🏔️ 地震／山區落石</span>
+      </div>
+    </div>
+  </section>
+
   <section class="safety">
     <div class="safety-title"><div><div class="label">台灣旅客專用</div><h2>🆘 旅外安全</h2></div><span class="verified">政府資料</span></div>
     <p class="safety-note">遇到立即生命危險時，先聯絡所在地警察／救護單位。下列台灣駐外館處資料以中華民國外交部官方資料建置。</p>
@@ -129,6 +238,10 @@
       <option value="id-jkt">🇮🇩 印尼－雅加達及轄區</option>
       <option value="id-sub">🇮🇩 印尼－泗水／峇里島等轄區</option>
       <option value="ph">🇵🇭 菲律賓</option>
+      <option value="kh">🇰🇭 柬埔寨（胡志明市辦事處兼轄）</option>
+      <option value="la">🇱🇦 寮國（駐越南代表處兼轄）</option>
+      <option value="mm">🇲🇲 緬甸</option>
+      <option value="bn">🇧🇳 汶萊</option>
       <optgroup label="東北亞">
         <option value="jp-tokyo">🇯🇵 日本－東京／東日本</option>
         <option value="jp-osaka">🇯🇵 日本－大阪／關西等轄區</option>
@@ -142,6 +255,7 @@
     </select>
 
     <div id="officeCard" class="office-card"></div>
+    <div id="localEmergencyCard" class="office-card emergency-services"></div>
 
     <div class="steps">
       <strong>發生急難時怎麼做</strong>
@@ -173,12 +287,65 @@
     <small id="safetyVerified">資料查核：中華民國外交部／外交部領事事務局；V6 建置查核日 2026-08-09。緊急資料仍應以官方最新公告為準。</small>
   </section>
 
+
+  <section class="personal-emergency">
+    <div class="safety-title">
+      <div>
+        <div class="label">個人安全資料</div>
+        <h2>📞 緊急聯絡人與事項</h2>
+      </div>
+      <span class="verified">僅存此手機</span>
+    </div>
+
+    <p class="safety-note">
+      可儲存家人、同行者、公司、旅行社、保險公司等緊急聯絡資料。資料只保存在這台 iPhone 的瀏覽器，不會上傳到 GitHub。
+    </p>
+
+    <div class="contact-form">
+      <label>聯絡人姓名<input id="contactName" type="text" placeholder="例如：媽媽"></label>
+      <label>關係／單位<input id="contactRelation" type="text" placeholder="例如：家人／旅行社／保險公司"></label>
+      <label>電話<input id="contactPhone" type="tel" placeholder="+886..."></label>
+      <label>緊急事項
+        <select id="contactMatter">
+          <option value="任何重大急難">任何重大急難</option>
+          <option value="失聯">失聯</option>
+          <option value="受傷或住院">受傷或住院</option>
+          <option value="車禍">車禍</option>
+          <option value="護照或財物遺失">護照或財物遺失</option>
+          <option value="遭搶劫或詐騙">遭搶劫或詐騙</option>
+          <option value="被拘留或需要法律協助">被拘留或需要法律協助</option>
+          <option value="天然災害／天氣危險">天然災害／天氣危險</option>
+        </select>
+      </label>
+      <label class="full-field">備註／處理指示<textarea id="contactNote" placeholder="例如：若我 12 小時未回覆，請先聯絡駐外館處，再通知家人。"></textarea></label>
+    </div>
+
+    <div class="actions">
+      <button id="saveContact" class="primary" type="button">＋ 儲存聯絡人</button>
+      <button id="clearContacts" type="button">清除全部</button>
+    </div>
+
+    <div id="contactList" class="contact-list"></div>
+
+    <div class="emergency-checklist">
+      <strong>🧭 遇到重大危險的聯絡順序</strong>
+      <ol>
+        <li>先離開危險區域，前往警察局、醫院、飯店、避難所或人多安全處。</li>
+        <li>有立即生命危險：先打當地警察／消防／救護電話。</li>
+        <li>若為天災：優先遵從當地政府撤離、避難、停班停課或封路指示。</li>
+        <li>再聯絡台灣駐外館處急難電話。</li>
+        <li>聯絡你設定的第一順位緊急聯絡人，告知位置、事件、是否受傷。</li>
+        <li>保存報案單、醫療證明、照片、收據、天災警報截圖與對話紀錄。</li>
+      </ol>
+    </div>
+  </section>
+
   <section class="debug">
     <strong>狀態</strong>
     <div id="debugText">第一次使用請先按「啟用自動語音」。之後聽寫文字停止變動約 0.8 秒，會自動翻譯並嘗試自動朗讀。</div>
   </section>
 </main>
 
-<script src="app.js?v=62"></script>
+<script src="app.js?v=66"></script>
 </body>
 </html>
