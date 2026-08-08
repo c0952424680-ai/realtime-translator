@@ -2,15 +2,15 @@
 body{margin:0;background:#f5f7fb;color:#111;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang TC",sans-serif}
 .app{max-width:720px;margin:auto;padding:calc(env(safe-area-inset-top) + 24px) 18px 40px}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.eyebrow{font-size:11px;letter-spacing:.18em;color:#6b7280;font-weight:800}
-h1{font-size:38px;margin:3px 0}.pill{background:#e8f4ff;color:#0878d1;padding:7px 11px;border-radius:20px;font-size:12px;font-weight:700}
+.eyebrow{font-size:11px;letter-spacing:.18em;color:#6b7280;font-weight:800}h1{font-size:38px;margin:3px 0}
+.pill{background:#fff2d8;color:#9a6400;padding:7px 11px;border-radius:20px;font-size:12px;font-weight:700}
 .langs{display:grid;grid-template-columns:1fr 48px 1fr;gap:8px;align-items:center;margin-bottom:14px}
-select,button{font:inherit}select{padding:13px;border:1px solid #dbe1ea;border-radius:14px;background:white}
-#swap{font-size:24px;background:transparent;border:0}
-.card,.result,.travel{background:white;border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 5px 18px #00000008}
-textarea{width:100%;min-height:150px;border:0;outline:0;resize:none;font-size:20px;line-height:1.5}
-.actions{display:grid;grid-template-columns:1.3fr 1fr;gap:8px}
+select,button{font:inherit}select{padding:13px;border:1px solid #dbe1ea;border-radius:14px;background:white}#swap{font-size:24px;background:transparent;border:0}
+.card,.result,.debug{background:white;border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 5px 18px #00000008}
+textarea{width:100%;min-height:140px;border:0;outline:0;resize:none;font-size:20px;line-height:1.5}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 button{border:1px solid #dbe1ea;background:#fff;border-radius:14px;padding:12px}
 button.primary{background:#0A84FF;color:white;border-color:#0A84FF}
 .result{min-height:150px}.label{font-size:12px;color:#6b7280;margin-bottom:8px}#output{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:12px}
-.chips{display:flex;gap:8px;flex-wrap:wrap}.travel small{display:block;color:#6b7280;margin-top:12px}
+.meter-wrap{margin:8px 0 12px}.meter{height:10px;background:#e9edf3;border-radius:999px;overflow:hidden}.meter div{height:100%;width:0%;background:#0A84FF}
+small{color:#6b7280}.debug{font-size:13px;line-height:1.5}
