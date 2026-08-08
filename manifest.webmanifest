@@ -1,0 +1,8 @@
+{
+  "name": "即時譯",
+  "short_name": "即時譯",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#0A84FF"
+}
