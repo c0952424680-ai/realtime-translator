@@ -1,3 +1,4 @@
+const FAST_NEARBY_CACHE="rt_v80_nearby_cache";
 
 const NEARBY_STATE={lat:null,lon:null,kind:"hospital",results:{}};
 
@@ -37,10 +38,7 @@ function facilityName(e,kind){
 }
 
 function exactDirections(lat,lon,name){
-  return "https://www.google.com/maps/dir/?api=1&destination="+
-    encodeURIComponent(`${lat},${lon}`)+
-    "&destination_place_name="+encodeURIComponent(name||"目的地")+
-    "&travelmode=driving";
+  return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(`${lat},${lon}`)+"&travelmode=driving";
 }
 
 async function overpassFetch(query){
@@ -69,11 +67,16 @@ async function searchNearby(kind,lat,lon){
   if(status)status.textContent="正在搜尋 8 公里內最近設施…";
   if(results)results.innerHTML="";
 
-  let data=await overpassFetch(overpassQuery(kind,lat,lon,8000));
+  let data=await overpassFetch(overpassQuery(kind,lat,lon,5000));
   let elements=data.elements||[];
   if(elements.length<3){
-    if(status)status.textContent="附近結果較少，擴大到 25 公里搜尋…";
-    data=await overpassFetch(overpassQuery(kind,lat,lon,25000));
+    if(status)status.textContent="附近結果較少，擴大到 15 公里搜尋…";
+    data=await overpassFetch(overpassQuery(kind,lat,lon,15000));
+    elements=data.elements||[];
+  }
+  if(elements.length<2){
+    if(status)status.textContent="附近結果仍少，擴大到 30 公里搜尋…";
+    data=await overpassFetch(overpassQuery(kind,lat,lon,30000));
     elements=data.elements||[];
   }
 
@@ -92,6 +95,7 @@ async function searchNearby(kind,lat,lon){
   }).filter(Boolean).sort((a,b)=>a.distance-b.distance).slice(0,5);
 
   NEARBY_STATE.results[kind]=list;
+  try{localStorage.setItem(FAST_NEARBY_CACHE,JSON.stringify({time:Date.now(),lat,lon,kind,list,area:`${Number(lat).toFixed(2)},${Number(lon).toFixed(2)}`}))}catch{}
   renderNearby(kind);
 }
 
@@ -150,4 +154,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   });
   document.getElementById("refreshNearby")?.addEventListener("click",()=>refreshNearby());
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  try{
+    const c=JSON.parse(localStorage.getItem(FAST_NEARBY_CACHE)||"null");
+    if(c && Date.now()-c.time<30*60*1000 && Array.isArray(c.list)){
+      NEARBY_STATE.lat=c.lat;NEARBY_STATE.lon=c.lon;NEARBY_STATE.kind=c.kind;NEARBY_STATE.results[c.kind]=c.list;
+      renderNearby(c.kind);
+      const s=document.getElementById("nearbySearchStatus");if(s)s.textContent="⚡ 已先載入最近一次附近設施快取，背景可再重新搜尋。";
+    }
+  }catch{}
 });

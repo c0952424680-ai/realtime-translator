@@ -61,7 +61,7 @@ function renderLinkedRisk(){
   const key=findCountryKey(linkedFeed,country);
   linkedCountryKey=key;
 
-  const cityLine=[country,city,district].filter(x=>x && x!=="—" && x!=="未知" && x!=="未提供").join("・");
+  const cityLine=[country,city,district].filter((x,i,a)=>x && x!=="—" && x!=="未知" && x!=="未提供" && a.indexOf(x)===i).join("・");
   const lc=document.getElementById("linkedCity");
   if(lc)lc.textContent=cityLine||"尚未取得城市";
 
@@ -161,4 +161,14 @@ document.addEventListener("DOMContentLoaded",async()=>{
     const el=document.getElementById(id);
     if(el)obs.observe(el,{childList:true,subtree:true,attributes:true});
   });
+});
+
+window.addEventListener("manual-location-change",()=>{
+  renderLinkedRisk();
+  syncWeatherLight();
+});
+
+window.addEventListener("manual-location-change",()=>{
+  renderLinkedRisk();
+  syncWeatherLight();
 });

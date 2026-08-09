@@ -63,7 +63,7 @@ async function reverseGeocode(lat,lon){
   return await r.json();
 }
 
-async function currentWeather(lat,lon){
+window.currentWeather=async function currentWeather(lat,lon){
   const url="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(lat)+
     "&longitude="+encodeURIComponent(lon)+
     "&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m"+
@@ -73,7 +73,7 @@ async function currentWeather(lat,lon){
   return await r.json();
 }
 
-function renderLive(data){
+window.renderLive=function renderLive(data){
   const {lat,lon,geo,weather}=data;
   if(typeof window.updateNearbyPosition==="function")window.updateNearbyPosition(lat,lon);
   const a=geo?.address||{};

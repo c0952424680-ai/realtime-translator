@@ -40,7 +40,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .region-list{display:flex;flex-direction:column;gap:7px}.region-item{background:#ffffffc9;border:1px solid currentColor;border-radius:11px;padding:9px;font-size:14px;line-height:1.45}.region-empty{opacity:.75;font-size:13px}
 @media(max-width:450px){.risk-live-controls{grid-template-columns:1fr}}
 
-/* V7.8.1 翻譯介面細節 */
+/* V8.0 翻譯介面細節 */
 .translation-ui-settings select{font-size:16px}
 textarea,.result,.face .out,.faceout,.conversation-result{
   letter-spacing:.01em;
@@ -102,3 +102,12 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .taiwan-emergency-row .emergency-call{background:#fee2e2;border-color:#fecaca;color:#991b1b}
 .tw-link-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 @media(max-width:450px){.nearby-tabs,.taiwan-emergency-row,.tw-link-grid{grid-template-columns:1fr}.facility-row{grid-template-columns:30px 1fr}.facility-row>a{grid-column:1/-1;text-align:center}}
+
+.country-city-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.country-city-row label{font-size:12px;color:#64748b}
+.manual-location-card{border:2px solid #bfdbfe}
+@media(max-width:450px){.country-city-row{grid-template-columns:1fr}}
+
+.country-city-district-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.country-city-district-row label{font-size:12px;color:#64748b}
+@media(max-width:600px){.country-city-district-row{grid-template-columns:1fr}}
