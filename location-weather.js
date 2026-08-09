@@ -75,6 +75,7 @@ async function currentWeather(lat,lon){
 
 function renderLive(data){
   const {lat,lon,geo,weather}=data;
+  if(typeof window.updateNearbyPosition==="function")window.updateNearbyPosition(lat,lon);
   const a=geo?.address||{};
   const country=a.country||"未知";
   const city=a.city||a.town||a.village||a.municipality||a.county||"未知";

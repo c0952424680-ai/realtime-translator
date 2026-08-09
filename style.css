@@ -40,7 +40,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .region-list{display:flex;flex-direction:column;gap:7px}.region-item{background:#ffffffc9;border:1px solid currentColor;border-radius:11px;padding:9px;font-size:14px;line-height:1.45}.region-empty{opacity:.75;font-size:13px}
 @media(max-width:450px){.risk-live-controls{grid-template-columns:1fr}}
 
-/* V7.7 翻譯介面細節 */
+/* V7.8 翻譯介面細節 */
 .translation-ui-settings select{font-size:16px}
 textarea,.result,.face .out,.faceout,.conversation-result{
   letter-spacing:.01em;
@@ -89,3 +89,16 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .highrisk-regions span{padding:5px 7px;border-radius:999px;background:#fff1f2;color:#991b1b;font-size:11px;font-weight:800}
 .auto-update-note{margin-top:10px;padding:10px;border-radius:12px;background:#eff6ff;color:#1e40af;font-size:12px;line-height:1.5}
 @media(max-width:450px){.linked-risk-grid{grid-template-columns:1fr}.linked-wide{grid-column:auto}.linked-topline{flex-direction:column}}
+
+.nearby-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
+.nearby-tab.active{background:#0A84FF;color:#fff;border-color:#0A84FF}
+.nearby-results{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.facility-row{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;border:1px solid #e2e8f0;border-radius:14px;padding:10px;background:#fff}
+.facility-rank{width:30px;height:30px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:900;display:flex;align-items:center;justify-content:center}
+.facility-main b,.facility-main span{display:block}.facility-main span{font-size:12px;color:#64748b;margin-top:3px}
+.facility-row>a,.nearby-fallback{padding:8px 10px;border-radius:10px;background:#0A84FF;color:#fff;text-decoration:none;font-size:12px;font-weight:900}
+.taiwan-emergency-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+.taiwan-emergency-row a,.tw-link-grid a{text-decoration:none;text-align:center;padding:10px;border-radius:12px;border:1px solid #dbe2ea;color:#111827;font-weight:800;background:#fff}
+.taiwan-emergency-row .emergency-call{background:#fee2e2;border-color:#fecaca;color:#991b1b}
+.tw-link-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+@media(max-width:450px){.nearby-tabs,.taiwan-emergency-row,.tw-link-grid{grid-template-columns:1fr}.facility-row{grid-template-columns:30px 1fr}.facility-row>a{grid-column:1/-1;text-align:center}}

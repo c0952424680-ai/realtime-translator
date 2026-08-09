@@ -1,5 +1,5 @@
-即時譯 V7.7｜優化安全版 驗證報告
-BUILD=V7.7-LINKED-AUTO-RISK-20260809-01
+即時譯 V7.8｜優化安全版 驗證報告
+BUILD=V7.8-TAIWAN-NEAREST-EMERGENCY-20260809-01
 
 翻譯介面：
 - 字體選擇 6 mm：OK

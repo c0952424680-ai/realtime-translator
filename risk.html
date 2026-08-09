@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=77"><title>即時譯 V7.7｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=78"><title>即時譯 V7.8｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
       <strong>✅ V7.5 強制更新版</strong>
       <span>BUILD：V7.5-SAFETY-OPTIMIZED-20260809-01</span>
     </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V7.5 · FORCE UPDATE · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V7.5-SAFETY-OPTIMIZED-20260809-01</div></header><section class="card">
@@ -65,13 +65,28 @@
 </section>
 
 <section class="card nearby-card">
-  <h2>🧭 附近安全設施</h2>
-  <p class="small">取得定位後可直接用 Google Maps 搜尋附近設施。</p>
-  <div class="nearby-grid">
-    <a id="nearPolice" target="_blank">👮 附近警察局</a>
-    <a id="nearHospital" target="_blank">🏥 附近醫院／急診</a>
-    <a id="nearPharmacy" target="_blank">💊 附近藥局</a>
-    <a id="nearShelter" target="_blank">🏠 附近避難場所</a>
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">距離優先</div>
+      <h2>🚑 最近緊急應變設施</h2>
+    </div>
+    <button id="refreshNearby" class="primary">重新搜尋附近</button>
+  </div>
+  <p class="small">以目前 GPS 座標查詢附近實際設施，計算直線距離後由近到遠排列；導航使用設施的實際座標。</p>
+
+  <div class="nearby-tabs">
+    <button class="nearby-tab active" data-kind="hospital">🏥 醫院／急診</button>
+    <button class="nearby-tab" data-kind="police">👮 警察局</button>
+    <button class="nearby-tab" data-kind="pharmacy">💊 藥局</button>
+  </div>
+
+  <div id="nearbySearchStatus" class="official-note">取得定位後會自動搜尋最近設施。</div>
+  <div id="nearbyResults" class="nearby-results"></div>
+
+  <div class="taiwan-emergency-row" id="taiwanEmergencyRow" hidden>
+    <a href="tel:110" class="emergency-call">👮 台灣警察 110</a>
+    <a href="tel:119" class="emergency-call">🚒 台灣消防／救護 119</a>
+    <a href="tel:165">🛡️ 反詐騙 165</a>
   </div>
 </section>
 
@@ -127,7 +142,16 @@
     GitHub Actions 可每小時重新產生官方風險資料檔。
   </div>
 </section>
-<section class="card risk-roadmap">
+<section class="card taiwan-region-card" id="taiwanRegionCard" hidden>
+  <h2>🇹🇼 台灣所在地區聯動</h2>
+  <div id="taiwanRegionName" class="country-summary"></div>
+  <div class="tw-link-grid">
+    <a href="https://www.cwa.gov.tw/" target="_blank">🌦️ 中央氣象署</a>
+    <a href="https://165.npa.gov.tw/" target="_blank">💳 165 全民防騙網</a>
+    <a href="https://www.npa.gov.tw/" target="_blank">👮 警政署</a>
+    <a href="https://www.cdc.gov.tw/" target="_blank">🦠 疾管署</a>
+  </div>
+</section><section class="card risk-roadmap">
 <h2>🎯 風險警示下一階段目標</h2>
 <div class="risk-roadmap-grid">
   <div class="risk-roadmap-item"><b>📍 地區層級</b><span>從「國家」進一步細分到城市、行政區、邊境、景點與特定危險區。</span></div>
@@ -165,4 +189,4 @@
   <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
   <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
 </div>
-</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=77"></script><script src="risk-data.js?v=77"></script><script src="risk.js?v=77"></script><script src="location-weather.js?v=77"></script><script src="live-risk.js?v=77"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=78"></script><script src="risk-data.js?v=78"></script><script src="risk.js?v=78"></script><script src="location-weather.js?v=78"></script><script src="live-risk.js?v=78"></script><script src="nearby.js?v=78"></script><script src="taiwan-link.js?v=78"></script></body></html>

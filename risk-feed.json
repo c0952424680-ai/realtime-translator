@@ -9,6 +9,18 @@
     "cdc": {
       "name": "衛生福利部疾病管制署國際疫情及建議等級",
       "url": "https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA"
+    },
+    "taiwan_cwa": {
+      "name": "中央氣象署警特報／地震資訊",
+      "url": "https://www.cwa.gov.tw/V8/C/S/eservice/rss.html"
+    },
+    "taiwan_165": {
+      "name": "內政部警政署165全民防騙網／打詐儀錶板",
+      "url": "https://165.npa.gov.tw/"
+    },
+    "taiwan_npa": {
+      "name": "內政部警政署",
+      "url": "https://www.npa.gov.tw/"
     }
   },
   "countries": {
@@ -209,6 +221,38 @@
           "火山警戒區"
         ],
         "text": "部分地區不適合單獨旅行，請查看外交部最新警示。"
+      }
+    },
+    "Taiwan": {
+      "aliases": [
+        "台灣",
+        "臺灣",
+        "Taiwan",
+        "Republic of China",
+        "Taiwan (R.O.C.)"
+      ],
+      "crime": {
+        "level": "green",
+        "text": "一般地區維持基本治安警覺；實際事件與犯罪資訊請以警政署及所在地警察機關最新公告為準。"
+      },
+      "scam": {
+        "level": "orange",
+        "text": "詐騙手法變化快速，建議連結警政署165全民防騙網與打詐儀錶板查看最新案例與縣市資訊。"
+      },
+      "disease": {
+        "level": "green",
+        "text": "疾病風險依所在縣市與季節變化，請連結疾管署最新疫情與監測資料。"
+      },
+      "highrisk": {
+        "level": "green",
+        "regions": [],
+        "text": "不固定將任何台灣城市標示為永久高風險；颱風、豪雨、地震、山區封閉等依中央氣象署及地方政府即時警報升級。"
+      },
+      "official_links": {
+        "police": "https://www.npa.gov.tw/",
+        "scam": "https://165.npa.gov.tw/",
+        "disease": "https://www.cdc.gov.tw/",
+        "weather": "https://www.cwa.gov.tw/"
       }
     }
   }

@@ -83,15 +83,15 @@ function renderLinkedRisk(){
   const d=linkedFeed.countries[key];
 
   setMiniLight("crimeLight",d.crime?.level);
-  crimeText.textContent=d.crime?.text||"尚無資料";
+  crimeText.textContent=`${city||country}${district&&district!==city?"・"+district:""}：${d.crime?.text||"尚無資料"}`;
   showRiskSource("crimeSource",linkedFeed.sources?.boca?.name||"外交部",linkedFeed.sources?.boca?.url);
 
   setMiniLight("scamLight",d.scam?.level);
-  scamText.textContent=d.scam?.text||"尚無資料";
+  scamText.textContent=`${city||country}：${d.scam?.text||"尚無資料"}`;
   showRiskSource("scamSource",linkedFeed.sources?.boca?.name||"外交部",linkedFeed.sources?.boca?.url);
 
   setMiniLight("diseaseLight",d.disease?.level);
-  diseaseText.textContent=d.disease?.text||"尚無資料";
+  diseaseText.textContent=`${city||country}：${d.disease?.text||"尚無資料"}`;
   showRiskSource("diseaseSource",linkedFeed.sources?.cdc?.name||"疾管署",linkedFeed.sources?.cdc?.url);
 
   setMiniLight("highRiskLight",d.highrisk?.level);
