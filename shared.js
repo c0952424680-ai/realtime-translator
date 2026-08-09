@@ -1,5 +1,5 @@
 
-const BUILD_ID="V7.5.1-TRANSLATION-RISK-UPGRADE-20260809-01";
+const BUILD_ID="V7.5.3-LIVE-REGION-RISK-20260809-01";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,7 +17,7 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V7.5.1-TRANSLATION-RISK-UPGRADE-20260809-01";
+const CURRENT_BUILD="V7.5.3-LIVE-REGION-RISK-20260809-01";
 (async function forceUpgrade(){
   try{
     const previous=localStorage.getItem("rt_current_build");

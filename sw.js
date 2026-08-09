@@ -1,9 +1,9 @@
 
-const CACHE="RT-V7.5.1-TRANSLATION-RISK-UPGRADE";
+const CACHE="RT-V7.5.3-FEMALE-VOICE";
 const STATIC=[
- "./index.html?v=751","./sos.html?v=751","./risk.html?v=751","./contacts.html?v=751",
- "./style.css?v=751","./shared.js?v=751","./translate.js?v=751","./sos.js?v=751","./contacts.js?v=751",
- "./manifest.webmanifest?v=751"
+ "./index.html?v=753","./sos.html?v=753","./risk.html?v=753","./contacts.html?v=753",
+ "./style.css?v=753","./shared.js?v=753","./translate.js?v=753","./sos.js?v=753","./contacts.js?v=753",
+ "./manifest.webmanifest?v=753","./risk-data.js?v=753","./risk.js?v=753"
 ];
 
 self.addEventListener("install",event=>{
@@ -31,6 +31,6 @@ self.addEventListener("fetch",event=>{
         caches.open(CACHE).then(cache=>cache.put(event.request,copy));
         return response;
       })
-      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=751")))
+      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=753")))
   );
 });

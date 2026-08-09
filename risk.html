@@ -1,35 +1,48 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=751"><title>即時譯 V7.5.1｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=753"><title>即時譯 V7.5.3｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
       <strong>✅ V7.5 強制更新版</strong>
       <span>BUILD：V7.5-SAFETY-OPTIMIZED-20260809-01</span>
     </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V7.5 · FORCE UPDATE · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V7.5-SAFETY-OPTIMIZED-20260809-01</div></header><section class="card">
-<h2>📊 風險事項儀表板</h2>
-<p class="official-note">顏色是本 App 的介面摘要，不是外交部官方燈號。官方旅遊警示仍以灰／黃／橙／紅四級為準。</p>
+<h2>📍 所在國家／地區風險</h2>
+<div class="risk-live-controls">
+  <select id="riskCountry">
+    <option value="jp">🇯🇵 日本</option>
+    <option value="kr">🇰🇷 韓國</option>
+    <option value="vn">🇻🇳 越南</option>
+    <option value="my">🇲🇾 馬來西亞</option>
+    <option value="ph">🇵🇭 菲律賓</option>
+    <option value="th">🇹🇭 泰國</option>
+    <option value="id">🇮🇩 印尼</option>
+  </select>
+  <button id="useLocation" class="primary">📍 使用我的位置</button>
+</div>
+<div id="locationText" class="official-note">位置：尚未取得。定位只用於顯示目前座標，不會上傳。</div>
+<div id="snapshotTime" class="small"></div>
+</section>
+
+<section class="card">
+<h2>🚦 地區風險燈號</h2>
+<p class="official-note">本 App 只用三色做快速摘要：綠＝相對低風險、橙＝提高警覺／不適合單獨旅行、紅＝立即性高風險。它不是外交部官方燈號；外交部官方仍是灰／黃／橙／紅四級。</p>
+
+<div id="countrySummary" class="country-summary"></div>
+
 <div class="risk-tier safe">
-  <h3>🟢 綠色｜相對安全</h3>
-  <p><b>定義：</b>目前沒有已知立即生命危險；整體治安相對良好，但仍需一般旅遊警覺。</p>
-  <p><b>顯示：</b>安全地區、一般防竊、防詐與天氣注意。</p>
+  <h3>🟢 綠色｜相對低風險地區</h3>
+  <div id="greenRegions" class="region-list"></div>
 </div>
+
 <div class="risk-tier caution">
-  <h3>🟠 橙色｜有明顯危險</h3>
-  <p><b>定義：</b>不適合單獨旅行；可能有暴力犯罪、詐騙、邊境衝突、疾病或極端天氣等生命安全風險。</p>
-  <p><b>顯示：</b>列出不建議單獨前往的地區、可能危害與官方來源。</p>
+  <h3>🟠 橙色｜提高警覺／不適合單獨旅行</h3>
+  <div id="orangeRegions" class="region-list"></div>
 </div>
+
 <div class="risk-tier danger">
-  <h3>🔴 紅色｜立即性高風險</h3>
-  <p><b>定義：</b>有嚴重生命危險或立即性風險，例如戰爭、武裝衝突、綁架、嚴重暴力或重大災害。</p>
-  <p><b>顯示：</b>列出風險地區、立即避開／撤離建議、最近台灣館處與緊急聯絡方式。</p>
+  <h3>🔴 紅色｜立即性高風險／嚴重生命危險</h3>
+  <div id="redRegions" class="region-list"></div>
 </div>
-<h2>六大風險分類</h2>
-<div class="riskgrid">
-  <div class="risk"><b>🪖 戰爭／衝突</b><span>戰爭、武裝衝突、邊境交火、恐攻</span></div>
-  <div class="risk"><b>👮 治安</b><span>搶劫、攻擊、綁架、暴力犯罪</span></div>
-  <div class="risk"><b>💳 詐騙</b><span>電信詐騙、工作誘騙、人口販運</span></div>
-  <div class="risk"><b>🦠 疾病／衛生</b><span>疫情、飲食飲水衛生、醫療可近性</span></div>
-  <div class="risk"><b>🌦️ 天氣</b><span>高溫、暴雨、颱風、暴雪、煙霾</span></div>
-  <div class="risk"><b>🌋 天然災害</b><span>地震、海嘯、火山、洪水、山崩</span></div>
-</div>
+
 <div class="linkgrid">
-  <a href="https://www.boca.gov.tw/sp-trwa-list-1.html" target="_blank">🇹🇼 外交部官方旅遊警示</a>
-  <a href="https://www.cdc.gov.tw/CountryEpidLevel/Index/NlUwZUNvckRWQ09CbDJkRVFjaExjUT09" target="_blank">🦠 疾管署國際旅遊疫情</a>
+  <a id="officialRiskLink" target="_blank">🇹🇼 查看該國外交部最新警示</a>
+  <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
+  <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
 </div>
-</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=751"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=753"></script><script src="risk-data.js?v=753"></script><script src="risk.js?v=753"></script></body></html>

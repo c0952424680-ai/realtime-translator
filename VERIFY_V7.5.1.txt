@@ -1,5 +1,5 @@
-即時譯 V7.5.1｜優化安全版 驗證報告
-BUILD=V7.5.1-TRANSLATION-RISK-UPGRADE-20260809-01
+即時譯 V7.5.3｜優化安全版 驗證報告
+BUILD=V7.5.3-LIVE-REGION-RISK-20260809-01
 
 - 主要輸入／翻譯結果字體：14 mm
 - 介面文字：繁體中文
