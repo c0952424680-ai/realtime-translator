@@ -1,0 +1,17 @@
+即時譯 V8.6｜旅外安全助理 Clean Build 最終檢查
+BUILD=V8.6-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01
+
+- 舊 VERIFY：0
+- assistant-summary.js：已移除
+- risk-data.js：已移除
+- risk.js：已移除
+- app.js：已移除
+- README：已重建
+- 單一 assistant-unified.js：OK
+- 單一 nearby.js：OK
+- 單一 Service Worker：OK
+- 緊急設施搜尋：10→15→每次+5km→50km
+- 緊急說明文字：已簡化
+- Google Maps 備援：保留
+- JavaScript 語法：全部通過
+- 舊版 runtime 字樣：0

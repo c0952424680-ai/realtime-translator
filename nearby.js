@@ -143,7 +143,7 @@ async function searchNearby(kind,lat,lon){
   let list=[],lastRadius=10;
   for(const km of SEARCH_RADII_KM){
     lastRadius=km;
-    if(status)status.textContent=`正在搜尋 ${km} 公里內最近${kind==="hospital"?"醫院／急診":kind==="police"?"警察局":"藥局"}…`;
+    if(status)status.textContent="正在搜尋附近設施…";
     const data=await overpassFetch(overpassQuery(kind,lat,lon,km*1000));
     if(requestId!==NEARBY_STATE.requestId)return;
     list=normalizeElements(data.elements,kind,lat,lon);
@@ -168,14 +168,14 @@ function renderNearby(kind,lastRadius){
   const list=NEARBY_STATE.results[kind]||[];
 
   if(!list.length){
-    if(status)status.textContent="在最遠 50 公里內找不到 OpenStreetMap 設施資料，可改用 Google Maps 以目前座標搜尋。";
+    if(status)status.textContent="附近沒有結果，請改用 Google Maps 搜尋。";
     if(box && NEARBY_STATE.lat!=null){
       box.innerHTML=`<a class="nearby-fallback" target="_blank" href="${googleFallback(kind,NEARBY_STATE.lat,NEARBY_STATE.lon)}">🗺️ 改用 Google Maps 搜尋附近${kind==="hospital"?"醫院／急診":kind==="police"?"警察局":"藥局"}</a>`;
     }
     return;
   }
 
-  if(status)status.textContent=`✅ 已搜尋至 ${lastRadius} 公里範圍，依距離顯示最近 ${list.length} 個結果。`;
+  if(status)status.textContent="✅ 已找到，依距離由近到遠排列。";
 
   box.innerHTML=list.map((x,i)=>`
     <div class="facility-row">
