@@ -40,7 +40,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .region-list{display:flex;flex-direction:column;gap:7px}.region-item{background:#ffffffc9;border:1px solid currentColor;border-radius:11px;padding:9px;font-size:14px;line-height:1.45}.region-empty{opacity:.75;font-size:13px}
 @media(max-width:450px){.risk-live-controls{grid-template-columns:1fr}}
 
-/* V7.8 翻譯介面細節 */
+/* V7.8.1 翻譯介面細節 */
 .translation-ui-settings select{font-size:16px}
 textarea,.result,.face .out,.faceout,.conversation-result{
   letter-spacing:.01em;

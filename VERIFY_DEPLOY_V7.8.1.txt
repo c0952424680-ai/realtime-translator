@@ -1,0 +1,11 @@
+部署前最終檢查
+名稱：即時譯 V7.8.1｜優化安全版
+BUILD：V7.8.1-CLEAN-DEPLOY-20260809-01
+網址參數：v=781
+
+- 四個主頁可見版本：V7.8.1
+- 舊 V7.5 runtime 字樣：0
+- 舊資源版本參數：0
+- manifest：V7.8.1
+- Service Worker：全新 cache key
+- JavaScript 語法：全部通過
