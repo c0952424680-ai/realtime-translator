@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V7.4.1 強制更新版",
-  "short_name": "即時譯 7.4.1",
-  "start_url": "./index.html?build=V7.4.1-FORCE-UPDATE-20260809-01",
+  "name": "即時譯 V7.5.1｜優化安全版",
+  "short_name": "即時譯 7.5.1",
+  "start_url": "./index.html?v=751",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF"

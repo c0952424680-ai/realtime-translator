@@ -1,5 +1,5 @@
 V7.4 全新重製版驗證報告
-BUILD: V7.4.1-FORCE-UPDATE-20260809-01
+BUILD: V7.5-SAFETY-OPTIMIZED-20260809-01
 
 檢查結果：
 - 四頁：index / sos / risk / contacts = OK

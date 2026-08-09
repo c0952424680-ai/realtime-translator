@@ -1,5 +1,5 @@
 
-const BUILD_ID="V7.4.1-FORCE-UPDATE-20260809-01";
+const BUILD_ID="V7.5.1-TRANSLATION-RISK-UPGRADE-20260809-01";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,7 +17,7 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V7.4.1-FORCE-UPDATE-20260809-01";
+const CURRENT_BUILD="V7.5.1-TRANSLATION-RISK-UPGRADE-20260809-01";
 (async function forceUpgrade(){
   try{
     const previous=localStorage.getItem("rt_current_build");
@@ -43,9 +43,23 @@ const CURRENT_BUILD="V7.4.1-FORCE-UPDATE-20260809-01";
     }
 
     if("serviceWorker" in navigator){
-      await navigator.serviceWorker.register("./sw.js?v=741");
+      await navigator.serviceWorker.register("./sw.js?v=75");
     }
   }catch(e){
-    console.warn("V7.4.1 force-upgrade cleanup failed",e);
+    console.warn("V7.5 force-upgrade cleanup failed",e);
   }
 })();
+
+function detectLangByText(text){
+  const t=(text||"").trim();
+  if(!t)return null;
+  if(/[ぁ-んァ-ン]/.test(t)) return "ja-JP";
+  if(/[가-힣]/.test(t)) return "ko-KR";
+  if(/[\u0E00-\u0E7F]/.test(t)) return "th-TH";
+  if(/[\u1000-\u109F]/.test(t)) return "my-MM";
+  if(/[\u1780-\u17FF]/.test(t)) return "km-KH";
+  if(/[\u0E80-\u0EFF]/.test(t)) return "lo-LA";
+  if(/[A-Za-z]/.test(t) && !/[\u4E00-\u9FFF]/.test(t)) return "en-US";
+  if(/[\u4E00-\u9FFF]/.test(t)) return "zh-TW";
+  return null;
+}
