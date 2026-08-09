@@ -1,5 +1,5 @@
 
-const BUILD_ID="V8.3";
+const BUILD_ID="V8.4";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,36 +17,46 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V8.3";
+const CURRENT_BUILD="V8.4";
+const CURRENT_PARAM="84";
+
 (async function forceUpgrade(){
   try{
+    const u=new URL(location.href);
+    const wrongVersion=u.searchParams.get("v")!==CURRENT_PARAM;
+    const wrongBuild=u.searchParams.get("build")!==CURRENT_BUILD;
+
+    if(wrongVersion || wrongBuild){
+      u.searchParams.set("v",CURRENT_PARAM);
+      u.searchParams.set("build",CURRENT_BUILD);
+      location.replace(u.toString());
+      return;
+    }
+
     const previous=localStorage.getItem("rt_current_build");
     if(previous!==CURRENT_BUILD){
       localStorage.setItem("rt_current_build",CURRENT_BUILD);
 
       if("serviceWorker" in navigator){
         const regs=await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r=>r.unregister()));
+        await Promise.all(regs.map(async r=>{
+          try{await r.update()}catch{}
+          try{await r.unregister()}catch{}
+        }));
       }
 
       if("caches" in window){
         const keys=await caches.keys();
         await Promise.all(keys.map(k=>caches.delete(k)));
       }
-
-      const u=new URL(location.href);
-      if(u.searchParams.get("build")!==CURRENT_BUILD){
-        u.searchParams.set("build",CURRENT_BUILD);
-        location.replace(u.toString());
-        return;
-      }
     }
 
     if("serviceWorker" in navigator){
-      await navigator.serviceWorker.register("./sw.js?v=83");
+      const reg=await navigator.serviceWorker.register("./sw.js?v=84",{updateViaCache:"none"});
+      try{await reg.update()}catch{}
     }
   }catch(e){
-    console.warn("V8.3.1 force-upgrade cleanup failed",e);
+    console.warn("V8.4 force-upgrade cleanup failed",e);
   }
 })();
 
