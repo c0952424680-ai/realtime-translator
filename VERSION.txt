@@ -1,12 +1,11 @@
-即時譯 V8.4｜旅外安全助理
-BUILD=V8.4-TRAVEL-SAFETY-HARD-REFRESH-20260809-01
-URL_PARAM=v=84
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=84&build=V8.4
+即時譯 V8.5｜旅外安全助理
+BUILD=V8.5-GLOBAL-EMERGENCY-CLEAN-20260809-01
+URL_PARAM=v=85
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=85&build=V8.5
 
-本版重點：
-- 強制把舊網址導向 v=84 + build=V8.4
-- Service Worker updateViaCache=none
-- 版本變更時清除舊 Cache 並重註冊 Service Worker
-- 四個主頁內部連結全部帶 v=84
-- 移除重複 assistant-summary.js，只保留 assistant-unified.js
-- 旅外安全助理統一位置／風險／天氣／附近設施／快速行動
+搜尋策略：
+10km → 15km → 20km → 25km → 30km → 35km → 40km → 45km → 50km
+每次增加 5km；找到至少 3 筆即停止。
+
+衝突清理：
+risk-data.js / risk.js / assistant-summary.js 已刪除。

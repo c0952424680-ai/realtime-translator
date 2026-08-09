@@ -1,5 +1,5 @@
 
-const BUILD_ID="V8.4";
+const BUILD_ID="V8.5";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,8 +17,8 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V8.4";
-const CURRENT_PARAM="84";
+const CURRENT_BUILD="V8.5";
+const CURRENT_PARAM="85";
 
 (async function forceUpgrade(){
   try{
@@ -52,11 +52,11 @@ const CURRENT_PARAM="84";
     }
 
     if("serviceWorker" in navigator){
-      const reg=await navigator.serviceWorker.register("./sw.js?v=84",{updateViaCache:"none"});
+      const reg=await navigator.serviceWorker.register("./sw.js?v=85",{updateViaCache:"none"});
       try{await reg.update()}catch{}
     }
   }catch(e){
-    console.warn("V8.4 force-upgrade cleanup failed",e);
+    console.warn("V8.5 force-upgrade cleanup failed",e);
   }
 })();
 

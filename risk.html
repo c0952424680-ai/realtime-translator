@@ -1,7 +1,7 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=84"><title>即時譯 V8.4｜旅外安全助理</title></head><body><main class="app"><div class="force-version">
-      <strong>✅ V8.4 旅外安全助理強制更新版</strong>
-      <span>BUILD：V8.4-TRAVEL-SAFETY-HARD-REFRESH-20260809-01</span>
-    </div><div class="topnav"><a href="index.html?v=84">🌐 翻譯</a><a href="sos.html?v=84">🆘 求助</a><a href="risk.html?v=84">⚠️ 風險</a><a href="contacts.html?v=84">📞 聯絡人</a></div><header><div class="eyebrow">V8.4 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.4-TRAVEL-SAFETY-HARD-REFRESH-20260809-01</div></header><section class="card unified-location-card">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=85"><title>即時譯 V8.5｜旅外安全助理</title></head><body><main class="app"><div class="force-version">
+      <strong>✅ V8.5 旅外安全助理全球緊急版</strong>
+      <span>BUILD：V8.5-GLOBAL-EMERGENCY-CLEAN-20260809-01</span>
+    </div><div class="topnav"><a href="index.html?v=85">🌐 翻譯</a><a href="sos.html?v=85">🆘 求助</a><a href="risk.html?v=85">⚠️ 風險</a><a href="contacts.html?v=85">📞 聯絡人</a></div><header><div class="eyebrow">V8.5 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.5-GLOBAL-EMERGENCY-CLEAN-20260809-01</div></header><section class="card unified-location-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">旅外安全助理・位置中心</div>
@@ -130,7 +130,7 @@
     </div>
     <button id="refreshNearby" class="primary">重新搜尋附近</button>
   </div>
-  <p class="small">以目前 GPS 座標查詢附近實際設施，計算直線距離後由近到遠排列；導航使用設施的實際座標。</p>
+  <p class="small">全球模式：先搜尋 10 公里，結果不足就擴大到 15 公里，之後每次增加 5 公里，最遠到 50 公里。結果依直線距離由近到遠排序；導航直接使用設施座標。</p>
 
   <div class="nearby-tabs">
     <button class="nearby-tab active" data-kind="hospital">🏥 醫院／急診</button>
@@ -138,7 +138,7 @@
     <button class="nearby-tab" data-kind="pharmacy">💊 藥局</button>
   </div>
 
-  <div id="nearbySearchStatus" class="official-note">取得定位後會自動搜尋最近設施。</div>
+  <div id="nearbySearchStatus" class="official-note">取得定位後會以全球 OpenStreetMap 資料搜尋；若當地圖資不足，會提供 Google Maps 同座標備援搜尋。</div>
   <div id="nearbyResults" class="nearby-results"></div>
 
   <div class="taiwan-emergency-row" id="taiwanEmergencyRow" hidden>
@@ -209,50 +209,14 @@
     <a href="https://www.npa.gov.tw/" target="_blank">👮 警政署</a>
     <a href="https://www.cdc.gov.tw/" target="_blank">🦠 疾管署</a>
   </div>
-</section><section class="card risk-roadmap">
-<h2>🎯 風險警示下一階段目標</h2>
-<div class="risk-roadmap-grid">
-  <div class="risk-roadmap-item"><b>📍 地區層級</b><span>從「國家」進一步細分到城市、行政區、邊境、景點與特定危險區。</span></div>
-  <div class="risk-roadmap-item"><b>🚦 即時燈號</b><span>綠／橙／紅依最新官方警示與地區條件更新，並顯示最後更新時間。</span></div>
-  <div class="risk-roadmap-item"><b>🧭 自動定位</b><span>取得目前座標後，顯示所在國家與附近已知風險區；不把位置上傳到 GitHub。</span></div>
-  <div class="risk-roadmap-item"><b>🏛️ 官方來源</b><span>每一筆風險附外交部、疾管署或當地政府來源，避免自行判定。</span></div>
-  <div class="risk-roadmap-item"><b>🌦️ 動態因素</b><span>天氣、颱風、洪水、地震、火山、疫情等與治安風險分開顯示。</span></div>
-  <div class="risk-roadmap-item"><b>🆘 一鍵行動</b><span>高風險時直接提供 SOS、台灣館處、當地警消醫療與 Google Maps。</span></div>
-</div>
 </section>
 
-<section class="card">
-<h2>🚦 地區風險燈號</h2>
-<p class="official-note">本 App 只用三色做快速摘要：綠＝相對低風險、橙＝提高警覺／不適合單獨旅行、紅＝立即性高風險。它不是外交部官方燈號；外交部官方仍是灰／黃／橙／紅四級。</p>
-
-<div id="countrySummary" class="country-summary"></div>
-
-<div class="risk-tier safe">
-  <h3>🟢 綠色｜相對低風險地區</h3>
-  <div id="greenRegions" class="region-list"></div>
-</div>
-
-<div class="risk-tier caution">
-  <h3>🟠 橙色｜提高警覺／不適合單獨旅行</h3>
-  <div id="orangeRegions" class="region-list"></div>
-</div>
-
-<div class="risk-tier danger">
-  <h3>🔴 紅色｜立即性高風險／嚴重生命危險</h3>
-  <div id="redRegions" class="region-list"></div>
-</div>
-
-<div class="linkgrid">
-  <a id="officialRiskLink" target="_blank">🇹🇼 查看該國外交部最新警示</a>
-  <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
-  <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
-</div>
-</section><section class="card assistant-action-strip">
+<section class="card assistant-action-strip">
   <h2>⚡ 快速行動</h2>
   <div class="assistant-actions-grid">
-    <a href="sos.html?v=84">🆘 緊急求助</a>
+    <a href="sos.html?v=85">🆘 緊急求助</a>
     <button id="jumpNearestHospital">🏥 最近醫院</button>
     <button id="jumpNearestPolice">👮 最近警局</button>
-    <a href="contacts.html?v=84">🪪 我的旅行資料</a>
+    <a href="contacts.html?v=85">🪪 我的旅行資料</a>
   </div>
-</section></main><nav class="bottomnav"><a href="index.html?v=84">🌐<span>翻譯</span></a><a href="sos.html?v=84">🆘<span>求助</span></a><a href="risk.html?v=84">⚠️<span>風險</span></a><a href="contacts.html?v=84">📞<span>聯絡人</span></a></nav><script src="shared.js?v=84"></script><script src="risk-data.js?v=84"></script><script src="risk.js?v=84"></script><script src="location-weather.js?v=84"></script><script src="live-risk.js?v=84"></script><script src="nearby.js?v=84"></script><script src="taiwan-link.js?v=84"></script><script src="manual-location.js?v=84"></script><script src="assistant-unified.js?v=84"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html?v=85">🌐<span>翻譯</span></a><a href="sos.html?v=85">🆘<span>求助</span></a><a href="risk.html?v=85">⚠️<span>風險</span></a><a href="contacts.html?v=85">📞<span>聯絡人</span></a></nav><script src="shared.js?v=85"></script><script src="location-weather.js?v=85"></script><script src="live-risk.js?v=85"></script><script src="nearby.js?v=85"></script><script src="taiwan-link.js?v=85"></script><script src="manual-location.js?v=85"></script><script src="assistant-unified.js?v=85"></script></body></html>
