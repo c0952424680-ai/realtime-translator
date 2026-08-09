@@ -1,0 +1,11 @@
+{
+  "TW":{"name":"台灣","police":"110","ambulance":"119","fire":"119","extra":[{"label":"反詐騙","number":"165"}],"source":"內政部警政署／消防署","sourceUrl":"https://www.npa.gov.tw/"},
+  "JP":{"name":"日本","police":"110","ambulance":"119","fire":"119","extra":[],"source":"日本政府旅外緊急資訊","sourceUrl":"https://www.gov-online.go.jp/"},
+  "KR":{"name":"韓國","police":"112","ambulance":"119","fire":"119","extra":[],"source":"韓國警察廳／消防廳","sourceUrl":"https://www.police.go.kr/"},
+  "TH":{"name":"泰國","police":"191","ambulance":"1669","fire":"199","extra":[{"label":"旅遊警察","number":"1155"}],"source":"Thailand.go.th","sourceUrl":"https://www.thailand.go.th/issue-focus-detail/003_003?hl=en"},
+  "VN":{"name":"越南","police":"113","ambulance":"115","fire":"114","extra":[{"label":"災害／緊急協助","number":"112"}],"source":"越南政府緊急系統","sourceUrl":"https://en.mae.gov.vn/hotline-to-receive-disaster-and-emergency-reports-nationwide-9018.htm"},
+  "MY":{"name":"馬來西亞","police":"999","ambulance":"999","fire":"999","extra":[],"source":"Malaysia Civil Defence Force","sourceUrl":"https://www.civildefence.gov.my/999-emergency-services/?lang=en"},
+  "SG":{"name":"新加坡","police":"999","ambulance":"995","fire":"995","extra":[{"label":"警察緊急簡訊","number":"70999","callable":false}],"source":"Singapore Police Force／SCDF","sourceUrl":"https://www.gov.sg/contact-us/"},
+  "ID":{"name":"印尼","police":"110","ambulance":"119","fire":"113","extra":[],"source":"Indonesian National Police／Ministry of Health","sourceUrl":"https://inp.polri.go.id/artikel/inp-invites-public-to-call-110-in-any-emergency-situation"},
+  "PH":{"name":"菲律賓","police":"911","ambulance":"911","fire":"911","extra":[],"source":"Philippine Emergency 911","sourceUrl":"https://pia.gov.ph/press-release/911-becomes-filipinos-lifeline-as-emergency-calls-top-5-2-million-in-early-2026/"}
+}

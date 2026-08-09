@@ -11,7 +11,7 @@ function normalizeTwRegion(s){
 
 async function loadTaiwanRegions(){
   try{
-    const r=await fetch("./taiwan-regions.json?v=86",{cache:"no-store"});
+    const r=await fetch("./taiwan-regions.json?v=88",{cache:"no-store"});
     if(r.ok)TAIWAN_REGIONS=await r.json();
   }catch{}
 }
@@ -24,7 +24,7 @@ window.renderTaiwanLink=function renderTaiwanLink(){
 
   const on=isTaiwanCountry(country);
   card.hidden=!on;
-  if(emergency)emergency.hidden=!on;
+  // Global emergency row is controlled by emergency-link.js.
   if(!on)return;
 
   const geoDistrict=normalizeTwRegion(document.getElementById("liveDistrict")?.textContent||"");

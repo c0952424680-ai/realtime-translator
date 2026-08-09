@@ -1,0 +1,13 @@
+即時譯 V8.8｜旅外安全助理・全資訊聯動版 最終檢查
+BUILD=V8.8-TRAVEL-SAFETY-HUB-20260810-01
+
+- emergency-link.js：已移除
+- safety-hub.js：唯一國家緊急／館處聯動核心
+- 9 個國家緊急電話：已建立
+- 台灣駐外館處：依國家同步
+- 天氣／風險／附近設施：共用位置來源
+- 附近設施：15 km 快搜 → 不足直接 50 km
+- 3 個 Overpass 端點競速：保留
+- Google Maps 備援：定位後立即可點
+- JavaScript 語法：全部通過
+- 舊 V8.7 runtime：0

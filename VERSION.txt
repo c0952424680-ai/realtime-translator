@@ -1,5 +1,4 @@
-即時譯 V8.6｜旅外安全助理 Clean Build
-BUILD=V8.6-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01
-URL_PARAM=v=86
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=86&build=V8.6
-DEPLOY_CHECK=https://c0952424680-ai.github.io/realtime-translator/deploy-check.html?v=86
+即時譯 V8.8｜旅外安全助理・全資訊聯動版
+BUILD=V8.8-TRAVEL-SAFETY-HUB-20260810-01
+URL_PARAM=v=88
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=88&build=V8.8

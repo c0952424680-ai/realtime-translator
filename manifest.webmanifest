@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V8.6｜旅外安全助理 Clean Build",
-  "short_name": "即時譯 8.6",
-  "start_url": "./index.html?v=86&build=V8.6",
+  "name": "即時譯 V8.8｜旅外安全助理・全資訊聯動版",
+  "short_name": "即時譯 8.8",
+  "start_url": "./index.html?v=88&build=V8.8",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF",

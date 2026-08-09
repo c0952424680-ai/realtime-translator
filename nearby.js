@@ -1,7 +1,7 @@
 
-const FAST_NEARBY_CACHE_PREFIX="rt_v85_nearby_";
+const FAST_NEARBY_CACHE_PREFIX="rt_v87_nearby_";
 const NEARBY_STATE={lat:null,lon:null,kind:"hospital",results:{},requestId:0};
-const SEARCH_RADII_KM=[10,15,20,25,30,35,40,45,50];
+const SEARCH_RADII_KM=[15,50];
 
 function haversineKm(lat1,lon1,lat2,lon2){
   const R=6371,toRad=x=>x*Math.PI/180;
@@ -92,25 +92,21 @@ async function overpassFetch(query){
     "https://overpass-api.de/api/interpreter",
     "https://overpass.nchc.org.tw/api/interpreter"
   ];
-  let lastErr;
-  for(const ep of endpoints){
+  const controllers=endpoints.map(()=>new AbortController());
+  const requests=endpoints.map((ep,i)=>new Promise(async(resolve,reject)=>{
+    const timer=setTimeout(()=>{controllers[i].abort();reject(new Error("timeout"));},8500);
     try{
-      const controller=new AbortController();
-      const timer=setTimeout(()=>controller.abort(),18000);
-      const r=await fetch(ep,{
-        method:"POST",
-        headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
-        body:"data="+encodeURIComponent(query),
-        signal:controller.signal
-      });
-      clearTimeout(timer);
+      const r=await fetch(ep,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:"data="+encodeURIComponent(query),signal:controllers[i].signal});
       if(!r.ok)throw new Error("HTTP "+r.status);
-      return await r.json();
-    }catch(e){lastErr=e}
-  }
-  throw lastErr||new Error("nearby service failed");
+      const data=await r.json(); clearTimeout(timer); resolve(data);
+    }catch(e){clearTimeout(timer);reject(e)}
+  }));
+  try{
+    const data=await Promise.any(requests);
+    controllers.forEach(c=>c.abort());
+    return data;
+  }catch(e){throw new Error("nearby service failed")}
 }
-
 function normalizeElements(elements,kind,lat,lon){
   const seen=new Set();
   return (elements||[])
@@ -140,27 +136,20 @@ async function searchNearby(kind,lat,lon){
   const results=document.getElementById("nearbyResults");
   if(results)results.innerHTML="";
 
-  let list=[],lastRadius=10;
+  let list=[],lastRadius=15;
   for(const km of SEARCH_RADII_KM){
     lastRadius=km;
-    if(status)status.textContent="正在搜尋附近設施…";
+    if(status)status.textContent=km===15?"⚡ 快速搜尋 15 公里內…":"🔎 15 公里結果不足，直接擴大到 50 公里…";
     const data=await overpassFetch(overpassQuery(kind,lat,lon,km*1000));
     if(requestId!==NEARBY_STATE.requestId)return;
     list=normalizeElements(data.elements,kind,lat,lon);
     if(list.length>=3)break;
   }
-
   if(requestId!==NEARBY_STATE.requestId)return;
   NEARBY_STATE.results[kind]=list;
-
-  try{
-    localStorage.setItem(cacheKey(kind,lat,lon),JSON.stringify({
-      time:Date.now(),lat,lon,kind,list,lastRadius
-    }));
-  }catch{}
+  try{localStorage.setItem(cacheKey(kind,lat,lon),JSON.stringify({time:Date.now(),lat,lon,kind,list,lastRadius}));}catch{}
   renderNearby(kind,lastRadius);
 }
-
 function renderNearby(kind,lastRadius){
   if(kind!==NEARBY_STATE.kind)return;
   const status=document.getElementById("nearbySearchStatus");
@@ -202,6 +191,19 @@ async function loadCached(kind,lat,lon){
   return false;
 }
 
+
+function updateInstantMapFallbacks(lat,lon){
+  const items=[
+    ["mapFallbackHospital","hospital emergency room"],
+    ["mapFallbackPolice","police station"],
+    ["mapFallbackPharmacy","pharmacy"]
+  ];
+  items.forEach(([id,label])=>{
+    const a=document.getElementById(id);
+    if(a)a.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(`${label} near ${lat},${lon}`);
+  });
+}
+
 async function refreshNearby(kind=NEARBY_STATE.kind){
   if(NEARBY_STATE.lat==null||NEARBY_STATE.lon==null){
     const s=document.getElementById("nearbySearchStatus");
@@ -231,6 +233,7 @@ window.updateNearbyPosition=(lat,lon)=>{
     haversineKm(NEARBY_STATE.lat,NEARBY_STATE.lon,Number(lat),Number(lon))>0.3;
   NEARBY_STATE.lat=Number(lat);
   NEARBY_STATE.lon=Number(lon);
+  updateInstantMapFallbacks(NEARBY_STATE.lat,NEARBY_STATE.lon);
   if(changed){
     NEARBY_STATE.results={};
     NEARBY_STATE.requestId++;

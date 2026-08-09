@@ -1,10 +1,14 @@
 # 即時譯｜旅外安全助理
 
-**目前版本：即時譯 V8.6｜旅外安全助理 Clean Build**
+**目前版本：即時譯 V8.8｜旅外安全助理・全資訊聯動版**
 
-整合多語翻譯、女性語音、旅外風險、天氣、最近醫院／警察局／藥局、Google Maps 導航與 SOS。
+V8.8：
+- 國家／城市／地區與 GPS 共用同一位置來源
+- 當地警察／救護／消防電話自動切換
+- 台灣駐外館處依所在國家同步
+- 天氣、治安、詐騙、疾病、高風險與附近設施共用位置
+- Google Maps 備援定位後立即可用
+- 附近設施 15 km 快搜，不足直接擴大 50 km
 
 正式網址：
-`https://c0952424680-ai.github.io/realtime-translator/?v=86&build=V8.6`
-
-GitHub Pages：`main` → `/(root)`
+https://c0952424680-ai.github.io/realtime-translator/?v=88&build=V8.8

@@ -41,9 +41,9 @@ function updateAssistantUnified(){
       : "取得位置後，會把治安、天氣、詐騙、疾病、高風險地區與附近緊急設施同步顯示。";
   }
 
-  // emergency contact summary
-  const tw=country.includes("台灣")||country.includes("臺灣");
-  setTxt("overviewContact",tw?"110／119／165":"查看 SOS／館處");
+  // emergency contact summary is synchronized by emergency-link.js
+  const ec=window.getEmergencyContact?.();
+  setTxt("overviewContact",ec?`${ec.police}／${ec.ambulance}`:"同步當地電話");
 }
 
 async function refreshAssistantAll(){
@@ -94,4 +94,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.addEventListener("location-context-change",updateAssistantUnified);
   window.addEventListener("online",updateAssistantUnified);
   window.addEventListener("offline",updateAssistantUnified);
+  window.addEventListener("safety-hub-updated",updateAssistantUnified);
 });

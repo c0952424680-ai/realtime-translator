@@ -1,8 +1,8 @@
 <!doctype html><html lang="zh-Hant"><head>
-  <meta name="app-build" content="V8.6-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=86"><title>即時譯 V8.6｜旅外安全助理 Clean Build</title></head><body><main class="app"><div class="force-version">
-      <strong>✅ V8.6 旅外安全助理全球緊急版</strong>
-      <span>BUILD：V8.6.1-GITHUB-PAGES-DEPLOY-20260809-01</span>
-    </div><div class="topnav"><a href="index.html?v=86&build=V8.6">🌐 翻譯</a><a href="sos.html?v=86&build=V8.6">🆘 求助</a><a href="risk.html?v=86&build=V8.6">⚠️ 風險</a><a href="contacts.html?v=86&build=V8.6">📞 聯絡人</a></div><header><div class="eyebrow">V8.6 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.6.1-GITHUB-PAGES-DEPLOY-20260809-01</div></header><section class="card unified-location-card">
+  <meta name="app-build" content="V8.8-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=88"><title>即時譯 V8.8｜旅外安全助理・全資訊聯動版</title></head><body><main class="app"><div class="force-version">
+      <strong>✅ V8.8 旅外安全助理全球緊急版</strong>
+      <span>BUILD：V8.8.1-GITHUB-PAGES-DEPLOY-20260809-01</span>
+    </div><div class="topnav"><a href="index.html?v=88&build=V8.8">🌐 翻譯</a><a href="sos.html?v=88&build=V8.8">🆘 求助</a><a href="risk.html?v=88&build=V8.8">⚠️ 風險</a><a href="contacts.html?v=88&build=V8.8">📞 聯絡人</a></div><header><div class="eyebrow">V8.8 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.8.1-GITHUB-PAGES-DEPLOY-20260809-01</div></header><section class="card unified-location-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">旅外安全助理・位置中心</div>
@@ -22,6 +22,7 @@
     <button id="useGpsLocation">📍 使用我的位置</button>
   </div>
 
+  <div id="safetyHubStatus" class="official-note hub-status">等待位置同步…</div>
   <div id="manualLocationStatus" class="official-note">
     可手動選擇，也可使用 GPS。位置更新後會同步治安、天氣、詐騙、疾病、高風險地區與附近緊急設施。
   </div>
@@ -123,7 +124,11 @@
   </div>
 </section>
 
-<section class="card nearby-card">
+<section class="card mission-card" id="taiwanMissionCard" hidden>
+  <div class="eyebrow">台灣旅客支援</div>
+  <h2>🏛️ 台灣駐外館處</h2>
+  <div id="taiwanMissionBody">等待國家資料…</div>
+</section><section class="card nearby-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">距離優先</div>
@@ -139,14 +144,15 @@
     <button class="nearby-tab" data-kind="pharmacy">💊 藥局</button>
   </div>
 
-  <div id="nearbySearchStatus" class="official-note">取得位置後會自動搜尋附近設施；查不到時可改用 Google Maps。</div>
+  <div id="nearbySearchStatus" class="official-note">取得位置後先快速搜尋 15 公里；結果不足會直接擴大到 50 公里。</div><div id="instantMapFallbacks" class="instant-map-fallbacks">
+  <a id="mapFallbackHospital" target="_blank" rel="noopener">🗺️ 地圖找醫院</a>
+  <a id="mapFallbackPolice" target="_blank" rel="noopener">🗺️ 地圖找警局</a>
+  <a id="mapFallbackPharmacy" target="_blank" rel="noopener">🗺️ 地圖找藥局</a>
+</div>
   <div id="nearbyResults" class="nearby-results"></div>
 
-  <div class="taiwan-emergency-row" id="taiwanEmergencyRow" hidden>
-    <a href="tel:110" class="emergency-call">👮 台灣警察 110</a>
-    <a href="tel:119" class="emergency-call">🚒 台灣消防／救護 119</a>
-    <a href="tel:165">🛡️ 反詐騙 165</a>
-  </div>
+  <div id="emergencyCountryNote" class="official-note">正在同步當地緊急電話…</div>
+  <div class="taiwan-emergency-row" id="taiwanEmergencyRow"></div>
 </section>
 
 <section class="card linked-risk-card">
@@ -215,9 +221,9 @@
 <section class="card assistant-action-strip">
   <h2>⚡ 快速行動</h2>
   <div class="assistant-actions-grid">
-    <a href="sos.html?v=86&build=V8.6">🆘 緊急求助</a>
+    <a href="sos.html?v=88&build=V8.8">🆘 緊急求助</a>
     <button id="jumpNearestHospital">🏥 最近醫院</button>
     <button id="jumpNearestPolice">👮 最近警局</button>
-    <a href="contacts.html?v=86&build=V8.6">🪪 我的旅行資料</a>
+    <a href="contacts.html?v=88&build=V8.8">🪪 我的旅行資料</a>
   </div>
-</section></main><nav class="bottomnav"><a href="index.html?v=86&build=V8.6">🌐<span>翻譯</span></a><a href="sos.html?v=86&build=V8.6">🆘<span>求助</span></a><a href="risk.html?v=86&build=V8.6">⚠️<span>風險</span></a><a href="contacts.html?v=86&build=V8.6">📞<span>聯絡人</span></a></nav><script src="shared.js?v=86"></script><script src="location-weather.js?v=86"></script><script src="live-risk.js?v=86"></script><script src="nearby.js?v=86"></script><script src="taiwan-link.js?v=86"></script><script src="manual-location.js?v=86"></script><script src="assistant-unified.js?v=86"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html?v=88&build=V8.8">🌐<span>翻譯</span></a><a href="sos.html?v=88&build=V8.8">🆘<span>求助</span></a><a href="risk.html?v=88&build=V8.8">⚠️<span>風險</span></a><a href="contacts.html?v=88&build=V8.8">📞<span>聯絡人</span></a></nav><script src="shared.js?v=88"></script><script src="location-weather.js?v=88"></script><script src="live-risk.js?v=88"></script><script src="nearby.js?v=88"></script><script src="taiwan-link.js?v=88"></script><script src="manual-location.js?v=88"></script><script src="assistant-unified.js?v=88"></script><script src="safety-hub.js?v=88"></script></body></html>
