@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="style.css?v=70"><title>即時譯 V7｜SOS</title></head><body>
+<main class="app page-with-nav"><header><div><div class="eyebrow">V7 · SOS MODE</div><h1>🆘 緊急求助</h1><p>事件 → 處理步驟 → 官方電話 → Google Maps → 求助翻譯</p></div></header>
+<section class="sos-hero"><strong>我現在需要幫助</strong><small>有立即生命危險時，先撥當地警察／消防／救護。</small></section>
+<section class="card">
+<label class="label" for="incident">發生什麼事？</label>
+<select id="incident" class="wide">
+<option value="injury">受傷／需要醫療</option><option value="crime">被搶／遭攻擊</option><option value="traffic">車禍</option>
+<option value="passport">護照或財物遺失</option><option value="detained">被拘留／需要法律協助</option>
+<option value="scam">詐騙／人口販運疑慮</option><option value="disaster">天災／天氣危險</option><option value="other">其他重大急難</option>
+</select>
+<label class="label" for="country">所在國家／地區</label><select id="country" class="wide"></select>
+</section>
+<section id="sosSteps" class="card"></section>
+<section id="officialContact" class="card"></section>
+<section class="card">
+<div class="label">緊急翻譯卡</div><select id="phrase" class="wide"></select><div id="phraseOutput" class="big-phrase">請選擇求助句</div>
+<div class="actions"><button id="translatePhrase" class="primary" type="button">🌐 翻譯求助句</button><button id="speakPhrase" type="button">🔊 播放</button></div>
+</section></main>
+<nav class="bottom-nav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav>
+<script src="shared.js?v=70"></script><script src="sos.js?v=70"></script></body></html>

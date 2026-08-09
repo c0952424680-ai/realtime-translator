@@ -1,351 +1,83 @@
 <!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0A84FF">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="即時譯">
-  <link rel="manifest" href="manifest.webmanifest?v=67">
-  <link rel="stylesheet" href="style.css?v=67">
-  <title>即時譯 V6.7 Google Maps 導航版</title>
-</head>
-<body>
-<main class="app">
-  <header>
-    <div>
-      <div class="eyebrow">V6.7 · GOOGLE MAPS NAVIGATION</div>
-      <h1>即時譯</h1>
-      <p>鍵盤聽寫即時顯示 → 自動翻譯 → 女聲自動朗讀</p>
-    </div>
-    <span id="statePill" class="pill">待命</span>
-  </header>
+<html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A84FF"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest?v=71"><link rel="stylesheet" href="style.css?v=71">
+<title>即時譯 V7.1｜雙向對話翻譯</title></head>
+<body><main class="app page-with-nav">
+<header><div><div class="eyebrow">V7.1 · BIDIRECTIONAL CONVERSATION</div><h1>🌐 翻譯</h1><p>鍵盤聽寫 → 自動翻譯 → 女聲朗讀</p></div><span id="statePill" class="pill">待命</span></header>
 
-  <section class="langs">
-    <select id="from" aria-label="來源語言">
-      <option value="zh-TW">🇹🇼 中文（繁體中文）</option>
-      <option value="en-US">🇺🇸 English（英文）</option>
-      <option value="ja-JP">🇯🇵 日本語（日文）</option>
-      <option value="ko-KR">🇰🇷 한국어（韓文）</option>
-      <option value="th-TH">🇹🇭 ไทย（泰文）</option>
-      <option value="vi-VN">🇻🇳 Tiếng Việt（越南文）</option>
-      <option value="ms-MY">🇲🇾 Bahasa Melayu（馬來文）</option>
-      <option value="id-ID">🇮🇩 Bahasa Indonesia（印尼文）</option>
-      <option value="fil-PH">🇵🇭 Filipino（菲律賓文／他加祿語）</option>
-      <option value="km-KH">🇰🇭 ខ្មែរ（高棉文／柬埔寨）</option>
-      <option value="lo-LA">🇱🇦 ລາວ（寮文）</option>
-      <option value="my-MM">🇲🇲 မြန်မာ（緬甸文）</option>
-      <option value="ta-IN">🇸🇬 தமிழ்（坦米爾文／新加坡官方語言）</option>
-      <option value="mn-MN">🇲🇳 Монгол（蒙古文）</option>
-    </select>
+<section class="mode-switch card">
+  <button id="singleModeBtn" class="mode-btn active" type="button">單向翻譯</button>
+  <button id="conversationModeBtn" class="mode-btn" type="button">雙向對話</button>
+</section>
 
-    <button id="swap" type="button" aria-label="交換語言">⇄</button>
+<div id="singleMode">
+<section class="langs">
+<select id="from" aria-label="來源語言"></select><button id="swap" type="button">⇄</button><select id="to" aria-label="目標語言"></select>
+</section>
+<section class="card">
+<label class="label" for="input">你說的話</label>
+<textarea id="input" placeholder="點這裡，使用 iPhone 鍵盤上的 🎙️ 聽寫。"></textarea>
+<div class="dictation-help"><strong>🎙️ iPhone 鍵盤聽寫</strong><span id="keyboardHint"></span></div>
+<div class="settings-row">
+<label class="switch-line"><input id="autoTranslate" type="checkbox" checked><span>自動翻譯</span></label>
+<label class="switch-line"><input id="autoSpeak" type="checkbox" checked><span>自動播放</span></label>
+</div>
+<div class="actions"><button id="focusInput" class="primary" type="button">⌨️ 開啟聽寫</button><button id="translate" type="button">⚡ 立即翻譯</button></div>
+<div class="minirow"><button id="clear" type="button">清除</button><span id="latency">等待輸入</span></div>
+</section>
+<section class="result">
+<div class="label">翻譯結果</div><div id="output" aria-live="polite">尚未翻譯</div>
+<div class="voice-panel"><div><strong>👩 女聲優先</strong><small id="voiceUsed">尚未選擇語音</small></div>
+<label><span>語音模式</span><select id="voiceMode"><option value="natural">自然</option><option value="slow">慢速</option><option value="clear">清晰</option></select></label></div>
+<div class="actions"><button id="speak" type="button">🔊 播放翻譯</button><button id="stopSpeak" type="button">⏹ 停止播放</button></div>
+<button id="unlockAudio" class="full" type="button">🔈 啟用自動語音</button><small id="engine">翻譯引擎待命</small>
+</section>
+</div>
 
-    <select id="to" aria-label="目標語言">
-      <option value="ja-JP">🇯🇵 日本語（日文）</option>
-      <option value="en-US">🇺🇸 English（英文）</option>
-      <option value="zh-TW">🇹🇼 中文（繁體中文）</option>
-      <option value="ko-KR">🇰🇷 한국어（韓文）</option>
-      <option value="th-TH">🇹🇭 ไทย（泰文）</option>
-      <option value="vi-VN">🇻🇳 Tiếng Việt（越南文）</option>
-      <option value="ms-MY">🇲🇾 Bahasa Melayu（馬來文）</option>
-      <option value="id-ID">🇮🇩 Bahasa Indonesia（印尼文）</option>
-      <option value="fil-PH">🇵🇭 Filipino（菲律賓文／他加祿語）</option>
-      <option value="km-KH">🇰🇭 ខ្មែរ（高棉文／柬埔寨）</option>
-      <option value="lo-LA">🇱🇦 ລາວ（寮文）</option>
-      <option value="my-MM">🇲🇲 မြန်မာ（緬甸文）</option>
-      <option value="ta-IN">🇸🇬 தமிழ்（坦米爾文／新加坡官方語言）</option>
-      <option value="mn-MN">🇲🇳 Монгол（蒙古文）</option>
-    </select>
-  </section>
+<div id="conversationMode" hidden>
+<section class="card conversation-settings">
+  <div class="conversation-lang-grid">
+    <label><span>A 方語言</span><select id="langA"></select></label>
+    <button id="swapConversation" type="button">⇄</button>
+    <label><span>B 方語言</span><select id="langB"></select></label>
+  </div>
+  <div class="settings-row">
+    <label class="switch-line"><input id="conversationAutoSpeak" type="checkbox" checked><span>翻譯後自動播放</span></label>
+    <label class="switch-line"><input id="autoFlip" type="checkbox" checked><span>播放後自動換邊</span></label>
+  </div>
+  <label class="voice-mode-label"><span>語音模式</span>
+    <select id="conversationVoiceMode"><option value="natural">自然</option><option value="slow">慢速</option><option value="clear">清晰</option></select>
+  </label>
+</section>
 
-  <section class="card">
-    <label class="label" for="input">你說的話</label>
+<section class="conversation-panel side-a">
+  <div class="speaker-head"><strong id="speakerALabel">A 方</strong><span id="speakerAStatus">等待輸入</span></div>
+  <textarea id="inputA" placeholder="A 方點這裡，用 iPhone 鍵盤聽寫或輸入文字。"></textarea>
+  <div class="actions">
+    <button id="focusA" class="primary" type="button">⌨️ A 方聽寫</button>
+    <button id="translateA" type="button">翻譯給 B 方</button>
+  </div>
+  <div id="resultA" class="conversation-result">尚未翻譯</div>
+</section>
 
-    <textarea id="input"
-      inputmode="text"
-      autocomplete="off"
-      autocorrect="on"
-      spellcheck="true"
-      placeholder="點這裡後，用 iPhone 鍵盤上的 🎙️ 聽寫。文字會即時顯示在這裡。"></textarea>
+<section class="conversation-panel side-b">
+  <div class="speaker-head"><strong id="speakerBLabel">B 方</strong><span id="speakerBStatus">等待輸入</span></div>
+  <textarea id="inputB" placeholder="B 方點這裡，用 iPhone 鍵盤聽寫或輸入文字。"></textarea>
+  <div class="actions">
+    <button id="focusB" class="primary" type="button">⌨️ B 方聽寫</button>
+    <button id="translateB" type="button">翻譯給 A 方</button>
+  </div>
+  <div id="resultB" class="conversation-result">尚未翻譯</div>
+</section>
 
-    <div class="dictation-help">
-      <strong>🎙️ iPhone 鍵盤聽寫</strong>
-      <span id="keyboardHint">請使用中文鍵盤的聽寫功能。</span>
-      <small>網站不再直接使用網頁麥克風辨識，避免先前的辨識錯誤。</small>
-    </div>
+<section class="card">
+  <div class="section-title-row"><h2>對話紀錄</h2><button id="clearConversation" type="button">清除紀錄</button></div>
+  <div id="conversationHistory" class="conversation-history"><small>尚無對話紀錄。</small></div>
+</section>
+</div>
 
-    <div class="settings-row">
-      <label class="switch-line">
-        <input id="autoTranslate" type="checkbox" checked>
-        <span>自動翻譯</span>
-      </label>
-      <label class="switch-line">
-        <input id="autoSpeak" type="checkbox" checked>
-        <span>自動播放</span>
-      </label>
-    </div>
-
-    <div class="actions">
-      <button id="focusInput" class="primary" type="button">⌨️ 開啟聽寫輸入</button>
-      <button id="translate" type="button">⚡ 立即翻譯</button>
-    </div>
-
-    <div class="minirow">
-      <button id="clear" type="button">清除</button>
-      <span id="latency">等待輸入</span>
-    </div>
-  </section>
-
-  <section class="result">
-    <div class="label">翻譯結果</div>
-    <div id="output" aria-live="polite">尚未翻譯</div>
-
-    <div class="voice-panel">
-      <div>
-        <strong>👩 女聲優先</strong>
-        <small id="voiceUsed">尚未選擇語音</small>
-      </div>
-
-      <label class="voice-mode-label">
-        <span>語音模式</span>
-        <select id="voiceMode">
-          <option value="natural">自然</option>
-          <option value="slow">慢速</option>
-          <option value="clear">清晰</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="actions">
-      <button id="speak" type="button">🔊 播放翻譯</button>
-      <button id="stopSpeak" type="button">⏹ 停止播放</button>
-    </div>
-
-    <button id="unlockAudio" class="full" type="button">🔈 啟用自動語音</button>
-
-    <small id="engine">翻譯引擎待命</small>
-  </section>
-
-
-
-  <section class="danger-zone-section">
-    <div class="safety-title">
-      <div>
-        <div class="label">官方風險標示</div>
-        <h2>⚠️ 危險地區與生命安全</h2>
-      </div>
-      <span class="verified">外交部／疾管署</span>
-    </div>
-
-    <p class="safety-note">
-      只使用政府官方發布的旅遊警示與旅遊疫情資料。外交部「紅／橙／黃／灰」與疾管署疫情等級分開顯示，不自行合成分數。
-    </p>
-
-
-    <div class="risk-scale-card">
-      <strong>危險程度分類</strong>
-      <div class="risk-scale-row"><span class="risk-grade grade-5">極高</span><span>戰爭、武裝衝突、綁架、人口販運、重大災害或政府紅色警示；可能直接危及生命。</span></div>
-      <div class="risk-scale-row"><span class="risk-grade grade-4">高</span><span>橙色警示、重大治安、邊境衝突、嚴重詐騙、颱風／洪水／地震等重大天候災害；應避免前往。</span></div>
-      <div class="risk-scale-row"><span class="risk-grade grade-3">中高</span><span>黃色情勢、明顯犯罪／詐騙／疾病／高溫／豪雨／空污等風險；需提高警覺並準備替代方案。</span></div>
-      <div class="risk-scale-row"><span class="risk-grade grade-2">注意</span><span>一般治安、衛生、蚊媒疾病、交通、環境或季節性天氣風險；注意防護。</span></div>
-      <div class="risk-scale-row"><span class="risk-grade grade-1">一般</span><span>目前沒有本 App 已查核的重大紅橙警示，但仍須查看官方最新公告與天氣預報。</span></div>
-    </div>
-
-    <label class="label" for="dangerCountry">查看國家／地區</label>
-    <select id="dangerCountry" class="wide">
-      <option value="mm">🇲🇲 緬甸</option>
-      <option value="kh">🇰🇭 柬埔寨</option>
-      <option value="th">🇹🇭 泰國</option>
-      <option value="mn">🇲🇳 蒙古</option>
-    </select>
-
-    <div id="dangerCard"></div>
-
-    <div class="risk-legend">
-      <div><span class="risk-dot red"></span><b>第四級 紅色</b>：外交部建議儘速離境／切勿前往</div>
-      <div><span class="risk-dot orange"></span><b>第三級 橙色</b>：避免非必要旅行／避免前往</div>
-      <div><span class="risk-dot yellow"></span><b>第二級 黃色</b>：提高警覺、特別注意</div>
-      <div><span class="risk-dot gray"></span><b>第一級 灰色</b>：一般提醒</div>
-      <div><span class="risk-dot health"></span><b>健康警示</b>：衛福部疾管署旅遊疫情建議，與外交部治安／戰爭警示分開</div>
-    </div>
-
-    <small>
-      查核日期：2026-08-09。危險情勢與疫情可能快速變動，出發前及旅途中應再次查看官方最新公告。
-    </small>
-  </section>
-
-
-  <section class="weather-safety">
-    <div class="safety-title">
-      <div>
-        <div class="label">天然災害與天氣</div>
-        <h2>🌦️ 天氣與環境安全</h2>
-      </div>
-      <span class="verified">官方氣象</span>
-    </div>
-
-    <p class="safety-note">
-      颱風、暴雨、洪水、高溫、雷暴、地震、火山、空氣品質等都可能危及旅行安全。此頁提供各國官方氣象／災害機關入口；出發前與旅途中請查看即時警報。
-    </p>
-
-    <label class="label" for="weatherCountry">查看國家／地區</label>
-    <select id="weatherCountry" class="wide">
-      <option value="th">🇹🇭 泰國</option>
-      <option value="vn">🇻🇳 越南</option>
-      <option value="my">🇲🇾 馬來西亞</option>
-      <option value="sg">🇸🇬 新加坡</option>
-      <option value="id">🇮🇩 印尼</option>
-      <option value="ph">🇵🇭 菲律賓</option>
-      <option value="kh">🇰🇭 柬埔寨</option>
-      <option value="la">🇱🇦 寮國</option>
-      <option value="mm">🇲🇲 緬甸</option>
-      <option value="bn">🇧🇳 汶萊</option>
-      <option value="jp">🇯🇵 日本</option>
-      <option value="kr">🇰🇷 韓國</option>
-      <option value="mn">🇲🇳 蒙古</option>
-    </select>
-
-    <div id="weatherSafetyCard" class="office-card"></div>
-
-    <div class="weather-hazards">
-      <strong>可能造成生命危險的天氣／環境因素</strong>
-      <div class="risk-tags">
-        <span class="risk-tag">🌀 颱風／熱帶氣旋</span>
-        <span class="risk-tag">🌧️ 豪雨／洪水／土石流</span>
-        <span class="risk-tag">⚡ 雷暴／強風</span>
-        <span class="risk-tag">🔥 極端高溫／熱傷害</span>
-        <span class="risk-tag">🌫️ 空污／煙霾</span>
-        <span class="risk-tag">🌋 火山／火山灰</span>
-        <span class="risk-tag">🌊 海嘯／風暴潮</span>
-        <span class="risk-tag">🏔️ 地震／山區落石</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="safety">
-    <div class="safety-title"><div><div class="label">台灣旅客專用</div><h2>🆘 旅外安全</h2></div><span class="verified">政府資料</span></div>
-    <p class="safety-note">遇到立即生命危險時，先聯絡所在地警察／救護單位。下列台灣駐外館處資料以中華民國外交部官方資料建置。</p>
-
-    <label class="label" for="safetyCountry">所在國家／地區</label>
-    <select id="safetyCountry" class="wide">
-      <option value="th">🇹🇭 泰國</option>
-      <option value="vn-hn">🇻🇳 越南－北部／河內</option>
-      <option value="vn-hcm">🇻🇳 越南－南部／胡志明市</option>
-      <option value="my">🇲🇾 馬來西亞</option>
-      <option value="sg">🇸🇬 新加坡</option>
-      <option value="id-jkt">🇮🇩 印尼－雅加達及轄區</option>
-      <option value="id-sub">🇮🇩 印尼－泗水／峇里島等轄區</option>
-      <option value="ph">🇵🇭 菲律賓</option>
-      <option value="kh">🇰🇭 柬埔寨（胡志明市辦事處兼轄）</option>
-      <option value="la">🇱🇦 寮國（駐越南代表處兼轄）</option>
-      <option value="mm">🇲🇲 緬甸</option>
-      <option value="bn">🇧🇳 汶萊</option>
-      <optgroup label="東北亞">
-        <option value="jp-tokyo">🇯🇵 日本－東京／東日本</option>
-        <option value="jp-osaka">🇯🇵 日本－大阪／關西等轄區</option>
-        <option value="jp-fukuoka">🇯🇵 日本－福岡／九州</option>
-        <option value="jp-sapporo">🇯🇵 日本－北海道</option>
-        <option value="jp-naha">🇯🇵 日本－沖繩</option>
-        <option value="kr-seoul">🇰🇷 韓國－首爾及北／中部轄區</option>
-        <option value="kr-busan">🇰🇷 韓國－釜山／南部及濟州</option>
-        <option value="mn-ub">🇲🇳 蒙古－烏蘭巴托</option>
-      </optgroup>
-    </select>
-
-    <div id="officeCard" class="office-card"></div>
-    <div id="localEmergencyCard" class="office-card emergency-services"></div>
-
-    <div class="steps">
-      <strong>發生急難時怎麼做</strong>
-      <ol>
-        <li><b>先確保人身安全</b>：離開危險現場，到警察局、醫院、飯店或人多安全處。</li>
-        <li><b>需要立即救援</b>：先聯絡所在地警察／救護單位；本 Beta 版不放未完成政府查核的當地緊急號碼。</li>
-        <li><b>聯絡台灣駐外館處</b>：重大急難使用紅色「急難電話」；一般護照、簽證問題請使用辦公室電話。</li>
-        <li><b>說不通時</b>：使用下方「緊急翻譯卡」，把大字文字給警察、醫護或飯店人員看，並可播放當地語音。</li>
-        <li><b>館處聯絡不上</b>：可聯絡外交部緊急聯絡中心 +886-800-085-095（海外撥打可能產生國際電話費）。</li>
-      </ol>
-    </div>
-
-    <div class="emergency-card">
-      <div class="label">緊急翻譯卡</div>
-      <select id="emergencyPhrase" class="wide">
-        <option value="help">我是台灣旅客，我需要幫助。</option>
-        <option value="police">請幫我聯絡警察。</option>
-        <option value="hospital">我需要去醫院，請幫我叫救護車。</option>
-        <option value="passport">我的護照遺失了。</option>
-        <option value="office">請幫我聯絡台灣駐外代表處。</option>
-      </select>
-      <div id="emergencyOutput" class="big-phrase">請先選擇句子</div>
-      <div class="actions">
-        <button id="translateEmergency" type="button">🌐 翻譯求助句</button>
-        <button id="speakEmergency" type="button">🔊 播放求助句</button>
-      </div>
-    </div>
-
-    <small id="safetyVerified">資料查核：中華民國外交部／外交部領事事務局；V6 建置查核日 2026-08-09。緊急資料仍應以官方最新公告為準。</small>
-  </section>
-
-
-  <section class="personal-emergency">
-    <div class="safety-title">
-      <div>
-        <div class="label">個人安全資料</div>
-        <h2>📞 緊急聯絡人與事項</h2>
-      </div>
-      <span class="verified">僅存此手機</span>
-    </div>
-
-    <p class="safety-note">
-      可儲存家人、同行者、公司、旅行社、保險公司等緊急聯絡資料。資料只保存在這台 iPhone 的瀏覽器，不會上傳到 GitHub。
-    </p>
-
-    <div class="contact-form">
-      <label>聯絡人姓名<input id="contactName" type="text" placeholder="例如：媽媽"></label>
-      <label>關係／單位<input id="contactRelation" type="text" placeholder="例如：家人／旅行社／保險公司"></label>
-      <label>電話<input id="contactPhone" type="tel" placeholder="+886..."></label>
-      <label>緊急事項
-        <select id="contactMatter">
-          <option value="任何重大急難">任何重大急難</option>
-          <option value="失聯">失聯</option>
-          <option value="受傷或住院">受傷或住院</option>
-          <option value="車禍">車禍</option>
-          <option value="護照或財物遺失">護照或財物遺失</option>
-          <option value="遭搶劫或詐騙">遭搶劫或詐騙</option>
-          <option value="被拘留或需要法律協助">被拘留或需要法律協助</option>
-          <option value="天然災害／天氣危險">天然災害／天氣危險</option>
-        </select>
-      </label>
-      <label class="full-field">備註／處理指示<textarea id="contactNote" placeholder="例如：若我 12 小時未回覆，請先聯絡駐外館處，再通知家人。"></textarea></label>
-    </div>
-
-    <div class="actions">
-      <button id="saveContact" class="primary" type="button">＋ 儲存聯絡人</button>
-      <button id="clearContacts" type="button">清除全部</button>
-    </div>
-
-    <div id="contactList" class="contact-list"></div>
-
-    <div class="emergency-checklist">
-      <strong>🧭 遇到重大危險的聯絡順序</strong>
-      <ol>
-        <li>先離開危險區域，前往警察局、醫院、飯店、避難所或人多安全處。</li>
-        <li>有立即生命危險：先打當地警察／消防／救護電話。</li>
-        <li>若為天災：優先遵從當地政府撤離、避難、停班停課或封路指示。</li>
-        <li>再聯絡台灣駐外館處急難電話。</li>
-        <li>聯絡你設定的第一順位緊急聯絡人，告知位置、事件、是否受傷。</li>
-        <li>保存報案單、醫療證明、照片、收據、天災警報截圖與對話紀錄。</li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="debug">
-    <strong>狀態</strong>
-    <div id="debugText">第一次使用請先按「啟用自動語音」。之後聽寫文字停止變動約 0.8 秒，會自動翻譯並嘗試自動朗讀。</div>
-  </section>
 </main>
-
-<script src="app.js?v=67"></script>
-</body>
-</html>
+<nav class="bottom-nav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav>
+<script src="shared.js?v=71"></script><script src="translate.js?v=71"></script></body></html>
