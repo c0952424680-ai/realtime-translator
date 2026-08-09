@@ -1,11 +1,12 @@
-即時譯 V8.5｜旅外安全助理
-BUILD=V8.5-GLOBAL-EMERGENCY-CLEAN-20260809-01
-URL_PARAM=v=85
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=85&build=V8.5
+即時譯 V8.5.1｜旅外安全助理
+BUILD=V8.5.1-GITHUB-PAGES-DEPLOY-20260809-01
+URL_PARAM=v=851
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=851&build=V8.5.1
+DEPLOY_CHECK=https://c0952424680-ai.github.io/realtime-translator/deploy-check.html?v=851
 
-搜尋策略：
-10km → 15km → 20km → 25km → 30km → 35km → 40km → 45km → 50km
-每次增加 5km；找到至少 3 筆即停止。
-
-衝突清理：
-risk-data.js / risk.js / assistant-summary.js 已刪除。
+GitHub Pages 專用部署規則：
+1. ZIP 解壓後，把裡面的檔案直接上傳到 repository 根目錄。
+2. index.html 必須與 README.md 同一層。
+3. Pages Settings 使用：Deploy from a branch / main / (root)。
+4. 不要把整個資料夾再包在 realtime-translator/ 子資料夾裡。
+5. .nojekyll 必須保留。

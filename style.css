@@ -40,7 +40,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .region-list{display:flex;flex-direction:column;gap:7px}.region-item{background:#ffffffc9;border:1px solid currentColor;border-radius:11px;padding:9px;font-size:14px;line-height:1.45}.region-empty{opacity:.75;font-size:13px}
 @media(max-width:450px){.risk-live-controls{grid-template-columns:1fr}}
 
-/* V8.5 翻譯介面細節 */
+/* V8.5.1 翻譯介面細節 */
 .translation-ui-settings select{font-size:16px}
 textarea,.result,.face .out,.faceout,.conversation-result{
   letter-spacing:.01em;
@@ -117,7 +117,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .location-mode-badge.gps{background:#dcfce7;color:#166534}
 .location-mode-badge.manual{background:#e0e7ff;color:#3730a3}
 
-/* V8.5 位置中心：提升戶外可讀性 */
+/* V8.5.1 位置中心：提升戶外可讀性 */
 .unified-location-card h2{font-size:30px;line-height:1.2}
 .unified-location-card .eyebrow{font-size:14px}
 .unified-location-card label{font-size:17px;font-weight:800;color:#475569}

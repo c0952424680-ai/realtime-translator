@@ -1,5 +1,5 @@
 
-const BUILD_ID="V8.5";
+const BUILD_ID="V8.5.1";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,16 +17,16 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V8.5";
-const CURRENT_PARAM="85";
+const CURRENT_BUILD="V8.5.1";
+const CURRENT_PARAM="851";
 
 (async function forceUpgrade(){
   try{
     const u=new URL(location.href);
-    const wrongVersion=u.searchParams.get("v")!==CURRENT_PARAM;
-    const wrongBuild=u.searchParams.get("build")!==CURRENT_BUILD;
+    const v=u.searchParams.get("v");
+    const b=u.searchParams.get("build");
 
-    if(wrongVersion || wrongBuild){
+    if(v!==CURRENT_PARAM || b!==CURRENT_BUILD){
       u.searchParams.set("v",CURRENT_PARAM);
       u.searchParams.set("build",CURRENT_BUILD);
       location.replace(u.toString());
@@ -39,10 +39,9 @@ const CURRENT_PARAM="85";
 
       if("serviceWorker" in navigator){
         const regs=await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(async r=>{
-          try{await r.update()}catch{}
-          try{await r.unregister()}catch{}
-        }));
+        for(const reg of regs){
+          try{await reg.unregister()}catch{}
+        }
       }
 
       if("caches" in window){
@@ -52,11 +51,11 @@ const CURRENT_PARAM="85";
     }
 
     if("serviceWorker" in navigator){
-      const reg=await navigator.serviceWorker.register("./sw.js?v=85",{updateViaCache:"none"});
+      const reg=await navigator.serviceWorker.register("./sw.js?v=851",{updateViaCache:"none",scope:"./"});
       try{await reg.update()}catch{}
     }
   }catch(e){
-    console.warn("V8.5 force-upgrade cleanup failed",e);
+    console.warn("V8.5.1 deploy bootstrap:",e);
   }
 })();
 
