@@ -40,7 +40,7 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .region-list{display:flex;flex-direction:column;gap:7px}.region-item{background:#ffffffc9;border:1px solid currentColor;border-radius:11px;padding:9px;font-size:14px;line-height:1.45}.region-empty{opacity:.75;font-size:13px}
 @media(max-width:450px){.risk-live-controls{grid-template-columns:1fr}}
 
-/* V7.5.4 翻譯介面細節 */
+/* V7.7 翻譯介面細節 */
 .translation-ui-settings select{font-size:16px}
 textarea,.result,.face .out,.faceout,.conversation-result{
   letter-spacing:.01em;
@@ -54,3 +54,38 @@ textarea,.result,.face .out,.faceout,.conversation-result{
 .risk-roadmap-item b{display:block;margin-bottom:4px}
 .risk-roadmap-item span{font-size:12px;color:#64748b;line-height:1.4}
 @media(max-width:450px){.risk-roadmap-grid{grid-template-columns:1fr}}
+
+.section-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.location-facts,.weather-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.location-facts div,.weather-metrics div{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:10px}
+.location-facts span,.weather-metrics span{display:block;font-size:11px;color:#64748b}
+.location-facts b,.weather-metrics b{display:block;margin-top:3px;font-size:17px}
+.weather-badge{display:inline-block;border-radius:999px;padding:7px 9px;font-size:12px;font-weight:900}
+.weather-badge.neutral{background:#f1f5f9;color:#475569}
+.weather-badge.green{background:#dcfce7;color:#166534}
+.weather-badge.orange{background:#ffedd5;color:#9a3412}
+.weather-badge.red{background:#fee2e2;color:#991b1b}
+.weather-summary{background:#f8fafc;border-radius:14px;padding:12px;margin-top:10px;line-height:1.55}
+.source-note{margin-top:8px}
+.nearby-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nearby-grid a{text-decoration:none;text-align:center;border:1px solid #dbe2ea;border-radius:13px;padding:11px;color:#111827;font-weight:800;background:white}
+@media(max-width:450px){.location-facts,.weather-metrics,.nearby-grid{grid-template-columns:1fr}.section-head{flex-direction:column}.section-head button{width:100%}}
+
+.linked-risk-card{border:2px solid #c7d2fe}
+.linked-topline{display:flex;justify-content:space-between;gap:10px;background:#f8fafc;border-radius:12px;padding:9px;margin:8px 0;font-size:12px}
+.linked-risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.linked-risk-item{border:1px solid #e2e8f0;border-radius:14px;padding:11px;background:#fff}
+.linked-wide{grid-column:1/-1}
+.risk-item-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.risk-detail{font-size:13px;line-height:1.5;margin-top:7px}
+.risk-source{font-size:11px;color:#64748b;margin-top:7px}
+.risk-source a{color:#2563eb}
+.mini-light{display:inline-flex;min-width:34px;justify-content:center;padding:4px 7px;border-radius:999px;font-size:11px;font-weight:900}
+.mini-light.neutral{background:#f1f5f9;color:#475569}
+.mini-light.green{background:#dcfce7;color:#166534}
+.mini-light.orange{background:#ffedd5;color:#9a3412}
+.mini-light.red{background:#fee2e2;color:#991b1b}
+.highrisk-regions{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.highrisk-regions span{padding:5px 7px;border-radius:999px;background:#fff1f2;color:#991b1b;font-size:11px;font-weight:800}
+.auto-update-note{margin-top:10px;padding:10px;border-radius:12px;background:#eff6ff;color:#1e40af;font-size:12px;line-height:1.5}
+@media(max-width:450px){.linked-risk-grid{grid-template-columns:1fr}.linked-wide{grid-column:auto}.linked-topline{flex-direction:column}}

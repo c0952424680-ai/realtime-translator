@@ -1,9 +1,9 @@
 
-const CACHE="RT-V7.5.4-FONT-RISK-ROADMAP";
+const CACHE="RT-V7.7-LINKED-AUTO-RISK";
 const STATIC=[
- "./index.html?v=754","./sos.html?v=754","./risk.html?v=754","./contacts.html?v=754",
- "./style.css?v=754","./shared.js?v=754","./translate.js?v=754","./sos.js?v=754","./contacts.js?v=754",
- "./manifest.webmanifest?v=754","./risk-data.js?v=754","./risk.js?v=754"
+ "./index.html?v=77","./sos.html?v=77","./risk.html?v=77","./contacts.html?v=77",
+ "./style.css?v=77","./shared.js?v=77","./translate.js?v=77","./sos.js?v=77","./contacts.js?v=77",
+ "./manifest.webmanifest?v=77","./live-risk.js?v=77","./risk-feed.json","./location-weather.js?v=77","./risk-data.js?v=77","./risk.js?v=77"
 ];
 
 self.addEventListener("install",event=>{
@@ -31,6 +31,6 @@ self.addEventListener("fetch",event=>{
         caches.open(CACHE).then(cache=>cache.put(event.request,copy));
         return response;
       })
-      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=754")))
+      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=77")))
   );
 });

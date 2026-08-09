@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=754"><title>即時譯 V7.5.4｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=77"><title>即時譯 V7.7｜優化安全版｜風險儀表板</title></head><body><main class="app"><div class="force-version">
       <strong>✅ V7.5 強制更新版</strong>
       <span>BUILD：V7.5-SAFETY-OPTIMIZED-20260809-01</span>
     </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V7.5 · FORCE UPDATE · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V7.5-SAFETY-OPTIMIZED-20260809-01</div></header><section class="card">
@@ -17,7 +17,117 @@
 </div>
 <div id="locationText" class="official-note">位置：尚未取得。定位只用於顯示目前座標，不會上傳。</div>
 <div id="snapshotTime" class="small"></div>
-</section><section class="card risk-roadmap">
+</section>
+<section class="card live-location-card">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">即時位置與天氣</div>
+      <h2>📍 我目前的位置</h2>
+    </div>
+    <button id="locateMe" class="primary">取得目前位置</button>
+  </div>
+
+  <div id="liveLocationStatus" class="official-note">
+    尚未取得位置。定位資料只在這台裝置上用來查詢城市、地區與天氣。
+  </div>
+
+  <div class="location-facts">
+    <div><span>國家</span><b id="liveCountry">—</b></div>
+    <div><span>城市</span><b id="liveCity">—</b></div>
+    <div><span>地區</span><b id="liveDistrict">—</b></div>
+    <div><span>座標</span><b id="liveCoords">—</b></div>
+  </div>
+</section>
+
+<section class="card weather-live-card">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">目前天氣</div>
+      <h2>🌦️ 城市天氣與環境風險</h2>
+    </div>
+    <span id="weatherBadge" class="weather-badge neutral">等待定位</span>
+  </div>
+
+  <div class="weather-metrics">
+    <div><span>氣溫</span><b id="tempNow">—</b></div>
+    <div><span>體感</span><b id="feelsNow">—</b></div>
+    <div><span>降水</span><b id="rainNow">—</b></div>
+    <div><span>風速</span><b id="windNow">—</b></div>
+  </div>
+
+  <div id="weatherSummary" class="weather-summary">
+    取得位置後顯示目前天氣與簡易風險摘要。
+  </div>
+
+  <div class="small source-note">
+    天氣資料：Open-Meteo。這是天氣風險摘要，不等於當地政府正式災害警報。
+  </div>
+</section>
+
+<section class="card nearby-card">
+  <h2>🧭 附近安全設施</h2>
+  <p class="small">取得定位後可直接用 Google Maps 搜尋附近設施。</p>
+  <div class="nearby-grid">
+    <a id="nearPolice" target="_blank">👮 附近警察局</a>
+    <a id="nearHospital" target="_blank">🏥 附近醫院／急診</a>
+    <a id="nearPharmacy" target="_blank">💊 附近藥局</a>
+    <a id="nearShelter" target="_blank">🏠 附近避難場所</a>
+  </div>
+</section>
+
+<section class="card linked-risk-card">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">城市風險聯動</div>
+      <h2>🔄 即時風險聯動中心</h2>
+    </div>
+    <button id="refreshLinkedRisk" class="primary">立即更新</button>
+  </div>
+
+  <div class="linked-topline">
+    <span id="linkedCity">尚未取得城市</span>
+    <span id="linkedUpdated">等待更新</span>
+  </div>
+
+  <div class="linked-risk-grid">
+    <div class="linked-risk-item" data-risk="crime">
+      <div class="risk-item-head"><b>👮 治安</b><span id="crimeLight" class="mini-light neutral">—</span></div>
+      <div id="crimeText" class="risk-detail">等待城市與官方資料。</div>
+      <div id="crimeSource" class="risk-source"></div>
+    </div>
+
+    <div class="linked-risk-item" data-risk="weather">
+      <div class="risk-item-head"><b>🌦️ 天氣</b><span id="weatherLight" class="mini-light neutral">—</span></div>
+      <div id="weatherRiskText" class="risk-detail">等待即時天氣。</div>
+      <div class="risk-source">即時：Open-Meteo</div>
+    </div>
+
+    <div class="linked-risk-item" data-risk="scam">
+      <div class="risk-item-head"><b>💳 詐騙</b><span id="scamLight" class="mini-light neutral">—</span></div>
+      <div id="scamText" class="risk-detail">等待官方旅安資訊。</div>
+      <div id="scamSource" class="risk-source"></div>
+    </div>
+
+    <div class="linked-risk-item" data-risk="disease">
+      <div class="risk-item-head"><b>🦠 疾病</b><span id="diseaseLight" class="mini-light neutral">—</span></div>
+      <div id="diseaseText" class="risk-detail">等待疾管署國際旅遊資訊。</div>
+      <div id="diseaseSource" class="risk-source"></div>
+    </div>
+
+    <div class="linked-risk-item linked-wide" data-risk="highrisk">
+      <div class="risk-item-head"><b>🚨 高風險地區</b><span id="highRiskLight" class="mini-light neutral">—</span></div>
+      <div id="highRiskText" class="risk-detail">取得位置後，會比對所在國家／城市與高風險地區資料。</div>
+      <div id="highRiskSource" class="risk-source"></div>
+    </div>
+  </div>
+
+  <div class="auto-update-note">
+    <b>自動更新：</b>
+    天氣每 10 分鐘；位置每 30 分鐘；官方風險資料每 5 分鐘檢查一次。
+    GitHub Actions 可每小時重新產生官方風險資料檔。
+  </div>
+</section>
+<section class="card risk-roadmap">
 <h2>🎯 風險警示下一階段目標</h2>
 <div class="risk-roadmap-grid">
   <div class="risk-roadmap-item"><b>📍 地區層級</b><span>從「國家」進一步細分到城市、行政區、邊境、景點與特定危險區。</span></div>
@@ -55,4 +165,4 @@
   <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
   <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
 </div>
-</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=754"></script><script src="risk-data.js?v=754"></script><script src="risk.js?v=754"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=77"></script><script src="risk-data.js?v=77"></script><script src="risk.js?v=77"></script><script src="location-weather.js?v=77"></script><script src="live-risk.js?v=77"></script></body></html>
