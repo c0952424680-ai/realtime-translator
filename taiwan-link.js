@@ -11,7 +11,7 @@ function normalizeTwRegion(s){
 
 async function loadTaiwanRegions(){
   try{
-    const r=await fetch("./taiwan-regions.json?v=90",{cache:"no-store"});
+    const r=await fetch("./taiwan-regions.json?v=92",{cache:"no-store"});
     if(r.ok)TAIWAN_REGIONS=await r.json();
   }catch{}
 }

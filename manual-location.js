@@ -10,9 +10,9 @@ async function fetchJson(url){
 
 async function loadLocationMasters(){
   [LOCATION_MASTER,DISTRICT_MASTER,CITY_COORDS]=await Promise.all([
-    fetchJson("./locations.json?v=90"),
-    fetchJson("./location-districts.json?v=90"),
-    fetchJson("./city-coordinates.json?v=90")
+    fetchJson("./locations.json?v=92"),
+    fetchJson("./location-districts.json?v=92"),
+    fetchJson("./city-coordinates.json?v=92")
   ]);
 
   const c=document.getElementById("manualCountry");
@@ -85,6 +85,7 @@ async function resolveCoords(country,city,district){
   if(district && !["全市","全島"].includes(district)){
     try{return await geocodePlace(country.name,city,district)}catch{}
   }
+  const centerCoords=window.DataCenter?.cityCoords?.(city); if(centerCoords)return centerCoords;
   if(CITY_COORDS[city])return CITY_COORDS[city];
   try{return await geocodePlace(country.name,city,"")}catch{}
   return null;

@@ -1,5 +1,5 @@
 
-const FAST_NEARBY_CACHE_PREFIX="rt_v87_nearby_";
+const FAST_NEARBY_CACHE_PREFIX="rt_v91_nearby_";
 const NEARBY_STATE={lat:null,lon:null,kind:"hospital",results:{},requestId:0};
 const SEARCH_RADII_KM=[15,50];
 
@@ -75,6 +75,20 @@ function typeLabel(kind,e){
   return "藥局";
 }
 
+function addressFromTags(tags={}){
+  const parts=[
+    tags["addr:housenumber"],tags["addr:street"],tags["addr:district"],
+    tags["addr:city"],tags["addr:postcode"]
+  ].filter(Boolean);
+  return parts.join(" ");
+}
+
+function openingText(raw){
+  if(!raw)return "未提供";
+  if(raw==="24/7")return "24 小時";
+  return raw;
+}
+
 function exactDirections(lat,lon){
   return "https://www.google.com/maps/dir/?api=1&destination="+
     encodeURIComponent(`${lat},${lon}`)+"&travelmode=driving";
@@ -96,23 +110,34 @@ async function overpassFetch(query){
   const requests=endpoints.map((ep,i)=>new Promise(async(resolve,reject)=>{
     const timer=setTimeout(()=>{controllers[i].abort();reject(new Error("timeout"));},8500);
     try{
-      const r=await fetch(ep,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:"data="+encodeURIComponent(query),signal:controllers[i].signal});
+      const r=await fetch(ep,{
+        method:"POST",
+        headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+        body:"data="+encodeURIComponent(query),
+        signal:controllers[i].signal
+      });
       if(!r.ok)throw new Error("HTTP "+r.status);
-      const data=await r.json(); clearTimeout(timer); resolve(data);
+      const data=await r.json();
+      clearTimeout(timer);
+      resolve(data);
     }catch(e){clearTimeout(timer);reject(e)}
   }));
   try{
     const data=await Promise.any(requests);
     controllers.forEach(c=>c.abort());
     return data;
-  }catch(e){throw new Error("nearby service failed")}
+  }catch{
+    throw new Error("nearby service failed");
+  }
 }
+
 function normalizeElements(elements,kind,lat,lon){
   const seen=new Set();
   return (elements||[])
     .filter(e=>validForKind(e,kind))
     .map(e=>{
       const p=elementPoint(e); if(!p)return null;
+      const tags=e.tags||{};
       const name=facilityName(e,kind);
       const key=`${kind}|${name}|${p.lat.toFixed(5)}|${p.lon.toFixed(5)}`;
       if(seen.has(key))return null;
@@ -120,14 +145,53 @@ function normalizeElements(elements,kind,lat,lon){
       return {
         name,kind,type:typeLabel(kind,e),
         lat:p.lat,lon:p.lon,
-        distance:haversineKm(lat,lon,p.lat,p.lon),
-        phone:e.tags?.phone||e.tags?.["contact:phone"]||"",
-        website:e.tags?.website||e.tags?.["contact:website"]||""
+        straightDistanceKm:haversineKm(lat,lon,p.lat,p.lon),
+        roadDistanceKm:null,
+        driveMinutes:null,
+        phone:tags.phone||tags["contact:phone"]||"",
+        openingHours:tags.opening_hours||"",
+        website:tags.website||tags["contact:website"]||"",
+        address:addressFromTags(tags),
+        operator:tags.operator||"",
+        emergency:tags.emergency||""
       };
     })
     .filter(Boolean)
-    .sort((a,b)=>a.distance-b.distance)
+    .sort((a,b)=>a.straightDistanceKm-b.straightDistanceKm)
     .slice(0,5);
+}
+
+async function enrichRoadDistance(list,originLat,originLon){
+  if(!list?.length)return list;
+  const coords=[
+    `${originLon},${originLat}`,
+    ...list.map(x=>`${x.lon},${x.lat}`)
+  ].join(";");
+  const destinations=list.map((_,i)=>i+1).join(";");
+  const url=`https://router.project-osrm.org/table/v1/driving/${coords}?sources=0&destinations=${destinations}&annotations=distance,duration`;
+
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),5000);
+  try{
+    const r=await fetch(url,{cache:"no-store",signal:controller.signal});
+    if(!r.ok)throw new Error("route");
+    const d=await r.json();
+    const distances=d.distances?.[0]||[];
+    const durations=d.durations?.[0]||[];
+    list.forEach((x,i)=>{
+      if(Number.isFinite(distances[i]))x.roadDistanceKm=distances[i]/1000;
+      if(Number.isFinite(durations[i]))x.driveMinutes=Math.max(1,Math.round(durations[i]/60));
+    });
+    list.sort((a,b)=>
+      (a.roadDistanceKm??a.straightDistanceKm)-
+      (b.roadDistanceKm??b.straightDistanceKm)
+    );
+  }catch{
+    // Route service is optional. Straight-line distance remains as fallback.
+  }finally{
+    clearTimeout(timer);
+  }
+  return list;
 }
 
 async function searchNearby(kind,lat,lon){
@@ -139,17 +203,45 @@ async function searchNearby(kind,lat,lon){
   let list=[],lastRadius=15;
   for(const km of SEARCH_RADII_KM){
     lastRadius=km;
-    if(status)status.textContent=km===15?"⚡ 快速搜尋 15 公里內…":"🔎 15 公里結果不足，直接擴大到 50 公里…";
+    if(status)status.textContent=km===15?"⚡ 快速搜尋附近設施…":"🔎 附近結果不足，擴大搜尋中…";
     const data=await overpassFetch(overpassQuery(kind,lat,lon,km*1000));
     if(requestId!==NEARBY_STATE.requestId)return;
     list=normalizeElements(data.elements,kind,lat,lon);
     if(list.length>=3)break;
   }
   if(requestId!==NEARBY_STATE.requestId)return;
+
+  if(status && list.length)status.textContent="🛣️ 正在計算實際道路距離…";
+  list=await enrichRoadDistance(list,lat,lon);
+  if(requestId!==NEARBY_STATE.requestId)return;
+
   NEARBY_STATE.results[kind]=list;
-  try{localStorage.setItem(cacheKey(kind,lat,lon),JSON.stringify({time:Date.now(),lat,lon,kind,list,lastRadius}));}catch{}
+  try{
+    localStorage.setItem(cacheKey(kind,lat,lon),JSON.stringify({
+      time:Date.now(),lat,lon,kind,list,lastRadius
+    }));
+  }catch{}
   renderNearby(kind,lastRadius);
 }
+
+function distanceText(x){
+  if(Number.isFinite(x.roadDistanceKm)){
+    return `開車約 ${x.roadDistanceKm<1?(x.roadDistanceKm*1000).toFixed(0)+" 公尺":x.roadDistanceKm.toFixed(1)+" 公里"}`+
+      (x.driveMinutes?`・約 ${x.driveMinutes} 分鐘`:"");
+  }
+  return `直線約 ${x.straightDistanceKm<1?(x.straightDistanceKm*1000).toFixed(0)+" 公尺":x.straightDistanceKm.toFixed(1)+" 公里"}`;
+}
+
+function facilityActions(x){
+  const actions=[`<a target="_blank" rel="noopener" href="${exactDirections(x.lat,x.lon)}">🧭 導航</a>`];
+  if(x.phone){
+    const tel=String(x.phone).replace(/[^\d+]/g,"");
+    actions.push(`<a href="tel:${tel}">📞 電話</a>`);
+  }
+  if(x.website)actions.push(`<a target="_blank" rel="noopener" href="${esc(x.website)}">🌐 網站</a>`);
+  return actions.join("");
+}
+
 function renderNearby(kind,lastRadius){
   if(kind!==NEARBY_STATE.kind)return;
   const status=document.getElementById("nearbySearchStatus");
@@ -159,21 +251,26 @@ function renderNearby(kind,lastRadius){
   if(!list.length){
     if(status)status.textContent="附近沒有結果，請改用 Google Maps 搜尋。";
     if(box && NEARBY_STATE.lat!=null){
-      box.innerHTML=`<a class="nearby-fallback" target="_blank" href="${googleFallback(kind,NEARBY_STATE.lat,NEARBY_STATE.lon)}">🗺️ 改用 Google Maps 搜尋附近${kind==="hospital"?"醫院／急診":kind==="police"?"警察局":"藥局"}</a>`;
+      box.innerHTML=`<a class="nearby-fallback" target="_blank" rel="noopener" href="${googleFallback(kind,NEARBY_STATE.lat,NEARBY_STATE.lon)}">🗺️ 改用 Google Maps 搜尋附近${kind==="hospital"?"醫院／急診":kind==="police"?"警察局":"藥局"}</a>`;
     }
     return;
   }
 
-  if(status)status.textContent="✅ 已找到，依距離由近到遠排列。";
+  if(status)status.textContent="✅ 已找到。優先依道路距離排序；無道路資料時使用直線距離。";
 
   box.innerHTML=list.map((x,i)=>`
-    <div class="facility-row">
+    <div class="facility-row facility-detail-row">
       <div class="facility-rank">${i+1}</div>
       <div class="facility-main">
         <b>${esc(x.name)}</b>
-        <span>${esc(x.type)}｜${x.distance<1?(x.distance*1000).toFixed(0)+" 公尺":x.distance.toFixed(1)+" 公里"}${x.phone?"｜"+esc(x.phone):""}</span>
+        <span class="facility-distance">${esc(x.type)}｜${distanceText(x)}</span>
+        <div class="facility-meta">
+          <span>🕒 營業：${esc(openingText(x.openingHours))}</span>
+          <span>📞 ${x.phone?esc(x.phone):"未提供電話"}</span>
+          ${x.address?`<span>📍 ${esc(x.address)}</span>`:""}
+        </div>
+        <div class="facility-actions">${facilityActions(x)}</div>
       </div>
-      <a target="_blank" href="${exactDirections(x.lat,x.lon)}">導航</a>
     </div>`).join("");
 }
 
@@ -184,13 +281,12 @@ async function loadCached(kind,lat,lon){
       NEARBY_STATE.results[kind]=c.list;
       renderNearby(kind,c.lastRadius);
       const s=document.getElementById("nearbySearchStatus");
-      if(s)s.textContent="⚡ 已先顯示此位置同分類快取，正在背景重新搜尋。";
+      if(s)s.textContent="⚡ 已先顯示最近一次結果，正在背景重新確認。";
       return true;
     }
   }catch{}
   return false;
 }
-
 
 function updateInstantMapFallbacks(lat,lon){
   const items=[
@@ -217,11 +313,11 @@ async function refreshNearby(kind=NEARBY_STATE.kind){
   }catch{
     const s=document.getElementById("nearbySearchStatus");
     if(s)s.textContent=hadCache
-      ?"⚠️ 背景更新失敗，暫時保留最近一次快取。"
-      :"⚠️ 全球設施服務暫時沒有回應，可改用 Google Maps 同座標搜尋。";
+      ?"⚠️ 背景更新失敗，暫時保留最近一次結果。"
+      :"⚠️ 附近設施服務暫時沒有回應，可直接使用 Google Maps。";
     if(!hadCache){
       const box=document.getElementById("nearbyResults");
-      if(box)box.innerHTML=`<a class="nearby-fallback" target="_blank" href="${googleFallback(kind,NEARBY_STATE.lat,NEARBY_STATE.lon)}">🗺️ Google Maps 備援搜尋</a>`;
+      if(box)box.innerHTML=`<a class="nearby-fallback" target="_blank" rel="noopener" href="${googleFallback(kind,NEARBY_STATE.lat,NEARBY_STATE.lon)}">🗺️ Google Maps 備援搜尋</a>`;
     }
   }
 }

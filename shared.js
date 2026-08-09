@@ -1,5 +1,5 @@
 
-const BUILD_ID="V9.0";
+const BUILD_ID="V9.2";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,8 +17,8 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V9.0";
-const CURRENT_PARAM="90";
+const CURRENT_BUILD="V9.2";
+const CURRENT_PARAM="92";
 
 (async function forceUpgrade(){
   try{
@@ -51,11 +51,11 @@ const CURRENT_PARAM="90";
     }
 
     if("serviceWorker" in navigator){
-      const reg=await navigator.serviceWorker.register("./sw.js?v=90",{updateViaCache:"none",scope:"./"});
+      const reg=await navigator.serviceWorker.register("./sw.js?v=92",{updateViaCache:"none",scope:"./"});
       try{await reg.update()}catch{}
     }
   }catch(e){
-    console.warn("V9.0 deploy bootstrap:",e);
+    console.warn("V9.2 deploy bootstrap:",e);
   }
 })();
 

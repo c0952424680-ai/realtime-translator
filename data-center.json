@@ -1,7 +1,15 @@
 {
   "schema": 1,
   "version": "V9.2",
-  "generated_at": "2026-08-10T01:34:00+08:00",
+  "build": "V9.2-UNIFIED-DATA-CENTER-20260810-01",
+  "generatedAt": "2026-08-10T01:54:00+08:00",
+  "updatePolicies": {
+    "weatherMinutes": 10,
+    "nearbyMinutes": 15,
+    "travelDataMinutes": 30,
+    "missionMinutes": 360,
+    "riskMinutes": 30
+  },
   "countries": {
     "TW": {
       "name": "台灣",
@@ -821,5 +829,268 @@
         }
       }
     }
+  },
+  "services": {
+    "TW": {
+      "country": "台灣",
+      "police": "110",
+      "ambulance": "119",
+      "fire": "119",
+      "extra": [
+        {
+          "label": "反詐騙",
+          "number": "165"
+        }
+      ],
+      "emergencySource": "內政部警政署／消防署",
+      "emergencySourceUrl": "https://www.npa.gov.tw/",
+      "mission": null
+    },
+    "JP": {
+      "country": "日本",
+      "police": "110",
+      "ambulance": "119",
+      "fire": "119",
+      "extra": [],
+      "emergencySource": "日本政府緊急服務",
+      "emergencySourceUrl": "https://www.gov-online.go.jp/",
+      "mission": {
+        "name": "台北駐日經濟文化代表處",
+        "phone": "03-3280-7811",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-countrycp-02-29-77969-1.html"
+      }
+    },
+    "KR": {
+      "country": "韓國",
+      "police": "112",
+      "ambulance": "119",
+      "fire": "119",
+      "extra": [],
+      "emergencySource": "韓國警察／消防緊急服務",
+      "emergencySourceUrl": "https://www.police.go.kr/",
+      "mission": {
+        "name": "駐韓國台北代表部",
+        "phone": "02-6329-6000",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-countrycp-02-1-6256a-1.html"
+      }
+    },
+    "TH": {
+      "country": "泰國",
+      "police": "191",
+      "ambulance": "1669",
+      "fire": "199",
+      "extra": [
+        {
+          "label": "旅遊警察",
+          "number": "1155"
+        }
+      ],
+      "emergencySource": "泰國政府",
+      "emergencySourceUrl": "https://www.thailand.go.th/",
+      "mission": {
+        "name": "駐泰國台北經濟文化辦事處",
+        "phone": "+66-2-119-3555",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-countrycp-02-24-dec45-1.html"
+      }
+    },
+    "VN": {
+      "country": "越南",
+      "police": "113",
+      "ambulance": "115",
+      "fire": "114",
+      "extra": [
+        {
+          "label": "災害／緊急協助",
+          "number": "112"
+        }
+      ],
+      "emergencySource": "越南政府緊急服務",
+      "emergencySourceUrl": "https://en.mae.gov.vn/",
+      "mission": {
+        "name": "駐越南台北經濟文化辦事處",
+        "phone": "+84-24-3833-5501",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-countrycp-02-8-f4a19-1.html"
+      }
+    },
+    "MY": {
+      "country": "馬來西亞",
+      "police": "999",
+      "ambulance": "999",
+      "fire": "999",
+      "extra": [],
+      "emergencySource": "馬來西亞緊急服務",
+      "emergencySourceUrl": "https://www.civildefence.gov.my/",
+      "mission": {
+        "name": "駐馬來西亞臺北經濟文化辦事處",
+        "phone": "03-2161-4439",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-areacp-23-a7372-1.html"
+      }
+    },
+    "SG": {
+      "country": "新加坡",
+      "police": "999",
+      "ambulance": "995",
+      "fire": "995",
+      "extra": [
+        {
+          "label": "警察緊急簡訊",
+          "number": "70999",
+          "callable": false
+        }
+      ],
+      "emergencySource": "新加坡政府緊急服務",
+      "emergencySourceUrl": "https://www.gov.sg/contact-us/",
+      "mission": {
+        "name": "駐新加坡台北代表處",
+        "phone": "6500-0100",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-areacp-10-fa952-1.html"
+      }
+    },
+    "ID": {
+      "country": "印尼",
+      "police": "110",
+      "ambulance": "119",
+      "fire": "113",
+      "extra": [],
+      "emergencySource": "印尼警察／衛生緊急服務",
+      "emergencySourceUrl": "https://inp.polri.go.id/",
+      "mission": {
+        "name": "駐印尼台北經濟貿易代表處",
+        "phone": "021-515-3939",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-countrycp-02-12-c23b0-1.html"
+      }
+    },
+    "PH": {
+      "country": "菲律賓",
+      "police": "911",
+      "ambulance": "911",
+      "fire": "911",
+      "extra": [],
+      "emergencySource": "菲律賓 Emergency 911",
+      "emergencySourceUrl": "https://pia.gov.ph/",
+      "mission": {
+        "name": "駐菲律賓台北經濟文化辦事處",
+        "phone": "02-8887-6688",
+        "officialUrl": "https://www.boca.gov.tw/sp-foof-areacp-11-6fcbf-1.html"
+      }
+    }
+  },
+  "cityCoordinates": {
+    "臺北市": [
+      25.0375,
+      121.5637
+    ],
+    "新北市": [
+      25.012,
+      121.4657
+    ],
+    "桃園市": [
+      24.9937,
+      121.301
+    ],
+    "臺中市": [
+      24.1477,
+      120.6736
+    ],
+    "臺南市": [
+      22.9999,
+      120.2269
+    ],
+    "高雄市": [
+      22.6273,
+      120.3014
+    ],
+    "東京": [
+      35.6762,
+      139.6503
+    ],
+    "大阪": [
+      34.6937,
+      135.5023
+    ],
+    "京都": [
+      35.0116,
+      135.7681
+    ],
+    "札幌": [
+      43.0618,
+      141.3545
+    ],
+    "福岡": [
+      33.5902,
+      130.4017
+    ],
+    "名古屋": [
+      35.1815,
+      136.9066
+    ],
+    "沖繩": [
+      26.2124,
+      127.6809
+    ],
+    "首爾": [
+      37.5665,
+      126.978
+    ],
+    "釜山": [
+      35.1796,
+      129.0756
+    ],
+    "濟州": [
+      33.4996,
+      126.5312
+    ],
+    "曼谷": [
+      13.7563,
+      100.5018
+    ],
+    "清邁": [
+      18.7883,
+      98.9853
+    ],
+    "普吉": [
+      7.8804,
+      98.3923
+    ],
+    "河內": [
+      21.0278,
+      105.8342
+    ],
+    "胡志明市": [
+      10.8231,
+      106.6297
+    ],
+    "峴港": [
+      16.0544,
+      108.2022
+    ],
+    "吉隆坡": [
+      3.139,
+      101.6869
+    ],
+    "檳城": [
+      5.4141,
+      100.3288
+    ],
+    "新加坡": [
+      1.3521,
+      103.8198
+    ],
+    "雅加達": [
+      -6.2088,
+      106.8456
+    ],
+    "峇里島": [
+      -8.4095,
+      115.1889
+    ],
+    "馬尼拉": [
+      14.5995,
+      120.9842
+    ],
+    "宿霧": [
+      10.3157,
+      123.8854
+    ]
   }
 }

@@ -8,3 +8,19 @@ const TravelContext={
  locationLabel(){const s=this.state;return [s.country,s.city,s.district].filter((x,i,a)=>x&&a.indexOf(x)===i).join("・")}
 };
 window.TravelContext=TravelContext;TravelContext.load();
+window.addEventListener("location-context-change",e=>{
+  const d=e.detail||{};
+  if(!d.countryKey)return;
+  const countryText=typeof d.country==="string"
+    ? d.country
+    : (d.country?.name||"").replace(/^.. /,"");
+  window.TravelContext?.update({
+    countryKey:d.countryKey,
+    country:countryText,
+    city:d.city||"",
+    district:d.district||"",
+    lat:d.coords?.[0]??d.lat??null,
+    lon:d.coords?.[1]??d.lon??null,
+    source:d.source||"manual"
+  },"legacy-location-sync");
+});

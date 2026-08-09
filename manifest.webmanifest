@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V9.0｜旅外安全助理・智慧整合版",
-  "short_name": "即時譯 9.0",
-  "start_url": "./index.html?v=90&build=V9.0",
+  "name": "即時譯 V9.2｜旅外安全助理・統一資料中心版",
+  "short_name": "即時譯 9.2",
+  "start_url": "./index.html?v=92&build=V9.2",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF",

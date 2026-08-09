@@ -1,4 +1,4 @@
-即時譯 V9.0｜旅外安全助理・智慧整合版
-BUILD=V9.0-SMART-TRAVEL-SAFETY-20260810-01
-URL_PARAM=v=90
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=90&build=V9.0
+即時譯 V9.2｜旅外安全助理・統一資料中心版
+BUILD=V9.2-UNIFIED-DATA-CENTER-20260810-01
+URL_PARAM=v=92
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=92&build=V9.2
