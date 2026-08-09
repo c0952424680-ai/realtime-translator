@@ -1,0 +1,20 @@
+V7.4 全新重製版驗證報告
+BUILD: V7.4-FRESH-20260809-01
+
+檢查結果：
+- 四頁：index / sos / risk / contacts = OK
+- 單向翻譯 = OK
+- 雙向翻譯 = OK
+- 面對面翻譯 = OK
+- 全螢幕面對面 = OK
+- 8秒逾時 + 重試一次 + 最近翻譯快取 = OK
+- SOS 步驟式引導 = OK
+- 離線英文求助卡 = OK
+- Google Maps = OK
+- 六大風險分類 = OK
+- 緊急聯絡人 = OK
+- 旅行資料卡 = OK
+- 敏感資料預設隱藏 = OK
+- PWA 離線快取 = OK
+- JavaScript 語法檢查 = 全部通過
+- V7.2 / V7.3 / V6.7 殘留字樣 = 0
