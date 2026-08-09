@@ -1,83 +1,38 @@
-<!doctype html>
-<html lang="zh-Hant"><head>
+<!doctype html><html lang="zh-Hant"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A84FF"><meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.webmanifest?v=71"><link rel="stylesheet" href="style.css?v=71">
-<title>即時譯 V7.1｜雙向對話翻譯</title></head>
-<body><main class="app page-with-nav">
-<header><div><div class="eyebrow">V7.1 · BIDIRECTIONAL CONVERSATION</div><h1>🌐 翻譯</h1><p>鍵盤聽寫 → 自動翻譯 → 女聲朗讀</p></div><span id="statePill" class="pill">待命</span></header>
+<link rel="manifest" href="manifest.webmanifest?v=72"><link rel="stylesheet" href="style.css?v=72">
+<title>即時譯 V7.2｜翻譯</title></head><body>
+<main class="app"><div class="top-switch">
+<a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a>
+</div>
+<header><div><div class="eyebrow">V7.2 · CLEAN FOUR PAGES</div><h1>🌐 翻譯</h1><p>單向翻譯＋雙向對話，可隨時切換。</p></div><span id="state" class="pill">待命</span></header>
+<section class="card mode-switch"><button id="singleBtn" class="active">單向翻譯</button><button id="twoWayBtn">雙向對話</button></section>
 
-<section class="mode-switch card">
-  <button id="singleModeBtn" class="mode-btn active" type="button">單向翻譯</button>
-  <button id="conversationModeBtn" class="mode-btn" type="button">雙向對話</button>
-</section>
-
-<div id="singleMode">
-<section class="langs">
-<select id="from" aria-label="來源語言"></select><button id="swap" type="button">⇄</button><select id="to" aria-label="目標語言"></select>
-</section>
+<div id="singleView">
 <section class="card">
-<label class="label" for="input">你說的話</label>
-<textarea id="input" placeholder="點這裡，使用 iPhone 鍵盤上的 🎙️ 聽寫。"></textarea>
-<div class="dictation-help"><strong>🎙️ iPhone 鍵盤聽寫</strong><span id="keyboardHint"></span></div>
-<div class="settings-row">
-<label class="switch-line"><input id="autoTranslate" type="checkbox" checked><span>自動翻譯</span></label>
-<label class="switch-line"><input id="autoSpeak" type="checkbox" checked><span>自動播放</span></label>
-</div>
-<div class="actions"><button id="focusInput" class="primary" type="button">⌨️ 開啟聽寫</button><button id="translate" type="button">⚡ 立即翻譯</button></div>
-<div class="minirow"><button id="clear" type="button">清除</button><span id="latency">等待輸入</span></div>
-</section>
-<section class="result">
-<div class="label">翻譯結果</div><div id="output" aria-live="polite">尚未翻譯</div>
-<div class="voice-panel"><div><strong>👩 女聲優先</strong><small id="voiceUsed">尚未選擇語音</small></div>
-<label><span>語音模式</span><select id="voiceMode"><option value="natural">自然</option><option value="slow">慢速</option><option value="clear">清晰</option></select></label></div>
-<div class="actions"><button id="speak" type="button">🔊 播放翻譯</button><button id="stopSpeak" type="button">⏹ 停止播放</button></div>
-<button id="unlockAudio" class="full" type="button">🔈 啟用自動語音</button><small id="engine">翻譯引擎待命</small>
-</section>
-</div>
+<div class="lang-row"><select id="from"></select><button id="swap" class="swap">⇄</button><select id="to"></select></div>
+<label class="label">輸入／鍵盤聽寫</label><textarea id="input" placeholder="點這裡，使用 iPhone 鍵盤 🎙️ 聽寫或直接輸入文字。"></textarea>
+<div class="help" id="dictationHint">請切換到對應語言鍵盤後使用 iPhone 聽寫。</div>
+<div class="settings"><label class="toggle"><input id="autoTranslate" type="checkbox" checked>自動翻譯</label><label class="toggle"><input id="autoSpeak" type="checkbox" checked>自動朗讀</label></div>
+<div class="actions"><button id="translate" class="primary">⚡ 立即翻譯</button><button id="clear">清除</button></div>
+<div id="output" class="result">尚未翻譯</div>
+<div class="voice-row"><div><b>👩 女聲優先</b><div id="voiceUsed" class="small">尚未播放</div></div><select id="voiceMode"><option value="natural">自然</option><option value="slow">慢速</option><option value="clear">清晰</option></select></div>
+<div class="actions"><button id="enableAudio">🔈 啟用語音</button><button id="play">🔊 播放翻譯</button></div>
+</section></div>
 
-<div id="conversationMode" hidden>
-<section class="card conversation-settings">
-  <div class="conversation-lang-grid">
-    <label><span>A 方語言</span><select id="langA"></select></label>
-    <button id="swapConversation" type="button">⇄</button>
-    <label><span>B 方語言</span><select id="langB"></select></label>
-  </div>
-  <div class="settings-row">
-    <label class="switch-line"><input id="conversationAutoSpeak" type="checkbox" checked><span>翻譯後自動播放</span></label>
-    <label class="switch-line"><input id="autoFlip" type="checkbox" checked><span>播放後自動換邊</span></label>
-  </div>
-  <label class="voice-mode-label"><span>語音模式</span>
-    <select id="conversationVoiceMode"><option value="natural">自然</option><option value="slow">慢速</option><option value="clear">清晰</option></select>
-  </label>
-</section>
-
-<section class="conversation-panel side-a">
-  <div class="speaker-head"><strong id="speakerALabel">A 方</strong><span id="speakerAStatus">等待輸入</span></div>
-  <textarea id="inputA" placeholder="A 方點這裡，用 iPhone 鍵盤聽寫或輸入文字。"></textarea>
-  <div class="actions">
-    <button id="focusA" class="primary" type="button">⌨️ A 方聽寫</button>
-    <button id="translateA" type="button">翻譯給 B 方</button>
-  </div>
-  <div id="resultA" class="conversation-result">尚未翻譯</div>
-</section>
-
-<section class="conversation-panel side-b">
-  <div class="speaker-head"><strong id="speakerBLabel">B 方</strong><span id="speakerBStatus">等待輸入</span></div>
-  <textarea id="inputB" placeholder="B 方點這裡，用 iPhone 鍵盤聽寫或輸入文字。"></textarea>
-  <div class="actions">
-    <button id="focusB" class="primary" type="button">⌨️ B 方聽寫</button>
-    <button id="translateB" type="button">翻譯給 A 方</button>
-  </div>
-  <div id="resultB" class="conversation-result">尚未翻譯</div>
-</section>
-
+<div id="twoWayView" hidden>
 <section class="card">
-  <div class="section-title-row"><h2>對話紀錄</h2><button id="clearConversation" type="button">清除紀錄</button></div>
-  <div id="conversationHistory" class="conversation-history"><small>尚無對話紀錄。</small></div>
+<div class="lang-row"><select id="langA"></select><button id="swapAB" class="swap">⇄</button><select id="langB"></select></div>
+<div class="settings"><label class="toggle"><input id="autoSpeakAB" type="checkbox" checked>自動朗讀</label><label class="toggle"><input id="autoSwitchAB" type="checkbox" checked>播放後切換到對方</label></div>
 </section>
+<section class="panel conversation-panel"><div class="speaker-head"><b id="labelA">A 方</b><span id="statusA" class="small">等待輸入</span></div>
+<textarea id="inputA" placeholder="A 方輸入或用鍵盤聽寫"></textarea><div class="actions"><button id="goA" class="primary">A → B 翻譯</button><button id="focusA">⌨️ A 方聽寫</button></div><div id="resultA" class="result">尚未翻譯</div></section>
+<section class="panel conversation-panel b"><div class="speaker-head"><b id="labelB">B 方</b><span id="statusB" class="small">等待輸入</span></div>
+<textarea id="inputB" placeholder="B 方輸入或用鍵盤聽寫"></textarea><div class="actions"><button id="goB" class="primary">B → A 翻譯</button><button id="focusB">⌨️ B 方聽寫</button></div><div id="resultB" class="result">尚未翻譯</div></section>
+<section class="card"><div class="speaker-head"><h2>對話紀錄</h2><button id="clearHistory">清除</button></div><div id="history" class="history"><span class="small">尚無紀錄</span></div></section>
 </div>
-
-</main>
-<nav class="bottom-nav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav>
-<script src="shared.js?v=71"></script><script src="translate.js?v=71"></script></body></html>
+</main><nav class="bottom-nav">
+<a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a>
+</nav>
+<script src="shared.js?v=72"></script><script src="translate.js?v=72"></script></body></html>

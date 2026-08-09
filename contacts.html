@@ -1,19 +1,9 @@
-<!doctype html><html lang="zh-Hant"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="stylesheet" href="style.css?v=70"><title>即時譯 V7｜緊急聯絡人</title></head><body>
-<main class="app page-with-nav"><header><div><div class="eyebrow">V7 · MY CONTACTS</div><h1>📞 我的聯絡人</h1><p>家人、同行者、旅行社、保險公司與處理事項</p></div></header>
-<section class="card">
-<p class="safety-note">資料只保存在這台 iPhone 的瀏覽器，不會上傳 GitHub。清除 Safari 網站資料時也可能被刪除。</p>
-<div class="contact-form">
-<label>姓名<input id="name" type="text"></label><label>關係／單位<input id="relation" type="text"></label>
-<label>電話<input id="phone" type="tel" placeholder="+886..."></label>
-<label>緊急事項<select id="matter"><option>任何重大急難</option><option>失聯</option><option>受傷或住院</option><option>車禍</option><option>護照或財物遺失</option><option>遭搶劫或詐騙</option><option>被拘留或法律協助</option><option>天然災害／天氣危險</option></select></label>
-<label class="full-field">處理指示<textarea id="note" placeholder="例如：若 12 小時未回覆，先聯絡駐外館處，再通知家人。"></textarea></label>
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="style.css?v=72"><title>即時譯 V7.2｜聯絡人</title></head><body><main class="app"><div class="top-switch">
+<a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a>
 </div>
-<div class="actions"><button id="save" class="primary" type="button">＋ 儲存聯絡人</button><button id="clearAll" type="button">清除全部</button></div>
-</section>
-<section class="card"><h2>緊急聯絡順序</h2><ol class="steps-list"><li>當地警察／消防／救護</li><li>台灣駐外館處急難電話</li><li>第一順位緊急聯絡人</li><li>保險公司／旅行社／公司</li><li>保存報案、醫療、收據與定位資訊</li></ol></section>
+<header><div><div class="eyebrow">V7.2 · CONTACTS</div><h1>📞 緊急聯絡人</h1><p>資料只存此手機瀏覽器。</p></div></header>
+<section class="card"><div class="contact-form"><label>姓名<input id="name"></label><label>關係／單位<input id="relation"></label><label>電話<input id="phone" type="tel"></label><label>事項<select id="matter"><option>任何重大急難</option><option>失聯</option><option>受傷／住院</option><option>車禍</option><option>護照遺失</option><option>詐騙／搶劫</option><option>天災／天氣</option></select></label><label class="full">處理指示<textarea id="note"></textarea></label></div><div class="actions"><button id="save" class="primary">＋ 儲存</button><button id="clearAll">清除全部</button></div></section>
 <section id="list" class="card"></section>
-</main>
-<nav class="bottom-nav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav>
-<script src="shared.js?v=70"></script><script src="contacts.js?v=70"></script></body></html>
+</main><nav class="bottom-nav">
+<a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a>
+</nav><script src="shared.js?v=72"></script><script src="contacts.js?v=72"></script></body></html>
