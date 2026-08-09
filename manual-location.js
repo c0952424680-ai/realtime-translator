@@ -10,9 +10,9 @@ async function fetchJson(url){
 
 async function loadLocationMasters(){
   [LOCATION_MASTER,DISTRICT_MASTER,CITY_COORDS]=await Promise.all([
-    fetchJson("./locations.json?v=92"),
-    fetchJson("./location-districts.json?v=92"),
-    fetchJson("./city-coordinates.json?v=92")
+    fetchJson("./locations.json?v=93"),
+    fetchJson("./location-districts.json?v=93"),
+    fetchJson("./city-coordinates.json?v=93")
   ]);
 
   const c=document.getElementById("manualCountry");

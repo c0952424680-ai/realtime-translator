@@ -1,14 +1,17 @@
 # 即時譯｜旅外安全助理
 
-**目前版本：即時譯 V9.2｜旅外安全助理・統一資料中心版**
+**目前版本：即時譯 V9.3｜旅外安全助理・智慧自動更新版**
 
-V9.2 統一資料中心：
-- DataCenter：唯一整合資料入口
-- TravelContext：唯一位置狀態
-- Safety Hub、資料狀態列、自動更新都讀取 DataCenter
-- TravelDataStore 僅保留相容介面，不再重複抓資料
-- 更新策略集中在 data-center.json
-- 離線時使用最後一次 DataCenter 快取
+V9.3 智慧自動更新：
+- 天氣、附近設施、風險、整合資料分級更新
+- 背景 heartbeat 每 1 分鐘檢查是否到期
+- 頁面回到前景時自動檢查
+- 網路恢復時立即補更新
+- DataCenter 更新失敗自動指數退避重試
+- 只有資料內容變更時標記 changed
+- 顯示資料健康：正常／離線／過期／更新異常
+- 手動「立即更新全部資料」保留
+- 離線時使用最後一次快取
 
 正式網址：
-https://c0952424680-ai.github.io/realtime-translator/?v=92&build=V9.2
+https://c0952424680-ai.github.io/realtime-translator/?v=93&build=V9.3

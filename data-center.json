@@ -1,14 +1,18 @@
 {
   "schema": 1,
-  "version": "V9.2",
-  "build": "V9.2-UNIFIED-DATA-CENTER-20260810-01",
-  "generatedAt": "2026-08-10T01:54:00+08:00",
+  "version": "V9.3",
+  "build": "V9.3-SMART-AUTO-UPDATE-20260810-01",
+  "generatedAt": "2026-08-10T02:04:00+08:00",
   "updatePolicies": {
     "weatherMinutes": 10,
     "nearbyMinutes": 15,
+    "riskMinutes": 20,
     "travelDataMinutes": 30,
     "missionMinutes": 360,
-    "riskMinutes": 30
+    "staleWarningMinutes": 60,
+    "retryBaseSeconds": 8,
+    "retryMaxSeconds": 120,
+    "maxRetries": 4
   },
   "countries": {
     "TW": {
