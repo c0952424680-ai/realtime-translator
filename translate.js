@@ -11,7 +11,7 @@ function phraseFix(text,src,dst){
   return PHRASE_FIXES[src+"|"+dst+"|"+text.trim()]||null;
 }
 function applyFontSize(){
-  const v=document.getElementById("fontSizeMode")?.value||"9mm";
+  const v=document.getElementById("fontSizeMode")?.value||"7mm";
   document.documentElement.style.setProperty("--main-font-mm",v);
 }
 document.addEventListener("DOMContentLoaded",()=>{
