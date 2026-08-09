@@ -1,9 +1,18 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="style.css?v=72"><title>即時譯 V7.2｜風險</title></head><body><main class="app"><div class="top-switch">
-<a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a>
-</div>
-<header><div><div class="eyebrow">V7.2 · RISK</div><h1>⚠️ 旅行風險</h1><p>戰爭、治安、詐騙、疾病、衛生與天氣分開。</p></div></header>
-<section class="card"><label class="label">國家／地區</label><select id="riskCountry"></select></section>
-<section id="riskBox" class="card"></section><section id="weatherBox" class="card"></section>
-</main><nav class="bottom-nav">
-<a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a>
-</nav><script src="shared.js?v=72"></script><script src="risk.js?v=72"></script></body></html>
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=74"><title>即時譯 V7.4｜風險</title></head><body><main class="app"><div class="top-switch"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V7.4 · RISK</div><h1>⚠️ 旅行風險</h1><p>戰爭、治安、詐騙、疾病、天氣分開查看。</p></header><section class="card">
+      <div id="freshness"></div>
+      <h2>六大風險分類</h2>
+      <div class="risk-grid">
+        <div class="risk-cell"><b>🪖 戰爭／衝突</b><span>以外交部旅遊警示為準</span></div>
+        <div class="risk-cell"><b>👮 治安</b><span>搶劫、攻擊、綁架等</span></div>
+        <div class="risk-cell"><b>💳 詐騙</b><span>電信、工作誘騙、人口販運</span></div>
+        <div class="risk-cell"><b>🦠 疾病／衛生</b><span>以疾管署國際旅遊疫情為準</span></div>
+        <div class="risk-cell"><b>🌦️ 天氣</b><span>高溫、暴雨、颱風、暴雪</span></div>
+        <div class="risk-cell"><b>🌋 天然災害</b><span>地震、海嘯、火山、洪水</span></div>
+      </div>
+      <div class="official-source-card">
+        <a class="callbtn" href="https://www.boca.gov.tw/np-52-1.html" target="_blank">🇹🇼 外交部領事事務局－旅遊警示</a>
+        <a class="callbtn" href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署－國際疫情及建議等級</a>
+        <a class="callbtn" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
+      </div>
+      <p class="small">本頁不自行創造「安全分數」。真正出發前，以政府即時公告為準。</p>
+    </section><script>document.addEventListener("DOMContentLoaded",()=>{const f=freshnessLabel("2026-08-09");document.getElementById("freshness").innerHTML=`<div class="freshness ${f.cls}">${f.text}</div>`;});</script></main><nav class="bottom-nav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=74"></script></body></html>
