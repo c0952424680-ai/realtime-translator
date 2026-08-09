@@ -37,11 +37,9 @@ const SmartUpdate={
   },
 
   async refreshRisk(){
-    if(typeof window.renderLinkedRisk==="function"){
-      window.renderLinkedRisk();
-      this.mark("risk");
-      window.dispatchEvent(new CustomEvent("smart-update-complete",{detail:{type:"risk"}}));
-    }
+    window.RiskEventCenter?.build?.();
+    this.mark("risk");
+    window.dispatchEvent(new CustomEvent("smart-update-complete",{detail:{type:"risk"}}));
   },
 
   async refreshDataCenter(){

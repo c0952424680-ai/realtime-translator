@@ -1,9 +1,9 @@
 <!doctype html><html lang="zh-Hant"><head>
-  <meta name="app-build" content="V9.3-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=93"><title>即時譯 V9.3｜旅外安全助理・智慧自動更新版</title></head><body>
+  <meta name="app-build" content="V9.4-TRAVEL-SAFETY-CLEAN-BUILD-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=94"><title>即時譯 V9.4｜旅外安全助理・統一風險事件中心版</title></head><body>
 <div id="dataStatusBar" class="data-status-bar"><b>等待位置</b><span>資料載入中</span></div><main class="app"><div class="force-version">
-      <strong>✅ V9.3 旅外安全助理全球緊急版</strong>
-      <span>BUILD：V9.3.1-GITHUB-PAGES-DEPLOY-20260809-01</span>
-    </div><div class="topnav"><a href="index.html?v=93&build=V9.3">🌐 翻譯</a><a href="sos.html?v=93&build=V9.3">🆘 求助</a><a href="risk.html?v=93&build=V9.3">⚠️ 風險</a><a href="contacts.html?v=93&build=V9.3">📞 聯絡人</a></div><header><div class="eyebrow">V9.3 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V9.3.1-GITHUB-PAGES-DEPLOY-20260809-01</div></header><section class="card unified-location-card">
+      <strong>✅ V9.4 旅外安全助理全球緊急版</strong>
+      <span>BUILD：V9.4.1-GITHUB-PAGES-DEPLOY-20260809-01</span>
+    </div><div class="topnav"><a href="index.html?v=94&build=V9.4">🌐 翻譯</a><a href="sos.html?v=94&build=V9.4">🆘 求助</a><a href="risk.html?v=94&build=V9.4">⚠️ 風險</a><a href="contacts.html?v=94&build=V9.4">📞 聯絡人</a></div><header><div class="eyebrow">V9.4 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V9.4.1-GITHUB-PAGES-DEPLOY-20260809-01</div></header><section class="card unified-location-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">旅外安全助理・位置中心</div>
@@ -27,6 +27,12 @@
   <div id="manualLocationStatus" class="official-note">
     可手動選擇，也可使用 GPS。位置更新後會同步治安、天氣、詐騙、疾病、高風險地區與附近緊急設施。
   </div>
+</section><section class="card risk-event-center-card">
+  <div class="eyebrow">統一風險事件中心</div>
+  <h2>🚦 即時風險事件</h2>
+  <div class="risk-overall green" id="riskOverall">🟢 安全</div>
+  <div id="riskOverallText" class="official-note">正在整合風險資訊…</div>
+  <div id="riskEventList"></div>
 </section><section class="card update-center-card">
   <div class="eyebrow">智慧更新中心</div>
   <h2>🔄 資料健康狀態</h2>
@@ -42,7 +48,7 @@
   <div class="data-center-grid">
     <div><span>位置核心</span><b id="dcLocation">等待位置</b></div>
     <div><span>資料來源</span><b id="dcSource">載入中</b></div>
-    <div><span>資料版本</span><b id="dcVersion">V9.3</b></div>
+    <div><span>資料版本</span><b id="dcVersion">V9.4</b></div>
     <div><span>最後更新</span><b id="dcUpdated">尚未更新</b></div>
   </div>
 </section><section class="card assistant-control-center">
@@ -94,7 +100,7 @@
   
   
 </div>
-<div id="locationText" class="official-note">位置：尚未取得。定位只用於顯示目前座標，不會上傳。</div>
+<div id="locationText" class="official-note">位置：尚未取得。允許定位後，會同步更新國家、城市、天氣、風險與附近設施。</div>
 <div id="snapshotTime" class="small"></div>
 </section>
 <section class="card live-location-card">
@@ -107,7 +113,7 @@
   </div>
 
   <div id="liveLocationStatus" class="official-note">
-    尚未取得位置。定位資料只在這台裝置上用來查詢城市、地區與天氣。
+    尚未取得位置。允許定位後，會同步更新城市、天氣、風險與附近設施。
   </div>
 
   <div class="location-facts">
@@ -240,9 +246,9 @@
 <section class="card assistant-action-strip">
   <h2>⚡ 快速行動</h2>
   <div class="assistant-actions-grid">
-    <a href="sos.html?v=93&build=V9.3">🆘 緊急求助</a>
+    <a href="sos.html?v=94&build=V9.4">🆘 緊急求助</a>
     <button id="jumpNearestHospital">🏥 最近醫院</button>
     <button id="jumpNearestPolice">👮 最近警局</button>
-    <a href="contacts.html?v=93&build=V9.3">🪪 我的旅行資料</a>
+    <a href="contacts.html?v=94&build=V9.4">🪪 我的旅行資料</a>
   </div>
-</section></main><nav class="bottomnav"><a href="index.html?v=93&build=V9.3">🌐<span>翻譯</span></a><a href="sos.html?v=93&build=V9.3">🆘<span>求助</span></a><a href="risk.html?v=93&build=V9.3">⚠️<span>風險</span></a><a href="contacts.html?v=93&build=V9.3">📞<span>聯絡人</span></a></nav><script src="shared.js?v=93"></script><script src="location-weather.js?v=93"></script><script src="live-risk.js?v=93"></script><script src="nearby.js?v=93"></script><script src="taiwan-link.js?v=93"></script><script src="manual-location.js?v=93"></script><script src="assistant-unified.js?v=93"></script><script src="safety-hub.js?v=93"></script><script src="travel-context.js?v=93"></script><script src="data-center.js?v=93"></script><script src="travel-data-store.js?v=93"></script><script src="data-status.js?v=93"></script><script src="smart-update.js?v=93"></script><script src="auto-update.js?v=93"></script><script src="app-shell.js?v=93"></script><script src="data-center-view.js?v=93"></script><script src="data-health.js?v=93"></script><script src="manual-refresh.js?v=93"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html?v=94&build=V9.4">🌐<span>翻譯</span></a><a href="sos.html?v=94&build=V9.4">🆘<span>求助</span></a><a href="risk.html?v=94&build=V9.4">⚠️<span>風險</span></a><a href="contacts.html?v=94&build=V9.4">📞<span>聯絡人</span></a></nav><script src="shared.js?v=94"></script><script src="nearby.js?v=94"></script><script src="taiwan-link.js?v=94"></script><script src="assistant-unified.js?v=94"></script><script src="safety-hub.js?v=94"></script><script src="travel-context.js?v=94"></script><script src="data-center.js?v=94"></script><script src="travel-data-store.js?v=94"></script><script src="location-core.js?v=94"></script><script src="data-status.js?v=94"></script><script src="smart-update.js?v=94"></script><script src="auto-update.js?v=94"></script><script src="app-shell.js?v=94"></script><script src="data-center-view.js?v=94"></script><script src="data-health.js?v=94"></script><script src="manual-refresh.js?v=94"></script><script src="risk-event-center.js?v=94"></script></body></html>

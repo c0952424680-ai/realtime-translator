@@ -1,0 +1,24 @@
+即時譯 V9.4｜統一風險事件中心版 最終檢查
+BUILD=V9.4-RISK-EVENT-CENTER-20260810-01
+
+定位修正：
+- LocationCore：唯一定位控制器
+- GPS 按鈕 locateMe：已正確綁定
+- manual-location.js：已刪除
+- location-weather.js：已刪除
+- 定位成功後同步 TravelContext：OK
+- 定位成功後同步附近設施／天氣：OK
+
+風險整合：
+- RiskEventCenter：唯一風險事件控制器
+- live-risk.js：已刪除
+- 治安／詐騙／疾病／戰爭／環境／災害／天氣：統一格式
+- 綠／橙／紅總體風險：OK
+
+系統：
+- DataCenter：唯一資料入口
+- TravelContext：唯一位置狀態
+- SmartUpdate：改呼叫 RiskEventCenter
+- Service Worker：V9.4 runtime only
+- JavaScript 語法：全部通過
+- 舊 V9.3 runtime：0
