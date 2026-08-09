@@ -1,34 +1,3 @@
-const CACHE="RT-V8.8-TRAVEL-SAFETY-HUB";
-const ASSETS=["./index.html?v=88", "./risk.html?v=88", "./sos.html?v=88", "./contacts.html?v=88", "./style.css?v=88", "./shared.js?v=88", "./translate.js?v=88", "./location-weather.js?v=88", "./live-risk.js?v=88", "./nearby.js?v=88", "./taiwan-link.js?v=88", "./manual-location.js?v=88", "./assistant-unified.js?v=88", "./safety-hub.js?v=88", "./manifest.webmanifest?v=88", "./locations.json?v=88", "./location-districts.json?v=88", "./city-coordinates.json?v=88", "./taiwan-regions.json?v=88", "./risk-feed.json?v=88", "./country-services.json?v=88"];
-self.addEventListener("install",event=>{
-  self.skipWaiting();
-  event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(x=>new Request(x,{cache:"reload"})))).catch(()=>{}));
-});
-self.addEventListener("activate",event=>{
-  event.waitUntil((async()=>{
-    const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
-    await self.clients.claim();
-  })());
-});
-self.addEventListener("fetch",event=>{
-  const req=event.request;
-  if(req.method!=="GET")return;
-  const url=new URL(req.url);
-  if(req.mode==="navigate"||req.destination==="document"){
-    event.respondWith((async()=>{
-      try{return await fetch(req,{cache:"no-store"})}
-      catch{return (await caches.match("./index.html?v=88"))||Response.error()}
-    })());
-    return;
-  }
-  if(url.origin!==location.origin)return;
-  event.respondWith((async()=>{
-    try{
-      const fresh=await fetch(req,{cache:"no-store"});
-      const cache=await caches.open(CACHE);
-      cache.put(req,fresh.clone());
-      return fresh;
-    }catch{return (await caches.match(req))||Response.error()}
-  })());
-});
+const CACHE="RT-V9.0-SMART-TRAVEL-SAFETY";
+const ASSETS=["./index.html?v=90", "./risk.html?v=90", "./sos.html?v=90", "./contacts.html?v=90", "./style.css?v=90", "./shared.js?v=90", "./translate.js?v=90", "./travel-context.js?v=90", "./travel-data-store.js?v=90", "./data-status.js?v=90", "./auto-update.js?v=90", "./app-shell.js?v=90", "./location-weather.js?v=90", "./live-risk.js?v=90", "./nearby.js?v=90", "./taiwan-link.js?v=90", "./manual-location.js?v=90", "./assistant-unified.js?v=90", "./safety-hub.js?v=90", "./manifest.webmanifest?v=90", "./travel-data.json?v=90", "./city-coordinates.json?v=90"];
+self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(x=>new Request(x,{cache:"reload"})))).catch(()=>{}))});self.addEventListener("activate",e=>{e.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})())});self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);if(r.mode==="navigate"||r.destination==="document"){e.respondWith((async()=>{try{return await fetch(r,{cache:"no-store"})}catch{return(await caches.match("./index.html?v=90"))||Response.error()}})());return}if(u.origin!==location.origin)return;e.respondWith((async()=>{try{const f=await fetch(r,{cache:"no-store"});const c=await caches.open(CACHE);c.put(r,f.clone());return f}catch{return(await caches.match(r))||Response.error()}})())});

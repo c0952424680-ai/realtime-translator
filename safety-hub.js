@@ -5,7 +5,7 @@ let LAST_LOCATION_DETAIL=null;
 
 async function loadCountryServices(){
   try{
-    const r=await fetch("./country-services.json?v=88",{cache:"no-store"});
+    const r=await fetch("./country-services.json?v=90",{cache:"no-store"});
     if(r.ok)COUNTRY_SERVICES=await r.json();
   }catch{}
 }

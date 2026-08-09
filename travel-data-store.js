@@ -1,0 +1,6 @@
+const TRAVEL_DATA_CACHE="rt_v90_travel_data";
+const TravelDataStore={data:null,loadedAt:null,source:"network",
+ async load(force=false){if(this.data&&!force)return this.data;try{const r=await fetch(`./travel-data.json?v=90&t=${force?Date.now():""}`,{cache:"no-store"});if(!r.ok)throw new Error();this.data=await r.json();this.loadedAt=new Date();this.source="network";try{localStorage.setItem(TRAVEL_DATA_CACHE,JSON.stringify({time:Date.now(),data:this.data}))}catch{}window.dispatchEvent(new CustomEvent("travel-data-updated",{detail:{source:"network"}}));return this.data}catch(e){try{const c=JSON.parse(localStorage.getItem(TRAVEL_DATA_CACHE)||"null");if(c?.data){this.data=c.data;this.loadedAt=new Date(c.time);this.source="cache";window.dispatchEvent(new CustomEvent("travel-data-updated",{detail:{source:"cache"}}));return this.data}}catch{}throw e}},
+ country(code){return this.data?.countries?.[code]||null},
+ freshnessText(){if(!this.loadedAt)return "尚未更新";const m=Math.max(0,Math.floor((Date.now()-this.loadedAt.getTime())/60000));return m<1?"剛剛更新":m<60?`${m} 分鐘前`:this.loadedAt.toLocaleString("zh-TW",{hour12:false})}
+};window.TravelDataStore=TravelDataStore;

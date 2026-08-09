@@ -10,9 +10,9 @@ async function fetchJson(url){
 
 async function loadLocationMasters(){
   [LOCATION_MASTER,DISTRICT_MASTER,CITY_COORDS]=await Promise.all([
-    fetchJson("./locations.json?v=88"),
-    fetchJson("./location-districts.json?v=88"),
-    fetchJson("./city-coordinates.json?v=88")
+    fetchJson("./locations.json?v=90"),
+    fetchJson("./location-districts.json?v=90"),
+    fetchJson("./city-coordinates.json?v=90")
   ]);
 
   const c=document.getElementById("manualCountry");
@@ -189,3 +189,5 @@ document.addEventListener("DOMContentLoaded",async()=>{
     detail:{countryKey:k,country:LOCATION_MASTER[k],city,district,coords:null,source:"manual"}
   }));
 });
+
+window.addEventListener("location-context-change",e=>{const d=e.detail||{};if(window.TravelContext){const c=d.country||{};window.TravelContext.update({countryKey:d.countryKey||document.getElementById("manualCountry")?.value||"TW",country:(c.name||document.getElementById("liveCountry")?.textContent||"").replace(/^.. /,""),city:d.city||document.getElementById("liveCity")?.textContent||"",district:d.district||document.getElementById("liveDistrict")?.textContent||"",lat:d.coords?.[0]??null,lon:d.coords?.[1]??null,source:d.source||"manual"},"location-change")}});
