@@ -1,7 +1,7 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=81"><title>即時譯 V8.1｜優化安全版</title></head><body><main class="app"><div class="force-version">
-      <strong>✅ V8.1 旅外安全助理乾淨版</strong>
-      <span>BUILD：V8.1-TRAVEL-SAFETY-ASSISTANT-CLEAN-20260809-01</span>
-    </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V8.1 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.1-TRAVEL-SAFETY-ASSISTANT-CLEAN-20260809-01</div></header><section class="card unified-location-card">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=83"><title>即時譯 V8.3｜旅外安全助理</title></head><body><main class="app"><div class="force-version">
+      <strong>✅ V8.3 旅外安全助理統一版</strong>
+      <span>BUILD：V8.3-TRAVEL-SAFETY-ASSISTANT-UNIFIED-20260809-01</span>
+    </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V8.3 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.3-TRAVEL-SAFETY-ASSISTANT-UNIFIED-20260809-01</div></header><section class="card unified-location-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">旅外安全助理・位置中心</div>
@@ -24,6 +24,49 @@
   <div id="manualLocationStatus" class="official-note">
     可手動選擇，也可使用 GPS。位置更新後會同步治安、天氣、詐騙、疾病、高風險地區與附近緊急設施。
   </div>
+</section><section class="card assistant-control-center">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">旅外安全助理・統一資訊中心</div>
+      <h2>🛡️ 目前安全總覽</h2>
+    </div>
+    <button id="refreshAssistantAll" class="primary">全部更新</button>
+  </div>
+
+  <div class="assistant-status-row">
+    <span id="assistantFreshness" class="status-pill">等待資料</span>
+    <span id="assistantNetwork" class="status-pill">檢查網路</span>
+    <span id="assistantMode" class="status-pill">位置模式</span>
+  </div>
+
+  <div class="assistant-overview-grid">
+    <button class="assistant-tile" data-jump="linked-risk-card">
+      <span>🚦</span><b id="overviewRisk">風險</b><small>治安／詐騙／疾病／高風險</small>
+    </button>
+    <button class="assistant-tile" data-jump="weather-live-card">
+      <span>🌦️</span><b id="overviewWeather">天氣</b><small>氣溫／降雨／風速</small>
+    </button>
+    <button class="assistant-tile" data-jump="nearby-card">
+      <span>🚑</span><b id="overviewEmergency">緊急設施</b><small>醫院／警局／藥局</small>
+    </button>
+    <button class="assistant-tile" data-jump="taiwan-region-card">
+      <span>📞</span><b id="overviewContact">緊急聯絡</b><small>SOS／館處／官方電話</small>
+    </button>
+  </div>
+
+  <div id="assistantKeyMessage" class="assistant-key-message">
+    取得位置後，會把所有資訊同步到同一個國家／城市／地區。
+  </div>
+</section><section class="card travel-assistant-summary">
+  <div class="eyebrow">旅外安全助理</div>
+  <h2>🛡️ 一頁安全摘要</h2>
+  <div class="assistant-summary-grid">
+    <div><span>位置</span><b id="assistantLocation">等待位置</b></div>
+    <div><span>整體狀態</span><b id="assistantOverall">等待資料</b></div>
+    <div><span>最近急救</span><b id="assistantMedical">搜尋中</b></div>
+    <div><span>最近警察</span><b id="assistantPolice">搜尋中</b></div>
+  </div>
+  <p class="small">此摘要只整合本頁既有官方來源與即時資料，不自行產生新的政府安全等級。</p>
 </section><section class="card">
 <h2>📍 所在國家／地區風險</h2>
 <div class="risk-live-controls">
@@ -204,4 +247,12 @@
   <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
   <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
 </div>
-</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=81"></script><script src="risk-data.js?v=81"></script><script src="risk.js?v=81"></script><script src="location-weather.js?v=81"></script><script src="live-risk.js?v=81"></script><script src="nearby.js?v=81"></script><script src="taiwan-link.js?v=81"></script><script src="manual-location.js?v=81"></script></body></html>
+</section><section class="card assistant-action-strip">
+  <h2>⚡ 快速行動</h2>
+  <div class="assistant-actions-grid">
+    <a href="sos.html">🆘 緊急求助</a>
+    <button id="jumpNearestHospital">🏥 最近醫院</button>
+    <button id="jumpNearestPolice">👮 最近警局</button>
+    <a href="contacts.html">🪪 我的旅行資料</a>
+  </div>
+</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=83"></script><script src="risk-data.js?v=83"></script><script src="risk.js?v=83"></script><script src="location-weather.js?v=83"></script><script src="live-risk.js?v=83"></script><script src="nearby.js?v=83"></script><script src="taiwan-link.js?v=83"></script><script src="manual-location.js?v=83"></script><script src="assistant-summary.js?v=83"></script><script src="assistant-unified.js?v=83"></script></body></html>

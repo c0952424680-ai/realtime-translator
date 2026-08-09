@@ -1,9 +1,9 @@
 
-const CACHE="RT-V8.1-TRAVEL-SAFETY-CLEAN";
+const CACHE="RT-V8.3-TRAVEL-SAFETY-UNIFIED";
 const STATIC=[
- "./index.html?v=81","./sos.html?v=81","./risk.html?v=81","./contacts.html?v=81",
- "./style.css?v=81","./shared.js?v=81","./translate.js?v=81","./sos.js?v=81","./contacts.js?v=81",
- "./manifest.webmanifest?v=81","./live-risk.js?v=81","./risk-feed.json","./taiwan-regions.json","./city-coordinates.json","./locations.json","./location-districts.json","./manual-location.js?v=81","./taiwan-link.js?v=81","./nearby.js?v=81","./location-weather.js?v=81","./risk-data.js?v=81","./risk.js?v=81"
+ "./index.html?v=83","./sos.html?v=83","./risk.html?v=83","./contacts.html?v=83",
+ "./style.css?v=83","./shared.js?v=83","./translate.js?v=83","./sos.js?v=83","./contacts.js?v=83",
+ "./manifest.webmanifest?v=83","./live-risk.js?v=83","./risk-feed.json","./taiwan-regions.json","./city-coordinates.json","./locations.json","./location-districts.json","./manual-location.js?v=83","./assistant-summary.js?v=83","./assistant-unified.js?v=83","./taiwan-link.js?v=83","./nearby.js?v=83","./location-weather.js?v=83","./risk-data.js?v=83","./risk.js?v=83"
 ];
 
 self.addEventListener("install",event=>{
@@ -31,6 +31,6 @@ self.addEventListener("fetch",event=>{
         caches.open(CACHE).then(cache=>cache.put(event.request,copy));
         return response;
       })
-      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=81")))
+      .catch(()=>caches.match(event.request).then(r=>r||caches.match("./index.html?v=83")))
   );
 });
