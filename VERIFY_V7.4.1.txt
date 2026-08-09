@@ -1,0 +1,22 @@
+V7.4.1 強制更新版驗證報告
+BUILD: V7.4.1-FORCE-UPDATE-20260809-01
+
+已特別修正『網站一直停在舊 V7.2』：
+- 首次開啟解除所有舊 Service Worker
+- 首次開啟刪除所有舊 Cache Storage
+- 自動加入唯一 build query 並重新載入一次
+- 清理完才註冊 V7.4.1 Service Worker
+
+- 四大頁面: OK
+- 單向翻譯: OK
+- 雙向翻譯: OK
+- 面對面: OK
+- 全螢幕: OK
+- SOS步驟: OK
+- 離線求助卡: OK
+- 六大風險: OK
+- 旅行資料卡: OK
+- Google Maps: OK
+- 強制清舊快取: OK
+- JavaScript 語法: 全部 OK
+- 使用者執行檔中的 V7.2 / V7.3 / V6.7 殘留: 0
