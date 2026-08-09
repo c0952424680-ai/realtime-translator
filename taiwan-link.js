@@ -11,12 +11,12 @@ function normalizeTwRegion(s){
 
 async function loadTaiwanRegions(){
   try{
-    const r=await fetch("./taiwan-regions.json?v=80",{cache:"no-store"});
+    const r=await fetch("./taiwan-regions.json?v=81",{cache:"no-store"});
     if(r.ok)TAIWAN_REGIONS=await r.json();
   }catch{}
 }
 
-function renderTaiwanLink(){
+window.renderTaiwanLink=function renderTaiwanLink(){
   const country=document.getElementById("liveCountry")?.textContent||"";
   const card=document.getElementById("taiwanRegionCard");
   const emergency=document.getElementById("taiwanEmergencyRow");
@@ -62,3 +62,5 @@ document.addEventListener("DOMContentLoaded",async()=>{
     const e=document.getElementById(id);if(e)obs.observe(e,{childList:true,subtree:true});
   });
 });
+
+window.addEventListener("location-context-change",()=>window.renderTaiwanLink?.());

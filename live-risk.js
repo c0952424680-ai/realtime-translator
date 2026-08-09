@@ -163,12 +163,8 @@ document.addEventListener("DOMContentLoaded",async()=>{
   });
 });
 
-window.addEventListener("manual-location-change",()=>{
-  renderLinkedRisk();
-  syncWeatherLight();
-});
 
-window.addEventListener("manual-location-change",()=>{
+window.addEventListener("location-context-change",()=>{
   renderLinkedRisk();
   syncWeatherLight();
 });

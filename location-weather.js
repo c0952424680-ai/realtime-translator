@@ -142,6 +142,9 @@ window.locateAndUpdate=async function locateAndUpdate(){
       const data={lat,lon,geo,weather};
       saveLiveCache(data);
       renderLive(data);
+      if(typeof window.syncSelectorsFromGps==="function"){
+        await window.syncSelectorsFromGps(geo,lat,lon);
+      }
     }catch(e){
       liveSet("liveLocationStatus","已取得座標，但城市／天氣服務暫時沒有回應。");
       liveSet("liveCoords",`${lat.toFixed(5)}, ${lon.toFixed(5)}`);

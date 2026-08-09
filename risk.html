@@ -1,37 +1,39 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=80"><title>即時譯 V8.0｜優化安全版</title></head><body><main class="app"><div class="force-version">
-      <strong>✅ V8.0 完整修正版</strong>
-      <span>BUILD：V8.0-COUNTRY-CITY-DISTRICT-LINKED-20260809-01</span>
-    </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V8.0 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.0-COUNTRY-CITY-DISTRICT-LINKED-20260809-01</div></header><section class="card">
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=81"><title>即時譯 V8.1｜優化安全版</title></head><body><main class="app"><div class="force-version">
+      <strong>✅ V8.1 旅外安全助理乾淨版</strong>
+      <span>BUILD：V8.1-TRAVEL-SAFETY-ASSISTANT-CLEAN-20260809-01</span>
+    </div><div class="topnav"><a href="index.html">🌐 翻譯</a><a href="sos.html">🆘 求助</a><a href="risk.html">⚠️ 風險</a><a href="contacts.html">📞 聯絡人</a></div><header><div class="eyebrow">V8.1 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V8.1-TRAVEL-SAFETY-ASSISTANT-CLEAN-20260809-01</div></header><section class="card unified-location-card">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">旅外安全助理・位置中心</div>
+      <h2>🌏 所在國家／城市／地區</h2>
+    </div>
+    <span id="locationModeBadge" class="location-mode-badge">手動模式</span>
+  </div>
+
+  <div class="country-city-district-row">
+    <label>國家<select id="manualCountry"></select></label>
+    <label>城市<select id="manualCity"></select></label>
+    <label>地區<select id="manualDistrict"></select></label>
+  </div>
+
+  <div class="actions">
+    <button id="applyManualLocation" class="primary">套用並更新全部資訊</button>
+    <button id="useGpsLocation">📍 使用我的位置</button>
+  </div>
+
+  <div id="manualLocationStatus" class="official-note">
+    可手動選擇，也可使用 GPS。位置更新後會同步治安、天氣、詐騙、疾病、高風險地區與附近緊急設施。
+  </div>
+</section><section class="card">
 <h2>📍 所在國家／地區風險</h2>
 <div class="risk-live-controls">
-  <select id="riskCountry">
-    <option value="jp">🇯🇵 日本</option>
-    <option value="kr">🇰🇷 韓國</option>
-    <option value="vn">🇻🇳 越南</option>
-    <option value="my">🇲🇾 馬來西亞</option>
-    <option value="ph">🇵🇭 菲律賓</option>
-    <option value="th">🇹🇭 泰國</option>
-    <option value="id">🇮🇩 印尼</option>
-  </select>
-  <button id="useLocation" class="primary">📍 使用我的位置</button>
+  
+  
 </div>
 <div id="locationText" class="official-note">位置：尚未取得。定位只用於顯示目前座標，不會上傳。</div>
 <div id="snapshotTime" class="small"></div>
 </section>
-<section class="card manual-location-card">
-<h2>🌏 所在國家／城市／地區</h2>
-<div class="country-city-district-row">
-  <label>國家<select id="manualCountry"></select></label>
-  <label>城市<select id="manualCity"></select></label>
-  <label>地區<select id="manualDistrict"></select></label>
-</div>
-<div class="actions">
-  <button id="applyManualLocation" class="primary">套用並更新全部資訊</button>
-  <button id="useGpsLocation">📍 使用 GPS 位置</button>
-</div>
-<p class="small">選擇後會聯動：治安、天氣、詐騙、疾病、高風險地區、最近醫院／警局／藥局與 Google Maps 導航。</p>
-<div id="manualLocationStatus" class="official-note">可選「全市」或更細地區；沒有預設地區時會以城市中心或線上地理編碼查找。</div>
-</section><section class="card live-location-card">
+<section class="card live-location-card">
   <div class="section-head">
     <div>
       <div class="eyebrow">即時位置與天氣</div>
@@ -202,4 +204,4 @@
   <a href="https://www.cdc.gov.tw/Category/List/7XRS9-rOLh8NhijuoCCegA" target="_blank">🦠 疾管署國際疫情</a>
   <a id="currentMapLink" href="https://www.google.com/maps" target="_blank">🗺️ Google Maps</a>
 </div>
-</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=80"></script><script src="risk-data.js?v=80"></script><script src="risk.js?v=80"></script><script src="location-weather.js?v=80"></script><script src="live-risk.js?v=80"></script><script src="nearby.js?v=80"></script><script src="taiwan-link.js?v=80"></script><script src="manual-location.js?v=80"></script></body></html>
+</section></main><nav class="bottomnav"><a href="index.html">🌐<span>翻譯</span></a><a href="sos.html">🆘<span>求助</span></a><a href="risk.html">⚠️<span>風險</span></a><a href="contacts.html">📞<span>聯絡人</span></a></nav><script src="shared.js?v=81"></script><script src="risk-data.js?v=81"></script><script src="risk.js?v=81"></script><script src="location-weather.js?v=81"></script><script src="live-risk.js?v=81"></script><script src="nearby.js?v=81"></script><script src="taiwan-link.js?v=81"></script><script src="manual-location.js?v=81"></script></body></html>

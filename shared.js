@@ -1,5 +1,5 @@
 
-const BUILD_ID="V8.0";
+const BUILD_ID="V8.1";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,7 +17,7 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V8.0";
+const CURRENT_BUILD="V8.1";
 (async function forceUpgrade(){
   try{
     const previous=localStorage.getItem("rt_current_build");
@@ -43,10 +43,10 @@ const CURRENT_BUILD="V8.0";
     }
 
     if("serviceWorker" in navigator){
-      await navigator.serviceWorker.register("./sw.js?v=80");
+      await navigator.serviceWorker.register("./sw.js?v=81");
     }
   }catch(e){
-    console.warn("V8.0.1 force-upgrade cleanup failed",e);
+    console.warn("V8.1.1 force-upgrade cleanup failed",e);
   }
 })();
 

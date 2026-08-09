@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V8.0｜優化安全版",
-  "short_name": "即時譯 8.0",
-  "start_url": "./index.html?v=80",
+  "name": "即時譯 V8.1｜優化安全版",
+  "short_name": "即時譯 8.1",
+  "start_url": "./index.html?v=81",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF"
