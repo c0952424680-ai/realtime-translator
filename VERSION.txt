@@ -1,4 +1,6 @@
-即時譯 V9.5｜旅外安全助理・緊急模式版
-BUILD=V9.5-EMERGENCY-MODE-20260810-01
-URL_PARAM=v=95
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=95&build=V9.5
+即時譯 V9.5.1｜旅外安全助理・部署修正版
+BUILD=V9.5.1-DEPLOY-FIX-20260810-01
+URL_PARAM=v=951
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=951&build=V9.5.1
+SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=951&build=V9.5.1
+DEPLOY_CHECK=https://c0952424680-ai.github.io/realtime-translator/deploy-check.html?v=951

@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V9.5｜旅外安全助理・緊急模式版",
-  "short_name": "即時譯 9.5",
-  "start_url": "./index.html?v=95&build=V9.5",
+  "name": "即時譯 V9.5.1｜旅外安全助理・部署修正版",
+  "short_name": "即時譯 9.5.1",
+  "start_url": "./index.html?v=951&build=V9.5.1",
   "display": "standalone",
   "background_color": "#f3f6fb",
   "theme_color": "#0A84FF",

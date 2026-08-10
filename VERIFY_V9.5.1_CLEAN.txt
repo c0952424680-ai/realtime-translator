@@ -1,0 +1,8 @@
+V9.5.1 部署修正版檢查
+- 緊急模式卡：存在
+- emergency-mode.js：存在
+- safety-hub.js：已引用
+- Service Worker：V9.5.1
+- DEPLOY_V9.5.1.txt：存在
+- JavaScript：全部通過
+- 舊 V9.5 runtime：0
