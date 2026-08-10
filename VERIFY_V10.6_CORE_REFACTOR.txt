@@ -1,0 +1,17 @@
+V10.6 核心重構檢查報告
+名稱：即時譯 V10.6｜旅外安全助理・核心重構即時聯動版
+BUILD：V10.6-CORE-REFACTOR-LIVE-LINK-20260811-01
+
+PASS
+- JavaScript 語法：PASS
+- 單一 StateCore：PASS
+- GPS/反查單一路徑：PASS
+- 語音全自動：PASS
+- 移除裝置語音下拉：PASS
+- 移除男/女聲與試聽：PASS
+- RiskEngine：PASS
+- 部分資料異常不再顯示為安全：PASS
+- Safari 網頁模式通知流程：PASS
+- 天氣/地震/新聞背景並行：PASS
+- 附近設施保留：PASS
+- 新 Service Worker Cache：PASS
