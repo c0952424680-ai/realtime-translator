@@ -4,7 +4,7 @@ const AppCore={
     try{
       await AppState.load();
       AppUI.init();
-      if(document.body.dataset.page==="risk")RiskUI.init();
+      if(document.body.dataset.page==="risk"){RiskUI.init();LiveEventUI.init();}
       if(document.body.dataset.page==="sos")EmergencyUI.init();
       UpdateService.start();
       window.dispatchEvent(new Event("app-ready"));

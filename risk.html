@@ -1,38 +1,68 @@
 <!doctype html><html lang="zh-Hant"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f172a"><meta name="app-build" content="V10.0-APP-CORE-20260810-01">
-<link rel="manifest" href="manifest.webmanifest?v=100"><link rel="stylesheet" href="style.css?v=100">
-<title>即時譯 V10.0｜旅外安全助理・App Core｜安全</title></head><body data-page="risk">
+<meta name="theme-color" content="#0f172a"><meta name="app-build" content="V10.1-LIVE-EVENT-LINK-20260810-01">
+<link rel="manifest" href="manifest.webmanifest?v=101"><link rel="stylesheet" href="style.css?v=101">
+<title>即時譯 V10.1｜旅外安全助理・即時事件聯動版｜安全</title></head><body data-page="risk">
 <div id="appStatusBar" class="data-status-bar"><b>位置尚未取得</b><span>App 啟動中</span></div>
 <div id="appAlertBanner" class="app-alert-banner" hidden></div>
 <main class="app v10-app">
-<section class="v10-brand"><strong>✅ 即時譯 V10.0｜旅外安全助理・App Core</strong><span>BUILD：V10.0-APP-CORE-20260810-01</span></section>
-<section class="card"><div class="eyebrow">Location Hub</div><h1>🌏 所在地</h1>
+<section class="v10-brand"><strong>✅ 即時譯 V10.1｜旅外安全助理・即時事件聯動版</strong><span>BUILD：V10.1-LIVE-EVENT-LINK-20260810-01</span></section>
+<section class="card">
+<div class="eyebrow">Location Hub</div><h1>🌏 所在地</h1>
+<div id="v1001CurrentLocation" class="official-note">正在載入所在地…</div>
 <div class="country-city-district-row">
-<label>國家<select id="v10Country"></select></label><label>城市<select id="v10City"></select></label><label>地區<select id="v10District"></select></label>
-</div><div class="actions"><button id="v10ApplyLocation" class="primary">套用位置</button><button id="v10UseGps">📍 使用 GPS</button></div>
-<div id="v10LocationStatus" class="official-note">位置會同步緊急電話、風險與附近設施。</div></section>
-<section class="card"><div class="eyebrow">Risk Event Engine</div><h2>🚦 即時風險事件</h2>
-<div id="v10RiskLevel" class="v10-risk-level green">🟢 安全</div><div id="v10RiskEvents"></div>
+<label>國家<select id="v10Country"></select></label>
+<label>城市<select id="v10City"></select></label>
+<label>地區<select id="v10District"></select></label>
+</div>
+<div class="actions"><button id="v10ApplyLocation" class="primary">套用位置</button><button id="v10UseGps">📍 使用 GPS</button></div>
+<div id="v10LocationStatus" class="official-note">位置會同步緊急電話、風險、天氣與重大事件。</div>
 </section>
-<section class="card"><h2>🔔 安全通知</h2><p>V10.0 先支援 App 開啟期間的即時風險聯動與瀏覽器通知權限。真正背景伺服器推播將由後端 Push Service 接續。</p>
-<button id="v10EnableRiskNotify" class="primary" onclick="NotificationService.enable().then(ok=>alert(ok?'已啟用通知':'未允許通知'))">啟用通知</button></section>
+
+<section class="card v101-event-center">
+<div class="eyebrow">Live Event Link</div><h2>📡 所在地重大事件</h2>
+<div class="v101-live-head"><div id="v101LiveLevel" class="v101-live-level green">🟢 尚無鄰近重大事件</div><button id="v101RefreshEvents">立即更新</button></div>
+<div id="v101EventStatus" class="official-note">正在更新重大事件…</div>
+<div id="v101EventUpdated" class="v101-updated"></div>
+<div id="v101LiveEvents"></div>
+</section>
+
+<section class="card"><div class="eyebrow">Risk Event Engine</div><h2>🚦 旅遊風險</h2>
+<div id="v10RiskLevel" class="v10-risk-level checking">⚪ 資料確認中</div>
+<div id="v1001RiskMessage" class="official-note">正在整合所在地旅遊警示…</div>
+<div id="v10RiskEvents"></div>
+</section>
+
+<section class="card"><div class="eyebrow">Weather & Environment</div><h2>🌦️ 即時天氣</h2>
+<div id="v1001Weather"><div class="official-note">取得 GPS 後會顯示所在地即時天氣。</div></div>
+</section>
+
+<section class="card"><h2>🔔 安全通知</h2>
+<p>V10.1 會在 App 開啟時每 2 分鐘檢查重大事件，瀏覽器允許通知時可顯示重大事件提醒。</p>
+<button class="primary" onclick="NotificationService.enable().then(ok=>alert(ok?'已啟用通知':'未允許通知'))">啟用通知</button>
+</section>
 </main>
 <nav class="bottomnav">
-<a href="index.html?v=100&build=V10.0">🌐<span>翻譯</span></a>
-<a class="active" href="risk.html?v=100&build=V10.0">🛡️<span>安全</span></a>
-<a href="sos.html?v=100&build=V10.0">🆘<span>緊急</span></a>
-<a href="contacts.html?v=100&build=V10.0">🪪<span>我的旅行</span></a>
+<a href="index.html?v=101&build=V10.1">🌐<span>翻譯</span></a>
+<a class="active" href="risk.html?v=101&build=V10.1">🛡️<span>安全</span></a>
+<a href="sos.html?v=101&build=V10.1">🆘<span>緊急</span></a>
+<a href="contacts.html?v=101&build=V10.1">🪪<span>我的旅行</span></a>
 </nav>
-<script src="shared.js?v=100"></script>
-<script src="app/app-state.js?v=100"></script>
-<script src="services/location-service.js?v=100"></script>
-<script src="services/emergency-service.js?v=100"></script>
-<script src="services/nearby-service.js?v=100"></script>
-<script src="services/risk-service.js?v=100"></script>
-<script src="services/notification-service.js?v=100"></script>
-<script src="services/update-service.js?v=100"></script>
-<script src="ui/app-ui.js?v=100"></script>
-<script src="ui/risk-ui.js?v=100"></script>
-<script src="app/app-core.js?v=100"></script>
+<script src="shared.js?v=101"></script>
+<script src="data/fallback-locations.js?v=101"></script>
+<script src="app/app-state.js?v=101"></script>
+<script src="services/location-service.js?v=101"></script>
+<script src="services/emergency-service.js?v=101"></script>
+<script src="services/nearby-service.js?v=101"></script>
+<script src="services/emergency-phrase-service.js?v=101"></script>
+<script src="services/weather-service.js?v=101"></script>
+<script src="services/travel-alert-service.js?v=101"></script>
+<script src="services/risk-service.js?v=101"></script>
+<script src="services/live-event-service.js?v=101"></script>
+<script src="services/notification-service.js?v=101"></script>
+<script src="services/update-service.js?v=101"></script>
+<script src="ui/app-ui.js?v=101"></script>
+<script src="ui/risk-ui.js?v=101"></script>
+<script src="ui/live-event-ui.js?v=101"></script>
+<script src="app/app-core.js?v=101"></script>
 </body></html>

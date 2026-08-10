@@ -1,26 +1,15 @@
-# 即時譯 V10.0｜旅外安全助理・App Core
+# 即時譯 V10.1｜旅外安全助理・即時事件聯動版
 
-V10.0 將舊版多組定位、風險、附近設施、緊急控制器重構為 App Service 架構。
+新增所在地重大事件中心：
+- USGS 即時地震
+- 與所在地距離計算
+- 規模＋距離綠／橙／紅分級
+- 天氣風險事件
+- 旅遊警示、治安、疾病、詐騙、戰爭／衝突、災害整合
+- 每 2 分鐘事件檢查
+- 快取優先、背景刷新
+- 重大事件 Notification
+- 高風險事件可直接進入緊急中心
 
-## 核心
-- `app/app-state.js`：唯一 App 狀態
-- `services/location-service.js`：唯一定位服務
-- `services/emergency-service.js`：唯一緊急電話／地圖／分享服務
-- `services/nearby-service.js`：唯一附近設施服務
-- `services/risk-service.js`：唯一風險事件服務
-- `services/notification-service.js`：通知介面
-- `services/update-service.js`：自動更新排程
-- `ui/*`：只處理畫面，不保存第二份狀態
-
-## SOS 修正
-緊急頁所有按鈕重新綁定：
-- 一鍵撥打當地警察／救護／消防
-- 最近醫院／警局／藥局
-- GPS
-- 分享目前位置
-- 通知權限
-- 緊急處理步驟
-
-## V10.0 即時性
-目前支援 App 開啟期間的風險自動重新評估與瀏覽器 Notification API。
-真正「App 關閉後仍可靠推播」需要 V10.1 後端 Push Service / Web Push 訂閱端點。
+V10.1 仍保留國家／城市／地區 fallback、GPS、天氣、情境求助句、緊急電話與附近設施。
+真正 App 完全關閉後仍可靠送達的背景推播，需要下一階段加入 Web Push 後端。

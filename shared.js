@@ -1,5 +1,5 @@
 
-const BUILD_ID="V10.0";
+const BUILD_ID="V10.1";
 const $=id=>document.getElementById(id);
 
 const LANGS={
@@ -17,8 +17,8 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V10.0";
-const CURRENT_PARAM="100";
+const CURRENT_BUILD="V10.1";
+const CURRENT_PARAM="101";
 
 (async function forceUpgrade(){
   try{

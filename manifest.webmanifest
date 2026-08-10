@@ -1,7 +1,7 @@
 {
-  "name": "即時譯 V10.0｜旅外安全助理・App Core",
-  "short_name": "即時譯 V10",
-  "start_url": "./index.html?v=100&build=V10.0",
+  "name": "即時譯 V10.1｜旅外安全助理・即時事件聯動版",
+  "short_name": "即時譯 V10.1",
+  "start_url": "./index.html?v=101&build=V10.1",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f8fafc",
