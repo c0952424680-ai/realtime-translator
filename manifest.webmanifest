@@ -1,9 +1,10 @@
 {
-  "name": "即時譯 V9.5.2｜旅外安全助理・緊急模式整合修正版",
-  "short_name": "即時譯 9.5.2",
-  "start_url": "./index.html?v=952&build=V9.5.2",
+  "name": "即時譯 V10.0｜旅外安全助理・App Core",
+  "short_name": "即時譯 V10",
+  "start_url": "./index.html?v=100&build=V10.0",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f3f6fb",
-  "theme_color": "#0A84FF",
-  "scope": "./"
+  "background_color": "#f8fafc",
+  "theme_color": "#0f172a",
+  "lang": "zh-Hant"
 }

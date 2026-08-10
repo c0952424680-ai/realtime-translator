@@ -1,203 +1,38 @@
 <!doctype html><html lang="zh-Hant"><head>
-  <meta name="app-build" content="V9.5.2-BRANDING-FIX-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=952"><title>即時譯 V9.5.2｜旅外安全助理・緊急模式整合修正版</title></head><body>
-<div id="dataStatusBar" class="data-status-bar"><b>等待位置</b><span>資料載入中</span></div><main class="app"><div class="force-version">
-      <strong>✅ V9.5.2 旅外安全助理全球緊急版</strong>
-      <span>BUILD：V9.5.2-BRANDING-FIX-20260810-01</span>
-    </div><div class="topnav"><a href="index.html?v=952&build=V9.5.2">🌐 翻譯</a><a href="sos.html?v=952&build=V9.5.2">🆘 求助</a><a href="risk.html?v=952&build=V9.5.2">⚠️ 風險</a><a href="contacts.html?v=952&build=V9.5.2">📞 聯絡人</a></div><header><div class="eyebrow">V9.5.2 · CLEAN BUILD · RISK</div><h1>⚠️ 旅行風險</h1><div class="build">V9.5.2-BRANDING-FIX-20260810-01</div></header><section class="card unified-location-card">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">旅外安全助理・位置中心</div>
-      <h2>🌏 所在國家／城市／地區</h2>
-    </div>
-    <span id="locationModeBadge" class="location-mode-badge">手動模式</span>
-  </div>
-
-  <div class="country-city-district-row">
-    <label>國家<select id="manualCountry"></select></label>
-    <label>城市<select id="manualCity"></select></label>
-    <label>地區<select id="manualDistrict"></select></label>
-  </div>
-
-  <div class="actions">
-    <button id="applyManualLocation" class="primary">套用並更新全部資訊</button>
-    <button id="useGpsLocation">📍 使用我的位置</button>
-  </div>
-
-  <div id="safetyHubStatus" class="official-note hub-status">等待位置同步…</div>
-  <div id="manualLocationStatus" class="official-note">
-    可手動選擇，也可使用 GPS。位置更新後會同步治安、天氣、詐騙、疾病、高風險地區與附近緊急設施。
-  </div>
-</section><section class="card risk-event-center-card">
-  <div class="eyebrow">統一風險事件中心</div>
-  <h2>🚦 即時風險事件</h2>
-  <div class="risk-overall green" id="riskOverall">🟢 安全</div>
-  <div id="riskOverallText" class="official-note">正在整合風險資訊…</div>
-  <div id="riskEventList"></div>
-</section><section class="card update-center-card">
-  <div class="eyebrow">智慧更新中心</div>
-  <h2>🔄 資料健康狀態</h2>
-  <div class="update-health-row">
-    <span id="dataHealthBadge" class="health-badge healthy">資料正常</span>
-    <span id="dataRetryState"></span>
-  </div>
-  <div id="dataHealthMessage" class="official-note">資料中心已同步。</div>
-  <button id="manualSmartRefresh" class="primary">立即更新全部資料</button>
-</section><section class="card data-center-card">
-  <div class="eyebrow">系統資料中心</div>
-  <h2>🧩 統一資料狀態</h2>
-  <div class="data-center-grid">
-    <div><span>位置核心</span><b id="dcLocation">等待位置</b></div>
-    <div><span>資料來源</span><b id="dcSource">載入中</b></div>
-    <div><span>資料版本</span><b id="dcVersion">V9.5.2</b></div>
-    <div><span>最後更新</span><b id="dcUpdated">尚未更新</b></div>
-  </div>
-</section><section class="card assistant-control-center">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">旅外安全助理・統一資訊中心</div>
-      <h2>🛡️ 目前安全總覽</h2>
-    </div>
-    <button id="refreshAssistantAll" class="primary">全部更新</button>
-  </div>
-
-  <div class="assistant-status-row">
-    <span id="assistantFreshness" class="status-pill">等待資料</span>
-    <span id="assistantNetwork" class="status-pill">檢查網路</span>
-    <span id="assistantMode" class="status-pill">位置模式</span>
-  </div>
-
-  <div class="assistant-overview-grid">
-    <button class="assistant-tile" data-jump="risk-event-center-card">
-      <span>🚦</span><b id="overviewRisk">風險</b><small>治安／詐騙／疾病／高風險</small>
-    </button>
-    <button class="assistant-tile" data-jump="weather-live-card">
-      <span>🌦️</span><b id="overviewWeather">天氣</b><small>氣溫／降雨／風速</small>
-    </button>
-    <button class="assistant-tile" data-jump="nearby-card">
-      <span>🚑</span><b id="overviewEmergency">緊急設施</b><small>醫院／警局／藥局</small>
-    </button>
-    <button class="assistant-tile" data-jump="taiwan-region-card">
-      <span>📞</span><b id="overviewContact">緊急聯絡</b><small>SOS／館處／官方電話</small>
-    </button>
-  </div>
-
-  <div id="assistantKeyMessage" class="assistant-key-message">
-    取得位置後，會把所有資訊同步到同一個國家／城市／地區。
-  </div>
-</section><section class="card travel-assistant-summary">
-  <div class="eyebrow">旅外安全助理</div>
-  <h2>🛡️ 一頁安全摘要</h2>
-  <div class="assistant-summary-grid">
-    <div><span>位置</span><b id="assistantLocation">等待位置</b></div>
-    <div><span>整體狀態</span><b id="assistantOverall">等待資料</b></div>
-    <div><span>最近急救</span><b id="assistantMedical">搜尋中</b></div>
-    <div><span>最近警察</span><b id="assistantPolice">搜尋中</b></div>
-  </div>
-  <p class="small">此摘要只整合本頁既有官方來源與即時資料，不自行產生新的政府安全等級。</p>
-</section><section class="card">
-<h2>📍 所在國家／地區風險</h2>
-<div class="risk-live-controls">
-  
-  
-</div>
-<div id="locationText" class="official-note">位置：尚未取得。允許定位後，會同步更新國家、城市、天氣、風險與附近設施。</div>
-<div id="snapshotTime" class="small"></div>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a"><meta name="app-build" content="V10.0-APP-CORE-20260810-01">
+<link rel="manifest" href="manifest.webmanifest?v=100"><link rel="stylesheet" href="style.css?v=100">
+<title>即時譯 V10.0｜旅外安全助理・App Core｜安全</title></head><body data-page="risk">
+<div id="appStatusBar" class="data-status-bar"><b>位置尚未取得</b><span>App 啟動中</span></div>
+<div id="appAlertBanner" class="app-alert-banner" hidden></div>
+<main class="app v10-app">
+<section class="v10-brand"><strong>✅ 即時譯 V10.0｜旅外安全助理・App Core</strong><span>BUILD：V10.0-APP-CORE-20260810-01</span></section>
+<section class="card"><div class="eyebrow">Location Hub</div><h1>🌏 所在地</h1>
+<div class="country-city-district-row">
+<label>國家<select id="v10Country"></select></label><label>城市<select id="v10City"></select></label><label>地區<select id="v10District"></select></label>
+</div><div class="actions"><button id="v10ApplyLocation" class="primary">套用位置</button><button id="v10UseGps">📍 使用 GPS</button></div>
+<div id="v10LocationStatus" class="official-note">位置會同步緊急電話、風險與附近設施。</div></section>
+<section class="card"><div class="eyebrow">Risk Event Engine</div><h2>🚦 即時風險事件</h2>
+<div id="v10RiskLevel" class="v10-risk-level green">🟢 安全</div><div id="v10RiskEvents"></div>
 </section>
-<section class="card live-location-card">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">即時位置與天氣</div>
-      <h2>📍 我目前的位置</h2>
-    </div>
-    <button id="locateMe" class="primary">取得目前位置</button>
-  </div>
-
-  <div id="liveLocationStatus" class="official-note">
-    尚未取得位置。允許定位後，會同步更新城市、天氣、風險與附近設施。
-  </div>
-
-  <div class="location-facts">
-    <div><span>國家</span><b id="liveCountry">—</b></div>
-    <div><span>城市</span><b id="liveCity">—</b></div>
-    <div><span>地區</span><b id="liveDistrict">—</b></div>
-    <div><span>座標</span><b id="liveCoords">—</b></div>
-  </div>
-</section>
-
-<section class="card weather-live-card">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">目前天氣</div>
-      <h2>🌦️ 城市天氣與環境風險</h2>
-    </div>
-    <span id="weatherBadge" class="weather-badge neutral">等待定位</span>
-  </div>
-
-  <div class="weather-metrics">
-    <div><span>氣溫</span><b id="tempNow">—</b></div>
-    <div><span>體感</span><b id="feelsNow">—</b></div>
-    <div><span>降水</span><b id="rainNow">—</b></div>
-    <div><span>風速</span><b id="windNow">—</b></div>
-  </div>
-
-  <div id="weatherSummary" class="weather-summary">
-    取得位置後顯示目前天氣與簡易風險摘要。
-  </div>
-
-  <div class="small source-note">
-    天氣資料：Open-Meteo。這是天氣風險摘要，不等於當地政府正式災害警報。
-  </div>
-</section>
-
-<section class="card mission-card" id="taiwanMissionCard" hidden>
-  <div class="eyebrow">台灣旅客支援</div>
-  <h2>🏛️ 台灣駐外館處</h2>
-  <div id="taiwanMissionBody">等待國家資料…</div>
-</section><section class="card nearby-card">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">距離優先</div>
-      <h2>🚑 最近緊急應變設施</h2>
-    </div>
-    <button id="refreshNearby" class="primary">重新搜尋附近</button>
-  </div>
-  <p class="small">依目前位置搜尋最近的醫院、警察局與藥局。優先顯示道路距離、預估車程、電話與營業資訊；資料不足時才使用直線距離。</p>
-
-  <div class="nearby-tabs">
-    <button class="nearby-tab active" data-kind="hospital">🏥 醫院／急診</button>
-    <button class="nearby-tab" data-kind="police">👮 警察局</button>
-    <button class="nearby-tab" data-kind="pharmacy">💊 藥局</button>
-  </div>
-
-  <div id="nearbySearchStatus" class="official-note">取得位置後會快速搜尋附近設施，並計算道路距離。</div><div id="instantMapFallbacks" class="instant-map-fallbacks">
-  <a id="mapFallbackHospital" target="_blank" rel="noopener">🗺️ 地圖找醫院</a>
-  <a id="mapFallbackPolice" target="_blank" rel="noopener">🗺️ 地圖找警局</a>
-  <a id="mapFallbackPharmacy" target="_blank" rel="noopener">🗺️ 地圖找藥局</a>
-</div>
-  <div id="nearbyResults" class="nearby-results"></div>
-
-  <div id="emergencyCountryNote" class="official-note">正在同步當地緊急電話…</div>
-  <div class="taiwan-emergency-row" id="taiwanEmergencyRow"></div>
-</section>
-
-
-<section class="card taiwan-region-card" id="taiwanRegionCard" hidden>
-  <h2>🇹🇼 台灣所在地區聯動</h2>
-  <div id="taiwanRegionName" class="country-summary"></div>
-  <div class="tw-link-grid">
-    <a href="https://www.cwa.gov.tw/" target="_blank">🌦️ 中央氣象署</a>
-    <a href="https://165.npa.gov.tw/" target="_blank">💳 165 全民防騙網</a>
-    <a href="https://www.npa.gov.tw/" target="_blank">👮 警政署</a>
-    <a href="https://www.cdc.gov.tw/" target="_blank">🦠 疾管署</a>
-  </div>
-</section>
-
-<section class="card assistant-action-strip">
-  <h2>⚡ 快速行動</h2>
-  <div class="assistant-actions-grid">
-    <a href="sos.html?v=952&build=V9.5.2">🆘 緊急求助</a>
-    <button id="jumpNearestHospital">🏥 最近醫院</button>
-    <button id="jumpNearestPolice">👮 最近警局</button>
-    <a href="contacts.html?v=952&build=V9.5.2">🪪 我的旅行資料</a>
-  </div>
-</section></main><nav class="bottomnav"><a href="index.html?v=952&build=V9.5.2">🌐<span>翻譯</span></a><a href="sos.html?v=952&build=V9.5.2">🆘<span>求助</span></a><a href="risk.html?v=952&build=V9.5.2">⚠️<span>風險</span></a><a href="contacts.html?v=952&build=V9.5.2">📞<span>聯絡人</span></a></nav><script src="shared.js?v=952"></script><script src="nearby.js?v=952"></script><script src="taiwan-link.js?v=952"></script><script src="assistant-unified.js?v=952"></script><script src="safety-hub.js?v=952"></script><script src="travel-context.js?v=952"></script><script src="data-center.js?v=952"></script><script src="travel-data-store.js?v=952"></script><script src="location-core.js?v=952"></script><script src="data-status.js?v=952"></script><script src="smart-update.js?v=952"></script><script src="auto-update.js?v=952"></script><script src="app-shell.js?v=952"></script><script src="data-center-view.js?v=952"></script><script src="data-health.js?v=952"></script><script src="manual-refresh.js?v=952"></script><script src="risk-event-center.js?v=952"></script></body></html>
+<section class="card"><h2>🔔 安全通知</h2><p>V10.0 先支援 App 開啟期間的即時風險聯動與瀏覽器通知權限。真正背景伺服器推播將由後端 Push Service 接續。</p>
+<button id="v10EnableRiskNotify" class="primary" onclick="NotificationService.enable().then(ok=>alert(ok?'已啟用通知':'未允許通知'))">啟用通知</button></section>
+</main>
+<nav class="bottomnav">
+<a href="index.html?v=100&build=V10.0">🌐<span>翻譯</span></a>
+<a class="active" href="risk.html?v=100&build=V10.0">🛡️<span>安全</span></a>
+<a href="sos.html?v=100&build=V10.0">🆘<span>緊急</span></a>
+<a href="contacts.html?v=100&build=V10.0">🪪<span>我的旅行</span></a>
+</nav>
+<script src="shared.js?v=100"></script>
+<script src="app/app-state.js?v=100"></script>
+<script src="services/location-service.js?v=100"></script>
+<script src="services/emergency-service.js?v=100"></script>
+<script src="services/nearby-service.js?v=100"></script>
+<script src="services/risk-service.js?v=100"></script>
+<script src="services/notification-service.js?v=100"></script>
+<script src="services/update-service.js?v=100"></script>
+<script src="ui/app-ui.js?v=100"></script>
+<script src="ui/risk-ui.js?v=100"></script>
+<script src="app/app-core.js?v=100"></script>
+</body></html>

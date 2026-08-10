@@ -1,26 +1,53 @@
 <!doctype html><html lang="zh-Hant"><head>
-  <meta name="app-build" content="V9.5.2-BRANDING-FIX-20260810-01"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css?v=952"><title>即時譯 V9.5.2｜旅外安全助理・緊急模式整合修正版</title></head><body>
-<div id="dataStatusBar" class="data-status-bar"><b>等待位置</b><span>資料載入中</span></div><main class="app"><section class="card emergency-mode-card">
-  <div class="eyebrow">旅外緊急模式</div>
-  <h2>🆘 緊急應變中心</h2>
-  <button id="toggleEmergencyMode" class="danger">啟用緊急模式</button>
-
-  <div class="emergency-context">
-    <div><span>目前位置</span><b id="emergencyLocation">位置尚未取得</b></div>
-    <div><span>座標</span><b id="emergencyCoords">尚未取得</b></div>
-  </div>
-
-  <div id="emergencyLocalContacts" class="emergency-call-grid">
-    <div class="official-note">正在同步當地緊急電話…</div>
-  </div>
-
-  <div class="emergency-action-grid">
-    <a id="emergencyNearestHospital" target="_blank" rel="noopener">🏥 最近醫院／急診</a>
-    <a id="emergencyNearestPolice" target="_blank" rel="noopener">👮 最近警察局</a>
-    <a id="emergencyNearestPharmacy" target="_blank" rel="noopener">💊 最近藥局</a>
-    <a id="shareEmergencyLocation">📍 傳送目前位置</a>
-  </div>
-</section><div class="force-version">
-      <strong>✅ V9.5.2 旅外安全助理全球緊急版</strong>
-      <span>BUILD：V9.5.2-BRANDING-FIX-20260810-01</span>
-    </div><div class="topnav"><a href="index.html?v=952&build=V9.5.2">🌐 翻譯</a><a href="sos.html?v=952&build=V9.5.2">🆘 求助</a><a href="risk.html?v=952&build=V9.5.2">⚠️ 風險</a><a href="contacts.html?v=952&build=V9.5.2">📞 聯絡人</a></div><header><div class="eyebrow">V9.5.2 · CLEAN BUILD · FOUR PAGES</div><h1>🆘 緊急求助</h1><div id="net" class="net"></div><div class="build">V9.5.2-BRANDING-FIX-20260810-01</div></header><section class="card offline"><b>📴 離線安全資料</b><p>步驟、館處資料、緊急求助句可離線查看。</p></section><section class="card"><select id="country"></select><select id="event"><option>受傷／醫療</option><option>搶劫／攻擊</option><option>車禍</option><option>護照遺失</option><option>詐騙／人口販運</option><option>天災／天氣</option></select></section><section class="card"><div id="prog"></div><div id="guide" class="result"></div><div class="actions"><button id="prev">上一步</button><button id="next" class="primary">下一步</button></div></section><section id="office" class="card"></section><section class="card"><h2>離線英文求助卡</h2><select id="phrase"><option>我是台灣旅客，我需要幫助。</option><option>請幫我聯絡警察。</option><option>我需要醫療協助。</option><option>我的護照遺失了。</option></select><div id="phraseOut" class="result"></div><button id="phraseSpeak">🔊 播放英文</button></section></main><nav class="bottomnav"><a href="index.html?v=952&build=V9.5.2">🌐<span>翻譯</span></a><a href="sos.html?v=952&build=V9.5.2">🆘<span>求助</span></a><a href="risk.html?v=952&build=V9.5.2">⚠️<span>風險</span></a><a href="contacts.html?v=952&build=V9.5.2">📞<span>聯絡人</span></a></nav><script src="shared.js?v=952"></script><script src="sos.js?v=952"></script><script src="travel-context.js?v=952"></script><script src="data-center.js?v=952"></script><script src="travel-data-store.js?v=952"></script><script src="location-core.js?v=952"></script><script src="data-status.js?v=952"></script><script src="smart-update.js?v=952"></script><script src="auto-update.js?v=952"></script><script src="app-shell.js?v=952"></script><script src="safety-hub.js?v=952"></script><script src="emergency-mode.js?v=952"></script></body></html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a"><meta name="app-build" content="V10.0-APP-CORE-20260810-01">
+<link rel="manifest" href="manifest.webmanifest?v=100"><link rel="stylesheet" href="style.css?v=100">
+<title>即時譯 V10.0｜旅外安全助理・App Core｜緊急</title></head><body data-page="sos">
+<div id="appStatusBar" class="data-status-bar"><b>位置尚未取得</b><span>App 啟動中</span></div>
+<div id="appAlertBanner" class="app-alert-banner" hidden></div>
+<main class="app v10-app">
+<section class="v10-brand"><strong>✅ 即時譯 V10.0｜旅外安全助理・App Core</strong><span>BUILD：V10.0-APP-CORE-20260810-01</span></section>
+<section class="card v10-emergency">
+<div class="eyebrow">Emergency Action Center</div><h1>🆘 緊急求救</h1>
+<div id="v10EmergencyStatus" class="official-note">緊急功能已準備。若需要最近設施，請先取得位置。</div>
+<div class="v10-location-row"><b id="v10EmergencyLocation">位置尚未取得</b><button id="v10Locate" class="primary">📍 取得目前位置</button></div>
+<div id="v10CallGrid" class="v10-call-grid"></div>
+<div class="v10-action-grid">
+<button id="v10Near-hospital">🏥 最近醫院／急診</button>
+<button id="v10Near-police">👮 最近警察局</button>
+<button id="v10Near-pharmacy">💊 最近藥局</button>
+<button id="v10Share">📍 分享目前位置</button>
+<button id="v10Notify">🔔 啟用安全通知</button>
+</div>
+</section>
+<section class="card"><h2>🧭 緊急處理步驟</h2>
+<select id="v10Event">
+<option value="medical">受傷／醫療</option><option value="crime">搶劫／攻擊</option>
+<option value="accident">車禍／事故</option><option value="passport">護照遺失</option>
+<option value="disaster">災害／戰爭／重大事件</option>
+</select>
+<button id="v10ShowGuide" class="primary">顯示處理步驟</button><div id="v10Guide"></div>
+</section>
+<section class="card"><h2>🏛️ 駐外館處</h2><div id="v10Mission" class="v10-mission"></div></section>
+<section class="card"><h2>🌐 快速求助句</h2>
+<div class="result">我需要幫助。請幫我聯絡警察或救護車。<br><small>I need help. Please call the police or an ambulance.</small></div>
+</section>
+</main>
+<nav class="bottomnav">
+<a href="index.html?v=100&build=V10.0">🌐<span>翻譯</span></a>
+<a href="risk.html?v=100&build=V10.0">🛡️<span>安全</span></a>
+<a class="active" href="sos.html?v=100&build=V10.0">🆘<span>緊急</span></a>
+<a href="contacts.html?v=100&build=V10.0">🪪<span>我的旅行</span></a>
+</nav>
+<script src="shared.js?v=100"></script>
+<script src="app/app-state.js?v=100"></script>
+<script src="services/location-service.js?v=100"></script>
+<script src="services/emergency-service.js?v=100"></script>
+<script src="services/nearby-service.js?v=100"></script>
+<script src="services/risk-service.js?v=100"></script>
+<script src="services/notification-service.js?v=100"></script>
+<script src="services/update-service.js?v=100"></script>
+<script src="ui/app-ui.js?v=100"></script>
+<script src="ui/emergency-ui.js?v=100"></script>
+<script src="app/app-core.js?v=100"></script>
+</body></html>
