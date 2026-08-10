@@ -1,0 +1,10 @@
+{
+  "name": "即時譯 V10.2｜旅外安全助理・Clean Room App",
+  "short_name": "即時譯 V10.2",
+  "start_url": "./index.html?v=102",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#0f172a",
+  "lang": "zh-Hant"
+}
