@@ -1,5 +1,5 @@
 
-const FAST_NEARBY_CACHE_PREFIX="rt_v91_nearby_";
+const FAST_NEARBY_CACHE_PREFIX="rt_v941_nearby_";
 const NEARBY_STATE={lat:null,lon:null,kind:"hospital",results:{},requestId:0};
 const SEARCH_RADII_KM=[15,50];
 
@@ -106,29 +106,26 @@ async function overpassFetch(query){
     "https://overpass-api.de/api/interpreter",
     "https://overpass.nchc.org.tw/api/interpreter"
   ];
-  const controllers=endpoints.map(()=>new AbortController());
-  const requests=endpoints.map((ep,i)=>new Promise(async(resolve,reject)=>{
-    const timer=setTimeout(()=>{controllers[i].abort();reject(new Error("timeout"));},8500);
+  let lastError=null;
+  for(const ep of endpoints){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),6500);
     try{
       const r=await fetch(ep,{
         method:"POST",
         headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
         body:"data="+encodeURIComponent(query),
-        signal:controllers[i].signal
+        signal:controller.signal
       });
-      if(!r.ok)throw new Error("HTTP "+r.status);
-      const data=await r.json();
       clearTimeout(timer);
-      resolve(data);
-    }catch(e){clearTimeout(timer);reject(e)}
-  }));
-  try{
-    const data=await Promise.any(requests);
-    controllers.forEach(c=>c.abort());
-    return data;
-  }catch{
-    throw new Error("nearby service failed");
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      return await r.json();
+    }catch(e){
+      clearTimeout(timer);
+      lastError=e;
+    }
   }
+  throw lastError||new Error("nearby service failed");
 }
 
 function normalizeElements(elements,kind,lat,lon){
@@ -277,7 +274,7 @@ function renderNearby(kind,lastRadius){
 async function loadCached(kind,lat,lon){
   try{
     const c=JSON.parse(localStorage.getItem(cacheKey(kind,lat,lon))||"null");
-    if(c && Date.now()-c.time<15*60*1000 && Array.isArray(c.list)){
+    if(c && Date.now()-c.time<30*60*1000 && Array.isArray(c.list)){
       NEARBY_STATE.results[kind]=c.list;
       renderNearby(kind,c.lastRadius);
       const s=document.getElementById("nearbySearchStatus");

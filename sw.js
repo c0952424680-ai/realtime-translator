@@ -1,5 +1,5 @@
-const CACHE="RT-V9.4-RISK-EVENT-CENTER";
-const ASSETS=["./index.html?v=94", "./risk.html?v=94", "./sos.html?v=94", "./contacts.html?v=94", "./style.css?v=94", "./shared.js?v=94", "./translate.js?v=94", "./travel-context.js?v=94", "./data-center.js?v=94", "./travel-data-store.js?v=94", "./data-center-view.js?v=94", "./data-status.js?v=94", "./smart-update.js?v=94", "./auto-update.js?v=94", "./data-health.js?v=94", "./manual-refresh.js?v=94", "./app-shell.js?v=94", "./location-core.js?v=94", "./nearby.js?v=94", "./taiwan-link.js?v=94", "./assistant-unified.js?v=94", "./safety-hub.js?v=94", "./risk-event-center.js?v=94", "./manifest.webmanifest?v=94", "./data-center.json?v=94"];
+const CACHE="RT-V9.4.1-INTEGRATION-FIX";
+const ASSETS=["./index.html?v=941", "./risk.html?v=941", "./sos.html?v=941", "./contacts.html?v=941", "./style.css?v=941", "./shared.js?v=941", "./translate.js?v=941", "./travel-context.js?v=941", "./data-center.js?v=941", "./travel-data-store.js?v=941", "./data-center-view.js?v=941", "./data-status.js?v=941", "./smart-update.js?v=941", "./auto-update.js?v=941", "./data-health.js?v=941", "./manual-refresh.js?v=941", "./app-shell.js?v=941", "./location-core.js?v=941", "./nearby.js?v=941", "./taiwan-link.js?v=941", "./assistant-unified.js?v=941", "./safety-hub.js?v=941", "./risk-event-center.js?v=941", "./manifest.webmanifest?v=941", "./data-center.json?v=941"];
 self.addEventListener("install",event=>{
   self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(x=>new Request(x,{cache:"reload"})))).catch(()=>{}));
@@ -18,7 +18,7 @@ self.addEventListener("fetch",event=>{
   if(req.mode==="navigate"||req.destination==="document"){
     event.respondWith((async()=>{
       try{return await fetch(req,{cache:"no-store"})}
-      catch{return (await caches.match("./index.html?v=94"))||Response.error()}
+      catch{return (await caches.match("./index.html?v=941"))||Response.error()}
     })());
     return;
   }

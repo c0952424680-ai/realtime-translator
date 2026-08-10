@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "V9.4",
-  "build": "V9.4-RISK-EVENT-CENTER-20260810-01",
-  "generatedAt": "2026-08-10T02:12:00+08:00",
+  "version": "V9.4.1",
+  "build": "V9.4.1-INTEGRATION-FIX-20260810-01",
+  "generatedAt": "2026-08-10T02:27:00+08:00",
   "updatePolicies": {
     "weatherMinutes": 10,
     "nearbyMinutes": 15,

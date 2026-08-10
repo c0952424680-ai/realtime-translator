@@ -17,8 +17,8 @@ window.addEventListener("online",netBadge);
 window.addEventListener("offline",netBadge);
 document.addEventListener("DOMContentLoaded",netBadge);
 
-const CURRENT_BUILD="V9.4";
-const CURRENT_PARAM="94";
+const CURRENT_BUILD="V9.4.1";
+const CURRENT_PARAM="941";
 
 (async function forceUpgrade(){
   try{
@@ -51,7 +51,7 @@ const CURRENT_PARAM="94";
     }
 
     if("serviceWorker" in navigator){
-      const reg=await navigator.serviceWorker.register("./sw.js?v=94",{updateViaCache:"none",scope:"./"});
+      const reg=await navigator.serviceWorker.register("./sw.js?v=941",{updateViaCache:"none",scope:"./"});
       try{await reg.update()}catch{}
     }
   }catch(e){
