@@ -1,0 +1,10 @@
+V9.5.2 名稱同步修正版檢查
+- 首頁大標題：V9.5.2
+- BUILD：V9.5.2-BRANDING-FIX-20260810-01
+- 版本資訊卡：V9.5.2
+- meta app-build：V9.5.2
+- shared.js：V9.5.2
+- Service Worker：V9.5.2
+- 緊急模式：保留
+- Runtime 舊版名稱：0
+- JavaScript：全部通過

@@ -25,7 +25,7 @@ const DataCenter={
     if(this.data && !force)return this.data;
 
     try{
-      const url=`./data-center.json?v=951${force?`&t=${Date.now()}`:""}`;
+      const url=`./data-center.json?v=952${force?`&t=${Date.now()}`:""}`;
       const r=await fetch(url,{cache:"no-store"});
       if(!r.ok)throw new Error(`HTTP ${r.status}`);
       const next=await r.json();

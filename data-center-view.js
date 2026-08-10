@@ -7,7 +7,7 @@ function renderDataCenterView(){
   if(el("dcLocation"))el("dcLocation").textContent=loc;
   if(el("dcSource"))el("dcSource").textContent=
     dc.source==="cache"?"離線快取":dc.source==="network"?"線上最新":"尚未載入";
-  if(el("dcVersion"))el("dcVersion").textContent=dc.version||"V9.4";
+  if(el("dcVersion"))el("dcVersion").textContent=dc.version||"V9.5.2";
   if(el("dcUpdated"))el("dcUpdated").textContent=
     window.DataCenter?.freshnessText?.()||"尚未更新";
 }
