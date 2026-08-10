@@ -1,0 +1,14 @@
+V10.7 檢查報告
+名稱：即時譯 V10.7｜旅外安全助理・區域風險與地圖修正版
+BUILD：V10.7-SAFETY-AREA-MAP-FIX-20260811-01
+
+PASS
+- JavaScript 語法：PASS
+- Google Maps 備援：PASS
+- Apple 地圖備援：PASS
+- Overpass 三端點：PASS
+- 區域風險分級：PASS
+- 當地國家資訊：PASS
+- PWA 重大事件通知邏輯：PASS
+- 更多城市資料：PASS
+- 繁體中文城市名稱：PASS

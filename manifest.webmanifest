@@ -1,0 +1,10 @@
+{
+  "name": "即時譯 V10.7｜旅外安全助理・區域風險與地圖修正版",
+  "short_name": "即時譯 V10.7",
+  "start_url": "./index.html?v=107",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#0f172a",
+  "lang": "zh-Hant"
+}
