@@ -1,5 +1,0 @@
-即時譯 V10.6｜旅外安全助理・核心重構即時聯動版
-BUILD=V10.6-CORE-REFACTOR-LIVE-LINK-20260811-01
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=106
-SAFETY_URL=https://c0952424680-ai.github.io/realtime-translator/risk.html?v=106
-SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=106
