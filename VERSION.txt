@@ -1,5 +1,0 @@
-即時譯 V10.4｜旅外安全助理・統一語音引擎版
-BUILD=V10.4-UNIFIED-VOICE-APP-20260811-01
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=104
-SAFETY_URL=https://c0952424680-ai.github.io/realtime-translator/risk.html?v=104
-SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=104
