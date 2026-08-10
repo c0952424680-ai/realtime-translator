@@ -1,20 +1,123 @@
 
 const LiveEvents={
  timer:null,weather:null,quakes:[],news:[],source:{},
- start(){this.refresh();clearInterval(this.timer);this.timer=setInterval(()=>this.refresh(),120000);window.addEventListener("location-changed",()=>this.refresh(true));document.getElementById("refreshLive")?.addEventListener("click",()=>this.refresh(true))},
+ start(){
+   this.refresh();
+   clearInterval(this.timer);
+   this.timer=setInterval(()=>this.refresh(),120000);
+   window.addEventListener("location-changed",()=>this.refresh(true));
+   document.getElementById("refreshLive")?.addEventListener("click",()=>this.refresh(true));
+ },
+
  cache(k,age){try{const c=JSON.parse(localStorage.getItem(k)||"null");return c&&Date.now()-c.t<age?c.v:null}catch{return null}},
  put(k,v){try{localStorage.setItem(k,JSON.stringify({t:Date.now(),v}))}catch{}},
- async getJson(url,ms=4500){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{cache:"no-store",signal:c.signal});clearTimeout(t);if(!r.ok)throw new Error("http");return await r.json()}catch(e){clearTimeout(t);throw e}},
- async weather(){const s=App.state,k=`w-${s.lat.toFixed(2)}-${s.lon.toFixed(2)}`,cached=this.cache(k,600000);if(cached){this.weather=cached;this.renderWeather();this.weatherFresh(k).catch(()=>{});return}await this.weatherFresh(k)},
- async weatherFresh(k){try{const s=App.state,j=await this.getJson(`https://api.open-meteo.com/v1/forecast?latitude=${s.lat}&longitude=${s.lon}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=auto`,4500),c=j.current||{};this.weather={temp:c.temperature_2m,feel:c.apparent_temperature,rain:c.precipitation,wind:c.wind_speed_10m,code:c.weather_code,time:c.time};this.put(k,this.weather);this.source.weather="即時";this.renderWeather();this.renderEvents()}catch{this.source.weather="逾時/離線";this.renderWeather(true)}},
- async earthquakes(force=false){const k="q-all-day",cached=this.cache(k,300000);if(cached&&!force){this.quakes=cached;this.renderEvents();this.quakeFresh(k).catch(()=>{});return}await this.quakeFresh(k)},
- async quakeFresh(k){try{const j=await this.getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",5000),s=App.state,arr=[];for(const f of (j.features||[])){const p=f.properties||{},co=f.geometry?.coordinates||[],mag=Number(p.mag),lat=Number(co[1]),lon=Number(co[0]);if(!Number.isFinite(mag)||mag<3.5)continue;const d=this.distance(s.lat,s.lon,lat,lon);if(d>1200)continue;const sev=(mag>=6.5&&d<=250)?"red":((mag>=5.5&&d<=500)||(mag>=4&&d<=80))?"orange":"green";arr.push({id:f.id,title:`M${mag.toFixed(1)} ${p.place||"地震"}`,summary:`距離約 ${Math.round(d)} 公里`,sev,url:p.url,time:p.time})}this.quakes=arr.sort((a,b)=>({red:0,orange:1,green:2}[a.sev]-{red:0,orange:1,green:2}[b.sev])).slice(0,10);this.put(k,this.quakes);this.source.quake="USGS 即時";this.renderEvents();this.notify()}catch{this.source.quake="逾時/快取";this.quakes=this.cache(k,86400000)||[];this.renderEvents()}},
- distance(a,b,c,d){const r=x=>x*Math.PI/180,R=6371,dl=r(c-a),dn=r(d-b),h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dn/2)**2;return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h))},
- newsJsonp(force=false){const s=App.state,k=`n-${s.countryKey}`,cached=this.cache(k,600000);if(cached&&!force){this.news=cached;this.renderNews();return Promise.resolve()}return new Promise(resolve=>{const cb="gdeltCb_"+Date.now(),script=document.createElement("script"),q=`${App.country()?.en||s.country} (earthquake OR flood OR storm OR war OR conflict OR attack OR evacuation OR disaster OR emergency)`;let done=false;const finish=()=>{if(done)return;done=true;try{delete window[cb]}catch{};script.remove();resolve()};const timer=setTimeout(()=>{this.source.news="逾時/快取";this.news=this.cache(k,86400000)||[];this.renderNews();finish()},5000);window[cb]=j=>{clearTimeout(timer);const arr=j?.articles||j?.items||[];this.news=arr.slice(0,10).map(x=>({title:x.title||"未命名新聞",url:x.url||x.link||"#",domain:x.domain||x.source||"",date:x.seendate||x.date||""}));this.put(k,this.news);this.source.news="GDELT 即時新聞監測";this.renderNews();finish()};script.onerror=()=>{clearTimeout(timer);this.source.news="載入失敗";this.news=this.cache(k,86400000)||[];this.renderNews();finish()};script.src=`https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(q)}&mode=artlist&format=jsonp&maxrecords=10&timespan=24h&sort=datedesc&callback=${cb}`;document.head.appendChild(script)})},
- async refresh(force=false){this.setSync("背景更新中…");await Promise.allSettled([this.weather(),this.earthquakes(force),this.newsJsonp(force)]);this.setSync(`更新完成 ${new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"})}`)},
+
+ async getJson(url,ms=4500){
+   const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
+   try{
+     const r=await fetch(url,{cache:"no-store",signal:c.signal});
+     clearTimeout(t);if(!r.ok)throw new Error("http");return await r.json();
+   }catch(e){clearTimeout(t);throw e}
+ },
+
+ async weather(){
+   const s=App.state,k=`w-${s.lat.toFixed(2)}-${s.lon.toFixed(2)}`,cached=this.cache(k,600000);
+   if(cached){this.weather=cached;this.renderWeather();this.weatherFresh(k).catch(()=>{});return}
+   await this.weatherFresh(k);
+ },
+
+ async weatherFresh(k){
+   try{
+     const s=App.state,j=await this.getJson(`https://api.open-meteo.com/v1/forecast?latitude=${s.lat}&longitude=${s.lon}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=auto`,4500),c=j.current||{};
+     this.weather={temp:c.temperature_2m,feel:c.apparent_temperature,rain:c.precipitation,wind:c.wind_speed_10m,code:c.weather_code,time:c.time};
+     this.put(k,this.weather);this.source.weather="Open-Meteo 即時";App.updateDiagnostic("weather","ok","Open-Meteo");this.renderWeather();this.renderEvents();
+   }catch{
+     this.source.weather="逾時/離線";App.updateDiagnostic("weather","error","天氣服務逾時或離線");this.renderWeather(true);
+   }
+ },
+
+ async earthquakes(force=false){
+   const k="q-all-day",cached=this.cache(k,300000);
+   if(cached&&!force){this.quakes=cached;this.renderEvents();this.quakeFresh(k).catch(()=>{});return}
+   await this.quakeFresh(k);
+ },
+
+ async quakeFresh(k){
+   try{
+     const j=await this.getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",5000),s=App.state,arr=[];
+     for(const f of (j.features||[])){
+       const p=f.properties||{},co=f.geometry?.coordinates||[],mag=Number(p.mag),lat=Number(co[1]),lon=Number(co[0]);
+       if(!Number.isFinite(mag)||mag<3.5)continue;
+       const d=App.distanceKm(s.lat,s.lon,lat,lon);if(d>1200)continue;
+       const sev=(mag>=6.5&&d<=250)?"red":((mag>=5.5&&d<=500)||(mag>=4&&d<=80))?"orange":"green";
+       arr.push({id:f.id,title:`M${mag.toFixed(1)} ${p.place||"地震"}`,summary:`距離約 ${Math.round(d)} 公里`,sev,url:p.url,time:p.time});
+     }
+     this.quakes=arr.sort((a,b)=>({red:0,orange:1,green:2}[a.sev]-{red:0,orange:1,green:2}[b.sev])).slice(0,10);
+     this.put(k,this.quakes);this.source.quake="USGS 即時";App.updateDiagnostic("quake","ok",`USGS ${this.quakes.length} 筆`);this.renderEvents();this.notify();
+   }catch{
+     this.source.quake="逾時/快取";this.quakes=this.cache(k,86400000)||[];App.updateDiagnostic("quake","error","USGS 逾時，使用快取");this.renderEvents();
+   }
+ },
+
+ newsJsonp(force=false){
+   const s=App.state,k=`n-${s.countryKey}`,cached=this.cache(k,600000);
+   if(cached&&!force){this.news=cached;this.renderNews();return Promise.resolve()}
+   return new Promise(resolve=>{
+     const cb="gdeltCb_"+Date.now(),script=document.createElement("script"),q=`${App.country()?.en||s.country} (earthquake OR flood OR storm OR typhoon OR war OR conflict OR attack OR evacuation OR disaster OR emergency)`;
+     let done=false;
+     const finish=()=>{if(done)return;done=true;try{delete window[cb]}catch{};script.remove();resolve()};
+     const timer=setTimeout(()=>{this.source.news="逾時/快取";this.news=this.cache(k,86400000)||[];App.updateDiagnostic("news","error","GDELT 逾時，使用快取");this.renderNews();finish()},5000);
+     window[cb]=j=>{
+       clearTimeout(timer);
+       const arr=j?.articles||j?.items||[];
+       this.news=arr.slice(0,10).map(x=>({title:x.title||"未命名新聞",url:x.url||x.link||"#",domain:x.domain||x.source||"",date:x.seendate||x.date||""}));
+       this.put(k,this.news);this.source.news="GDELT 即時新聞監測";App.updateDiagnostic("news","ok",`GDELT ${this.news.length} 筆`);this.renderNews();finish();
+     };
+     script.onerror=()=>{clearTimeout(timer);this.source.news="載入失敗";this.news=this.cache(k,86400000)||[];App.updateDiagnostic("news","error","GDELT 載入失敗");this.renderNews();finish()};
+     script.src=`https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(q)}&mode=artlist&format=jsonp&maxrecords=10&timespan=24h&sort=datedesc&callback=${cb}`;
+     document.head.appendChild(script);
+   })
+ },
+
+ async refresh(force=false){
+   this.setSync("背景更新中…");
+   await Promise.allSettled([this.weather(),this.earthquakes(force),this.newsJsonp(force)]);
+   this.setSync(`更新完成 ${new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"})}`);
+   App.renderDiagnostics();
+ },
+
  setSync(t){document.querySelectorAll("[data-live-status]").forEach(e=>e.textContent=t)},
- renderWeather(fail=false){const e=document.getElementById("weatherBox");if(!e)return;if(!this.weather){e.innerHTML=`<div class="status">${fail?"天氣暫時無法取得，App 其他功能不受影響。":"背景讀取天氣中…"}</div>`;return}e.innerHTML=`<div class="kpis"><div class="kpi"><span>氣溫</span><b>${this.weather.temp}°C</b></div><div class="kpi"><span>體感</span><b>${this.weather.feel}°C</b></div><div class="kpi"><span>降雨</span><b>${this.weather.rain} mm</b></div><div class="kpi"><span>風速</span><b>${this.weather.wind} km/h</b></div></div><div class="muted">資料：Open-Meteo｜${this.source.weather||""}</div>`},
- renderEvents(){const e=document.getElementById("eventBox");if(!e)return;const wr=[];if(this.weather){if(Number(this.weather.wind)>=70)wr.push({title:"所在地強風",summary:`${this.weather.wind} km/h`,sev:"red"});else if(Number(this.weather.wind)>=45)wr.push({title:"所在地強風",summary:`${this.weather.wind} km/h`,sev:"orange"});if([95,96,99].includes(Number(this.weather.code)))wr.push({title:"所在地雷暴",summary:"請注意雷擊與強降雨",sev:"orange"})}const arr=[...wr,...this.quakes],overall=arr.some(x=>x.sev==="red")?"red":arr.some(x=>x.sev==="orange")?"orange":"green",b=document.getElementById("riskBadge");if(b){b.className=`badge ${overall}`;b.textContent=overall==="red"?"🔴 高風險":overall==="orange"?"🟠 注意":"🟢 尚無鄰近重大警報"}e.innerHTML=arr.length?arr.map(x=>`<article class="event ${x.sev}"><header><b>${esc(x.title)}</b><span>${x.sev==="red"?"高風險":x.sev==="orange"?"注意":"資訊"}</span></header><p>${esc(x.summary||"")}</p>${x.url?`<a href="${x.url}" target="_blank" rel="noopener">官方來源</a>`:""}</article>`).join(""):`<div class="status">尚無鄰近重大警報；這不等於保證安全，仍請查看官方旅遊警示與當地公告。</div>`},
- renderNews(){const e=document.getElementById("newsBox");if(!e)return;e.innerHTML=this.news.length?this.news.map(x=>`<div class="news-item"><a href="${x.url}" target="_blank" rel="noopener">${esc(x.title)}</a><div class="meta">${esc(x.domain)} ${esc(x.date)}</div></div>`).join(""):`<div class="status">目前沒有取得新聞監測資料。請使用官方來源連結確認。</div>`;const s=document.getElementById("newsSource");if(s)s.textContent=this.source.news||"背景讀取中"},
- notify(){const hit=this.quakes.find(x=>x.sev==="red"||x.sev==="orange");if(!hit||!("Notification" in window)||Notification.permission!=="granted")return;const k="notified-"+hit.id;if(localStorage.getItem(k))return;localStorage.setItem(k,"1");try{new Notification(hit.sev==="red"?"🔴 重大事件警報":"🟠 重大事件提醒",{body:`${hit.title}｜${hit.summary}`})}catch{}}
-};window.LiveEvents=LiveEvents;
+
+ renderWeather(fail=false){
+   const e=document.getElementById("weatherBox");if(!e)return;
+   if(!this.weather){e.innerHTML=`<div class="status">${fail?"天氣暫時無法取得，App 其他功能不受影響。":"背景讀取天氣中…"}</div>`;return}
+   e.innerHTML=`<div class="kpis"><div class="kpi"><span>氣溫</span><b>${this.weather.temp}°C</b></div><div class="kpi"><span>體感</span><b>${this.weather.feel}°C</b></div><div class="kpi"><span>降雨</span><b>${this.weather.rain} mm</b></div><div class="kpi"><span>風速</span><b>${this.weather.wind} km/h</b></div></div><div class="muted">資料：${this.source.weather||""}｜${this.weather.time||""}</div>`;
+ },
+
+ renderEvents(){
+   const e=document.getElementById("eventBox");if(!e)return;
+   const wr=[];
+   if(this.weather){
+     if(Number(this.weather.wind)>=70)wr.push({title:"所在地強風",summary:`${this.weather.wind} km/h`,sev:"red"});
+     else if(Number(this.weather.wind)>=45)wr.push({title:"所在地強風",summary:`${this.weather.wind} km/h`,sev:"orange"});
+     if([95,96,99].includes(Number(this.weather.code)))wr.push({title:"所在地雷暴",summary:"請注意雷擊與強降雨",sev:"orange"});
+   }
+   const arr=[...wr,...this.quakes],overall=arr.some(x=>x.sev==="red")?"red":arr.some(x=>x.sev==="orange")?"orange":"green",b=document.getElementById("riskBadge");
+   if(b){b.className=`badge ${overall}`;b.textContent=overall==="red"?"🔴 高風險":overall==="orange"?"🟠 注意":"🟢 尚無鄰近重大警報"}
+   e.innerHTML=arr.length?arr.map(x=>`<article class="event ${x.sev}"><header><b>${esc(x.title)}</b><span>${x.sev==="red"?"高風險":x.sev==="orange"?"注意":"資訊"}</span></header><p>${esc(x.summary||"")}</p>${x.url?`<a href="${x.url}" target="_blank" rel="noopener">官方來源</a>`:""}</article>`).join(""):`<div class="status">尚無鄰近重大警報；這不等於保證安全，仍請查看官方旅遊警示與當地公告。</div>`;
+ },
+
+ renderNews(){
+   const e=document.getElementById("newsBox");if(!e)return;
+   e.innerHTML=this.news.length?this.news.map(x=>`<div class="news-item"><a href="${x.url}" target="_blank" rel="noopener">${esc(x.title)}</a><div class="meta">${esc(x.domain)} ${esc(x.date)}</div></div>`).join(""):`<div class="status">目前沒有取得新聞監測資料。請使用官方來源連結確認。</div>`;
+   const s=document.getElementById("newsSource");if(s)s.textContent=this.source.news||"背景讀取中";
+ },
+
+ notify(){
+   const hit=this.quakes.find(x=>x.sev==="red"||x.sev==="orange");
+   if(!hit||!("Notification" in window)||Notification.permission!=="granted")return;
+   const k="notified-"+hit.id;if(localStorage.getItem(k))return;localStorage.setItem(k,"1");
+   try{new Notification(hit.sev==="red"?"🔴 重大事件警報":"🟠 重大事件提醒",{body:`${hit.title}｜${hit.summary}`})}catch{}
+ }
+};
+window.LiveEvents=LiveEvents;

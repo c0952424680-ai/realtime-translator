@@ -1,0 +1,25 @@
+V10.4 統一語音引擎版 — 雙重測試報告
+名稱：即時譯 V10.4｜旅外安全助理・統一語音引擎版
+BUILD：V10.4-UNIFIED-VOICE-APP-20260811-01
+
+第一輪：PASS
+- JavaScript 語法：PASS
+- 必要檔案：PASS
+- HTML 本機引用：PASS
+- 舊 V10.2 / V10.3 runtime 引用：0
+
+第二輪：PASS
+- 翻譯頁與 SOS 共用單一 VoiceEngine：PASS
+- 自動／女聲／男聲：PASS
+- 語速：PASS
+- Safari voiceschanged：PASS
+- 裝置實際 Voice 清單：PASS
+- 語音設定跨頁記憶：PASS
+- 繁中 zh-TW：PASS
+- 英文 en-US / en-GB：PASS
+- 找不到指定性別時 fallback：PASS
+- GPS／反查／全球位置：保留
+- 最近設施距離排序：保留
+- 天氣／USGS 地震／GDELT 事件：保留
+- PWA 新 Cache + 舊 Cache 清理：PASS
+- JavaScript 第二次檢查：PASS
