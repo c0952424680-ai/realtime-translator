@@ -54,3 +54,5 @@ body{font-size:19px}.topbar{font-size:18px}.card h1{font-size:36px}.card h2{font
 .info-grid>div{background:#f8fafc;border-radius:14px;padding:12px}.info-grid span{display:block;font-size:15px;color:#64748b}.info-grid b{display:block;margin-top:4px;font-size:20px}
 .badge.yellow{background:#fff5cc;color:#805b00}
 @media(max-width:520px){.risk-columns,.info-grid{grid-template-columns:1fr}}
+
+#liveTranslateStatus{margin-top:10px}.news-item{display:flex;flex-direction:column;gap:4px;padding:12px 0;border-bottom:1px solid #e5e7eb}.news-item a{font-size:18px;font-weight:700;line-height:1.45}.news-item small{font-size:14px;color:#64748b}

@@ -1,0 +1,16 @@
+V10.8 檢查報告
+名稱：即時譯 V10.8｜旅外安全助理・在地語言即時翻譯版
+BUILD：V10.8-LOCAL-LANGUAGE-LIVE-TRANSLATE-20260811-01
+
+PASS
+- JavaScript 語法：PASS
+- 邊打字邊翻譯：PASS
+- 420ms debounce：PASS
+- 取消上一筆翻譯請求：PASS
+- 香港粵語在地短句：PASS
+- 日本日語：PASS
+- 德文：PASS
+- 法文：PASS
+- 西班牙文：PASS
+- GDELT + GDACS + 官方入口：PASS
+- 城市重大事件風險訊號：PASS

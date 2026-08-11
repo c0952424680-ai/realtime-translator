@@ -1,5 +1,5 @@
-即時譯 V10.7｜旅外安全助理・區域風險與地圖修正版
-BUILD=V10.7-SAFETY-AREA-MAP-FIX-20260811-01
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=107
-SAFETY_URL=https://c0952424680-ai.github.io/realtime-translator/risk.html?v=107
-SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=107
+即時譯 V10.8｜旅外安全助理・在地語言即時翻譯版
+BUILD=V10.8-LOCAL-LANGUAGE-LIVE-TRANSLATE-20260811-01
+DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=108
+SAFETY_URL=https://c0952424680-ai.github.io/realtime-translator/risk.html?v=108
+SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=108
