@@ -1,13 +1,10 @@
 const NearbyService = {
-  workerEndpoints: [
-    "https://travel-safety-autosync.c0952424680.workers.dev",
-    "https://c0952424680.workers.dev"
-  ],
   overpassEndpoints: [
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass-api.de/api/interpreter",
     "https://overpass.nchc.org.tw/api/interpreter"
   ],
+  osrmEndpoint: "https://router.project-osrm.org",
   currentKind: "",
 
   state() {
@@ -23,40 +20,16 @@ const NearbyService = {
       Math.abs(lon) <= 180;
   },
 
-  apiType(kind) {
-    return ({
-      hospital: "medical",
-      police: "police",
-      pharmacy: "pharmacy",
-      fire: "fire"
-    })[kind] || kind;
-  },
-
   typeLabel(kind) {
     return ({
       hospital: "醫院／急診",
-      police: "警察機關",
+      police: "警察局",
       pharmacy: "藥局",
-      fire: "消防單位"
+      fire: "消防局"
     })[kind] || "緊急設施";
   },
 
-  isTestRecord(x = {}) {
-    const values = [
-      x.name_zh_tw,
-      x.name_zh,
-      x.name_en,
-      x.name,
-      x.data_provider,
-      x.provider_id,
-      x.external_id,
-      x.source_name
-    ].filter(Boolean).join(" ").toLowerCase();
-
-    return /\bgps[\s_-]*test\b|\btest\b|\bdummy\b|\bsample\b|\bmock\b/.test(values);
-  },
-
-  async fetchJson(url, options = {}, timeout = 6500) {
+  async fetchJson(url, options = {}, timeout = 9000) {
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), timeout);
     try {
@@ -70,91 +43,6 @@ const NearbyService = {
     } finally {
       clearTimeout(timer);
     }
-  },
-
-  normalizeWorker(data, kind) {
-    const s = this.state();
-    const rows = Array.isArray(data?.records)
-      ? data.records
-      : Array.isArray(data?.data)
-        ? data.data
-        : [];
-
-    const out = [];
-
-    for (const x of rows) {
-      if (this.isTestRecord(x)) continue;
-
-      const lat = Number(x.latitude ?? x.lat);
-      const lon = Number(x.longitude ?? x.lng ?? x.lon);
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-
-      const zhName =
-        x.name_zh_tw ||
-        x.name_zh ||
-        x.name_zh_hant ||
-        "";
-
-      const originalName =
-        x.name ||
-        x.name_en ||
-        "";
-
-      const name = zhName || this.typeLabel(kind);
-
-      out.push({
-        name,
-        originalName: zhName ? "" : originalName,
-        lat,
-        lon,
-        distanceKm: App.distanceKm(
-          Number(s.lat),
-          Number(s.lon),
-          lat,
-          lon
-        ),
-        phone: x.phone || "",
-        opening: x.opening_hours || x.opening || "",
-        address:
-          x.address ||
-          [x.city_name, x.district_name, x.postal_code]
-            .filter(Boolean)
-            .join(" "),
-        mapUrl:
-          x.google_maps_url ||
-          `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`,
-        source: "安全資料庫"
-      });
-    }
-
-    return out;
-  },
-
-  async requestWorker(kind, km) {
-    const s = this.state();
-    const type = this.apiType(kind);
-    let last;
-
-    for (const base of this.workerEndpoints) {
-      try {
-        const url =
-          `${base.replace(/\/$/, "")}/nearby-services` +
-          `?lat=${encodeURIComponent(s.lat)}` +
-          `&lng=${encodeURIComponent(s.lon)}` +
-          `&service_type=${encodeURIComponent(type)}` +
-          `&radius_km=${encodeURIComponent(km)}`;
-
-        const data = await this.fetchJson(url, {}, 6500);
-        if (data?.ok === false) throw new Error(data?.error || "worker error");
-
-        return this.normalizeWorker(data, kind);
-      } catch (e) {
-        last = e;
-      }
-    }
-
-    if (last) throw last;
-    return [];
   },
 
   query(kind, km) {
@@ -180,7 +68,7 @@ const NearbyService = {
             nwr["healthcare"="pharmacy"](around:${r},${s.lat},${s.lon});
           `;
 
-    return `[out:json][timeout:18];(${filter});out center tags;`;
+    return `[out:json][timeout:20];(${filter});out center tags;`;
   },
 
   async requestOverpass(kind, km) {
@@ -189,24 +77,26 @@ const NearbyService = {
 
     for (const ep of this.overpassEndpoints) {
       try {
-        return await this.fetchJson(ep, {
+        const data = await this.fetchJson(ep, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
           },
           body: "data=" + encodeURIComponent(q)
-        }, 7500);
+        }, 9000);
+
+        if (Array.isArray(data?.elements)) return data;
       } catch (e) {
         last = e;
       }
     }
 
-    if (last) throw last;
-    return { elements: [] };
+    throw last || new Error("附近地圖資料暫時無回應");
   },
 
-  normalizeOverpass(data, kind) {
+  normalize(data, kind) {
     const s = this.state();
+    const seen = new Set();
     const out = [];
 
     for (const e of data?.elements || []) {
@@ -216,19 +106,20 @@ const NearbyService = {
 
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
 
-      const zhName =
+      const name =
         t["name:zh-Hant"] ||
-        t["name:zh"] ||
         t["name:zh-TW"] ||
-        t["name:zh-Hans"] ||
-        "";
-
-      const localName =
+        t["name:zh"] ||
         t.name ||
-        t["official_name"] ||
+        t.official_name ||
         "";
 
-      const name = zhName || localName || this.typeLabel(kind);
+      // 沒有真實名稱的 POI 不拿來當「最近」結果，避免只顯示地圖釘。
+      if (!name.trim()) continue;
+
+      const key = `${lat.toFixed(5)}|${lon.toFixed(5)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
 
       const phone =
         t.phone ||
@@ -245,56 +136,73 @@ const NearbyService = {
       ].filter(Boolean).join(" ");
 
       out.push({
+        id: `${e.type || "poi"}-${e.id || key}`,
         name,
-        originalName: zhName ? "" : "",
         lat,
         lon,
-        distanceKm: App.distanceKm(
+        straightKm: App.distanceKm(
           Number(s.lat),
           Number(s.lon),
           lat,
           lon
         ),
+        driveKm: null,
+        driveMin: null,
         phone,
         opening: t.opening_hours || "",
         address,
-        mapUrl:
-          `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`,
         source: "OpenStreetMap"
       });
     }
 
-    return out;
+    // 先用直線距離縮小候選，再算道路距離，避免遠處 POI 進入路徑計算。
+    return out
+      .sort((a, b) => a.straightKm - b.straightKm)
+      .slice(0, 20);
   },
 
-  dedupeAndSort(items) {
-    const seen = new Map();
+  async addDrivingDistances(list) {
+    const s = this.state();
+    if (!list.length) return list;
 
-    for (const x of items) {
-      if (!x || !Number.isFinite(Number(x.lat)) || !Number.isFinite(Number(x.lon))) {
-        continue;
-      }
+    const points = [
+      `${Number(s.lon)},${Number(s.lat)}`,
+      ...list.map(x => `${x.lon},${x.lat}`)
+    ].join(";");
 
-      const key =
-        `${Number(x.lat).toFixed(5)}|${Number(x.lon).toFixed(5)}`;
+    const destinations = list.map((_, i) => i + 1).join(";");
 
-      const old = seen.get(key);
-      if (!old) {
-        seen.set(key, x);
-        continue;
-      }
+    try {
+      const url =
+        `${this.osrmEndpoint}/table/v1/driving/${points}` +
+        `?sources=0&destinations=${destinations}&annotations=distance,duration`;
 
-      const score = y =>
-        (y.name && !/^未命名|醫院／急診|警察機關|藥局|消防單位$/.test(y.name) ? 3 : 0) +
-        (y.phone ? 2 : 0) +
-        (y.address ? 2 : 0) +
-        (y.opening ? 1 : 0);
+      const data = await this.fetchJson(url, {}, 8500);
 
-      if (score(x) > score(old)) seen.set(key, x);
+      const distances = data?.distances?.[0] || [];
+      const durations = data?.durations?.[0] || [];
+
+      return list.map((x, i) => ({
+        ...x,
+        driveKm: Number.isFinite(distances[i])
+          ? distances[i] / 1000
+          : null,
+        driveMin: Number.isFinite(durations[i])
+          ? durations[i] / 60
+          : null
+      }));
+    } catch (_) {
+      return list;
     }
+  },
 
-    return [...seen.values()]
-      .sort((a, b) => Number(a.distanceKm) - Number(b.distanceKm))
+  sortNearest(list) {
+    return [...list]
+      .sort((a, b) => {
+        const ad = Number.isFinite(a.driveKm) ? a.driveKm : a.straightKm;
+        const bd = Number.isFinite(b.driveKm) ? b.driveKm : b.straightKm;
+        return ad - bd;
+      })
       .slice(0, 8);
   },
 
@@ -308,108 +216,70 @@ const NearbyService = {
     if (box) box.innerHTML = "";
 
     if (!this.validGps(s)) {
-      if (status) {
-        status.textContent =
-          "⚠️ 尚未取得有效 GPS，請先允許定位或使用手動所在地。";
-      }
+      if (status) status.textContent =
+        "⚠️ 尚未取得有效 GPS。請先允許定位，再搜尋最近設施。";
       if (box) box.innerHTML = this.fallbackButtons(kind);
       return;
     }
 
-    let best = [];
-    let used = 15;
-    let sources = [];
+    let finalList = [];
+    let used = 3;
 
-    for (const km of [15, 20, 25, 30, 35, 40, 45, 50]) {
+    // 真正從附近開始，不再直接從 15 公里塞入遠處資料。
+    for (const km of [3, 5, 10, 15, 20, 30, 40, 50]) {
       used = km;
 
-      if (status) {
-        status.textContent =
-          `📍 正在搜尋 ${km} 公里內資料，並重新依目前 GPS 距離排序…`;
-      }
+      if (status) status.textContent =
+        `📍 正在搜尋 ${km} 公里內的${this.typeLabel(kind)}…`;
 
-      const [workerResult, osmResult] = await Promise.allSettled([
-        this.requestWorker(kind, km),
-        this.requestOverpass(kind, km)
-      ]);
+      try {
+        const raw = await this.requestOverpass(kind, km);
+        let list = this.normalize(raw, kind);
 
-      const merged = [];
+        if (list.length) {
+          if (status) status.textContent =
+            `🚗 找到 ${list.length} 個候選地點，正在計算實際道路距離…`;
 
-      if (workerResult.status === "fulfilled") {
-        merged.push(...workerResult.value);
-        if (workerResult.value.length) sources.push("安全資料庫");
-      }
+          list = await this.addDrivingDistances(list);
+          finalList = this.sortNearest(list);
+        }
 
-      if (osmResult.status === "fulfilled") {
-        const osm = this.normalizeOverpass(osmResult.value, kind);
-        merged.push(...osm);
-        if (osm.length) sources.push("OpenStreetMap");
-      }
+        if (finalList.length >= 3) break;
+      } catch (_) {}
 
-      best = this.dedupeAndSort(merged);
-
-      if (best.length >= 5) break;
-
-      if (status) {
-        status.textContent =
-          `${km} 公里內有效資料不足，自動擴大 5 公里搜尋…`;
-      }
+      if (status) status.textContent =
+        `${km} 公里內資料不足，自動擴大搜尋範圍…`;
     }
 
-    sources = [...new Set(sources)];
-
-    if (best.length) {
+    if (finalList.length) {
       App.health(
         "nearby",
         "ok",
-        `${used} 公里內找到 ${best.length} 筆`
+        `${used} 公里內找到 ${finalList.length} 筆，已依道路距離排序`
       );
 
-      this.render(best, kind, used, sources);
+      this.render(finalList, kind, used);
       return;
     }
 
-    App.health(
-      "nearby",
-      "error",
-      "附近設施來源暫時無可用資料"
-    );
+    App.health("nearby", "error", "附近設施來源暫時無回應");
 
-    if (status) {
-      status.textContent =
-        `⚠️ ${used} 公里內沒有可用結果，已切換地圖備援搜尋。`;
-    }
+    if (status) status.textContent =
+      "⚠️ 暫時無法取得可靠 POI，已切換 Google／Apple 地圖搜尋。";
 
     if (box) box.innerHTML = this.fallbackButtons(kind);
   },
 
   fallbackButtons(kind) {
     const s = this.state();
-
-    const kw = ({
-      hospital: "醫院 急診",
-      police: "警察局",
-      pharmacy: "藥局",
-      fire: "消防局"
-    })[kind] || "緊急設施";
-
-    const label =
-      [s.country, s.city, s.district]
-        .filter(Boolean)
-        .join(" ");
-
-    const gps = this.validGps(s)
-      ? `${s.lat},${s.lon}`
-      : "";
+    const kw = this.typeLabel(kind);
 
     const google =
-      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        kw + " " + label
-      )}`;
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(kw)}`;
 
-    const apple = gps
-      ? `https://maps.apple.com/?q=${encodeURIComponent(kw)}&ll=${encodeURIComponent(gps)}`
-      : `https://maps.apple.com/?q=${encodeURIComponent(kw + " " + label)}`;
+    const apple = this.validGps(s)
+      ? `https://maps.apple.com/?q=${encodeURIComponent(kw)}&ll=${encodeURIComponent(`${s.lat},${s.lon}`)}`
+      : `https://maps.apple.com/?q=${encodeURIComponent(kw)}`;
 
     return `
       <div class="grid2">
@@ -426,38 +296,46 @@ const NearbyService = {
            rel="noopener">
           Apple 地圖搜尋
         </a>
-      </div>
-    `;
+      </div>`;
   },
 
-  render(list, kind, used, sources) {
+  render(list, kind, used) {
     const box = document.getElementById("nearbyResults");
     const status = document.getElementById("nearbyStatus");
 
     if (status) {
-      status.textContent =
-        `✅ 已重新依目前 GPS 真實距離排序，顯示最近 ${list.length} 筆｜搜尋半徑 ${used} 公里｜來源：${(sources || []).join("＋") || "自動"}`;
+      const hasRoad = list.some(x => Number.isFinite(x.driveKm));
+      status.textContent = hasRoad
+        ? `✅ 已依「實際道路距離」由近到遠排序｜搜尋範圍 ${used} 公里`
+        : `✅ 道路服務暫時不可用，已依 GPS 直線距離由近到遠排序｜搜尋範圍 ${used} 公里`;
     }
 
     if (!box) return;
 
-    if (!list.length) {
-      box.innerHTML = this.fallbackButtons(kind);
-      return;
-    }
-
     box.innerHTML = list.map((x, i) => {
-      const distance =
-        Number(x.distanceKm) < 1
-          ? `${Math.round(Number(x.distanceKm) * 1000)} 公尺`
-          : `${Number(x.distanceKm).toFixed(1)} 公里`;
+      const straight =
+        x.straightKm < 1
+          ? `${Math.round(x.straightKm * 1000)} 公尺`
+          : `${x.straightKm.toFixed(1)} 公里`;
+
+      const driving = Number.isFinite(x.driveKm)
+        ? `${x.driveKm.toFixed(1)} 公里`
+        : null;
+
+      const minutes = Number.isFinite(x.driveMin)
+        ? `${Math.max(1, Math.round(x.driveMin))} 分鐘`
+        : null;
 
       const google =
-        x.mapUrl ||
-        `https://www.google.com/maps/dir/?api=1&destination=${x.lat},${x.lon}&travelmode=driving`;
+        `https://www.google.com/maps/dir/?api=1` +
+        `&origin=${encodeURIComponent(`${StateCore.get().lat},${StateCore.get().lon}`)}` +
+        `&destination=${encodeURIComponent(`${x.lat},${x.lon}`)}` +
+        `&travelmode=driving`;
 
       const apple =
-        `https://maps.apple.com/?daddr=${x.lat},${x.lon}&dirflg=d`;
+        `https://maps.apple.com/?saddr=${encodeURIComponent(`${StateCore.get().lat},${StateCore.get().lon}`)}` +
+        `&daddr=${encodeURIComponent(`${x.lat},${x.lon}`)}` +
+        `&dirflg=d`;
 
       const tel = x.phone
         ? x.phone.replace(/[^\d+]/g, "")
@@ -470,24 +348,32 @@ const NearbyService = {
           <div class="near-main">
             <h3>${esc(x.name)}</h3>
 
-            ${x.originalName
-              ? `<div class="muted">原名：${esc(x.originalName)}</div>`
+            <div class="meta">
+              ${driving
+                ? `🚗 道路距離 ${driving}${minutes ? `・約 ${minutes}` : ""}`
+                : `📍 GPS 直線距離 ${straight}`
+              }
+            </div>
+
+            ${driving
+              ? `<div class="muted">GPS 直線距離：${straight}</div>`
               : ""
             }
 
-            <div class="meta">
-              📍 ${distance}
-              ${x.address ? `｜${esc(x.address)}` : ""}
+            <div class="near-info">
+              ${x.address
+                ? `📍 ${esc(x.address)}`
+                : "📍 地址未公開"}
             </div>
 
             <div class="near-info">
               ${x.phone
                 ? `📞 ${esc(x.phone)}`
-                : "📞 無公開電話"}
+                : "📞 電話未公開"}
               ｜
               ${x.opening
                 ? `🕒 ${esc(x.opening)}`
-                : "🕒 無公開營業資訊"}
+                : "🕒 營業資訊未公開"}
             </div>
 
             <div class="near-actions">
@@ -511,8 +397,7 @@ const NearbyService = {
               }
             </div>
           </div>
-        </article>
-      `;
+        </article>`;
     }).join("");
   },
 
@@ -520,13 +405,8 @@ const NearbyService = {
     const box = document.getElementById("nearbyResults");
     const status = document.getElementById("nearbyStatus");
 
-    if (status) {
-      status.textContent = "已開啟地圖備援搜尋。";
-    }
-
-    if (box) {
-      box.innerHTML = this.fallbackButtons(kind);
-    }
+    if (status) status.textContent = "已開啟地圖備援搜尋。";
+    if (box) box.innerHTML = this.fallbackButtons(kind);
   }
 };
 
