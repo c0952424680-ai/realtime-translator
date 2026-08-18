@@ -1,10 +1,3 @@
 
-const VoiceEngine={
- voices:[],
- init(){this.refresh();if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=()=>this.refresh()},
- refresh(){this.voices=("speechSynthesis" in window)?speechSynthesis.getVoices():[];document.querySelectorAll("[data-voice-status]").forEach(e=>e.textContent=this.voices.length?`語音已自動就緒（${this.voices.length} 個）`:"正在等待裝置語音…")},
- select(locale){const target=(locale||"en-US").toLowerCase(),base=target.split("-")[0];return this.voices.find(v=>(v.lang||"").toLowerCase()===target)||this.voices.find(v=>(v.lang||"").toLowerCase().startsWith(base))||null},
- speak(text,locale){if(!("speechSynthesis" in window)){alert("此瀏覽器不支援語音播放");return false}const t=String(text||"").trim();if(!t)return false;const u=new SpeechSynthesisUtterance(t);u.lang=locale||"en-US";u.rate=.95;const v=this.select(u.lang);if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u);return true}
-};
+const VoiceEngine={speak(text,locale="zh-TW"){if(!("speechSynthesis" in window)||!text)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=locale;u.rate=.9;u.pitch=1;const voices=speechSynthesis.getVoices(),v=voices.find(x=>x.lang.toLowerCase()===locale.toLowerCase())||voices.find(x=>x.lang.toLowerCase().startsWith(locale.split("-")[0].toLowerCase()));if(v)u.voice=v;speechSynthesis.speak(u)}};
 window.VoiceEngine=VoiceEngine;
-document.addEventListener("DOMContentLoaded",()=>VoiceEngine.init());

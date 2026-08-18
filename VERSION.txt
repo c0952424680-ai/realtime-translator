@@ -1,5 +1,4 @@
-即時譯 V10.8｜旅外安全助理・在地語言即時翻譯版
-BUILD=V10.8-LOCAL-LANGUAGE-LIVE-TRANSLATE-20260811-01
-DEPLOY_URL=https://c0952424680-ai.github.io/realtime-translator/?v=108
-SAFETY_URL=https://c0952424680-ai.github.io/realtime-translator/risk.html?v=108
-SOS_URL=https://c0952424680-ai.github.io/realtime-translator/sos.html?v=108
+V10.9
+BUILD=V10.9-GEO-CROSSCITY-20260819-01
+CACHE=RT-V10.9-GEO-CROSSCITY-111
+NEARBY=GPS_REFRESH + RADIUS_CROSS_CITY + 15KM_FAST + 40KM_FALLBACK + OSRM_ROAD_SORT

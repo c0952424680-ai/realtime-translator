@@ -1,10 +1,9 @@
 {
-  "name": "即時譯 V10.8｜旅外安全助理・在地語言即時翻譯版",
-  "short_name": "即時譯 V10.8",
-  "start_url": "./index.html?v=108",
-  "scope": "./",
+  "name": "即時譯・旅外安全助理",
+  "short_name": "即時譯",
+  "start_url": "./index.html?v=111",
   "display": "standalone",
-  "background_color": "#f3f6fb",
+  "background_color": "#f5f8fd",
   "theme_color": "#0f172a",
   "lang": "zh-Hant"
 }
