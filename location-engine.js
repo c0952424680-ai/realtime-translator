@@ -1,4 +1,3 @@
-
 const LocationEngine={
   async getFreshPosition(maxWait=6500){
     if(!navigator.geolocation)throw new Error("此瀏覽器不支援 GPS");
@@ -48,10 +47,18 @@ const LocationEngine={
   syncSelectors(){
     const s=StateCore.get(),c=document.getElementById("countrySelect"),ct=document.getElementById("citySelect"),d=document.getElementById("districtSelect");
     if(!c||!ct||!d)return;
-    c.value=s.countryKey;c.dispatchEvent(new Event("change"));
-    if([...ct.options].some(o=>o.value===s.city))ct.value=s.city;
-    ct.dispatchEvent(new Event("change"));
-    if([...d.options].some(o=>o.value===s.district))d.value=s.district
+
+    // 只同步畫面，不觸發 change 事件。
+    // 否則 app.js 的 onchange -> applyNow() 會把 GPS 模式誤改成 manual。
+    c.value=s.countryKey;
+
+    const cities=Object.keys(LOCATION_DATA[s.countryKey]?.cities||{});
+    ct.innerHTML=cities.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");
+    if(cities.includes(s.city))ct.value=s.city;
+
+    const districts=LOCATION_DATA[s.countryKey]?.cities?.[ct.value]?.districts||["全市"];
+    d.innerHTML=districts.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");
+    if(districts.includes(s.district))d.value=s.district;
   }
 };
 window.LocationEngine=LocationEngine;

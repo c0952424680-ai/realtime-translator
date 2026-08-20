@@ -1,0 +1,29 @@
+{
+  "index.html": {
+    "no_V10.9": true,
+    "no_v111": true,
+    "has_V10.10": true,
+    "has_v112": true,
+    "correct_build": true
+  },
+  "risk.html": {
+    "no_V10.9": true,
+    "no_v111": true,
+    "has_V10.10": true,
+    "has_v112": true,
+    "correct_build": true
+  },
+  "contacts.html": {
+    "no_V10.9": true,
+    "no_v111": true,
+    "has_V10.10": true,
+    "has_v112": true,
+    "correct_build": true
+  },
+  "location-engine.js": {
+    "no_dispatchEvent_change": true,
+    "keeps_gps_mode": true,
+    "rebuilds_city_options": true,
+    "rebuilds_district_options": true
+  }
+}
