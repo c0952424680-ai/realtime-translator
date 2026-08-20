@@ -1,30 +1,12 @@
-VALIDATION REPORT - V10.9
-BUILD: V10.9-GEO-CROSSCITY-20260819-01
+V10.10 VALIDATION
+app.js: PASS 
+nearby-service.js: PASS 
+sw.js: PASS 
 
-JavaScript syntax checks:
-- app.js: PASS
-- emergency-data.js: PASS
-- live-events.js: PASS
-- local-phrases.js: PASS
-- location-data.js: PASS
-- location-engine.js: PASS
-- nearby-service.js: PASS
-- news-engine.js: PASS
-- risk-engine.js: PASS
-- state-core.js: PASS
-- sw.js: PASS
-- translate-live.js: PASS
-- voice-engine.js: PASS
-
-All JS syntax: PASS
-All local HTML references: PASS
-
-Nearby search checks:
-- fresh GPS before each search: PASS
-- no city/district filter in Overpass query: PASS
-- first request radius 15 km: PASS
-- fallback radius 40 km only when needed: PASS
-- hospital query includes hospital/clinic/doctors/emergency: PASS
-- road-distance ranking via OSRM with straight-line fallback: PASS
-- Google navigation includes explicit origin + destination coordinates: PASS
-- cache/version references unified to v111: PASS
+Checked:
+- country selection changes state immediately
+- manual country search does not call GPS
+- hospital/clinic/pharmacy are separate kinds
+- search plan is 5km -> 15km -> 40km
+- first results render before road-distance enrichment
+- cache version = 112

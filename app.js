@@ -1,5 +1,5 @@
 
-const APP_VERSION="V10.9",APP_BUILD="V10.9-GEO-CROSSCITY-20260819-01";
+const APP_VERSION="V10.10",APP_BUILD="V10.10-COUNTRY-FAST-NEAREST-20260820-01";
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 const App={
  healthState:{},
@@ -11,11 +11,50 @@ const App={
  initLocationControls(){
   const c=document.getElementById("countrySelect"),ct=document.getElementById("citySelect"),d=document.getElementById("districtSelect");if(!c)return;
   c.innerHTML=Object.entries(LOCATION_DATA).map(([k,v])=>`<option value="${k}">${v.flag} ${esc(v.name)}</option>`).join("");
-  const fd=()=>{const list=LOCATION_DATA[c.value]?.cities?.[ct.value]?.districts||["全市"];d.innerHTML=list.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("")};
-  const fc=()=>{const list=Object.keys(LOCATION_DATA[c.value]?.cities||{});ct.innerHTML=list.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");fd()};
-  const s=StateCore.get();c.value=s.countryKey;fc();if([...ct.options].some(o=>o.value===s.city))ct.value=s.city;fd();if([...d.options].some(o=>o.value===s.district))d.value=s.district;
-  c.onchange=fc;ct.onchange=fd;
-  document.getElementById("applyLocation")?.addEventListener("click",()=>{const x=LOCATION_DATA[c.value],y=x.cities[ct.value];StateCore.set({countryKey:c.value,country:x.name,city:ct.value,district:d.value,lat:y.lat,lon:y.lon,locationMode:"manual"},"manual");const st=document.getElementById("locationStatus");if(st)st.textContent=`✅ 已套用：${StateCore.label()}`});
+
+  const fillDistrict=()=>{
+    const list=LOCATION_DATA[c.value]?.cities?.[ct.value]?.districts||["全市"];
+    d.innerHTML=list.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");
+  };
+
+  const fillCity=()=>{
+    const list=Object.keys(LOCATION_DATA[c.value]?.cities||{});
+    ct.innerHTML=list.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");
+    fillDistrict();
+  };
+
+  const applyNow=()=>{
+    const x=LOCATION_DATA[c.value];
+    const y=x?.cities?.[ct.value];
+    if(!x||!y)return;
+
+    StateCore.set({
+      countryKey:c.value,
+      country:x.name,
+      city:ct.value,
+      district:d.value,
+      lat:y.lat,
+      lon:y.lon,
+      locationMode:"manual"
+    },"manual");
+
+    const st=document.getElementById("locationStatus");
+    if(st)st.textContent=`✅ 已立即切換：${StateCore.label()}`;
+  };
+
+  const s=StateCore.get();
+  c.value=s.countryKey;
+  fillCity();
+  if([...ct.options].some(o=>o.value===s.city))ct.value=s.city;
+  fillDistrict();
+  if([...d.options].some(o=>o.value===s.district))d.value=s.district;
+
+  // 選國家、城市、行政區後立即套用，不必再多按一次。
+  c.onchange=()=>{fillCity();applyNow()};
+  ct.onchange=()=>{fillDistrict();applyNow()};
+  d.onchange=applyNow;
+
+  document.getElementById("applyLocation")?.addEventListener("click",applyNow);
   document.getElementById("useGps")?.addEventListener("click",()=>LocationEngine.locate());
  },
  pageInit(){const p=document.body.dataset.page;if(p==="translate")this.translationInit();if(p==="sos")this.sosInit();if(p==="trip")this.tripInit()},
@@ -29,12 +68,17 @@ const App={
   LiveTranslate.init();
  },
  sosInit(){
-  const render=()=>{const e=this.country()?.emergency||{},box=document.getElementById("callGrid");if(box)box.innerHTML=[["👮 警察",e.police],["🚑 救護",e.ambulance],["🚒 消防",e.fire]].map(([l,n])=>`<a class="call" href="tel:${n}">${l}<b>${n}</b></a>`).join("");this.renderPhrase()};render();window.addEventListener("state-changed",render);
+  const render=()=>{const e=this.country()?.emergency||{},box=document.getElementById("callGrid");if(box)box.innerHTML=[["👮 警察",e.police],["🚑 救護",e.ambulance],["🚒 消防",e.fire]].map(([l,n])=>`<a class="call" href="tel:${n}">${l}<b>${n}</b></a>`).join("");this.renderPhrase()};
+  render();
+  window.addEventListener("state-changed",render);
+
   document.getElementById("crisisType").onchange=()=>this.renderPhrase();
   document.getElementById("playPhrase").onclick=()=>{const t=document.getElementById("crisisType").value,s=StateCore.get(),profile=COUNTRY_LANGUAGE_PROFILE[s.countryKey],fallback=EMERGENCY_PHRASES[t]||EMERGENCY_PHRASES.medical,phraseSet=profile?LOCAL_PHRASES[profile.phrase]:null,text=phraseSet?.[t]||fallback[this.country()?.translation]||fallback.en;VoiceEngine.speak(text,profile?.voice||this.country()?.voiceLocale||"en-US")};
+
   document.getElementById("near-hospital").onclick=()=>NearbyService.search("hospital");
-  document.getElementById("near-police").onclick=()=>NearbyService.search("police");
+  document.getElementById("near-clinic").onclick=()=>NearbyService.search("clinic");
   document.getElementById("near-pharmacy").onclick=()=>NearbyService.search("pharmacy");
+  document.getElementById("near-police").onclick=()=>NearbyService.search("police");
   document.getElementById("near-fire")?.addEventListener("click",()=>NearbyService.search("fire"));
   document.getElementById("shareLocation").onclick=()=>this.shareLocation();
  },
@@ -43,7 +87,7 @@ const App={
  tripInit(){const f=["name","passport","insurance","hotel","emergencyContact","medicalNote"];try{const x=JSON.parse(localStorage.getItem("rt_v109_trip")||"{}");f.forEach(k=>document.getElementById("trip-"+k).value=x[k]||"")}catch{};document.getElementById("saveTrip").onclick=()=>{const x={};f.forEach(k=>x[k]=document.getElementById("trip-"+k).value);localStorage.setItem("rt_v109_trip",JSON.stringify(x));alert("已儲存在此裝置")};document.getElementById("toggleSensitive").onclick=()=>document.getElementById("sensitiveFields").classList.toggle("reveal")},
  health(key,status,message){this.healthState[key]={status,message,time:new Date().toISOString()};this.renderHealth()},
  renderHealth(){const el=document.getElementById("diagnosticBox");if(!el)return;const s=StateCore.get(),rows=[["GPS",s.gpsStatus==="ok"?{status:"ok",message:`已取得 GPS；精度 ${Math.round(s.accuracy||0)}m`}:{status:"idle",message:"尚未使用 GPS"}],["天氣",this.healthState.weather],["地震",this.healthState.quake],["附近設施",this.healthState.nearby]];el.innerHTML=rows.map(([n,x])=>`<div class="diag-row"><b>${n}</b><span>${x?.status==="ok"?"✅ 正常":x?.status==="error"?"⚠️ 異常":"— 尚未使用"}</span><small>${esc(x?.message||"")}</small></div>`).join("")},
- registerSW(){if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js?v=111").catch(()=>{})}
+ registerSW(){if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js?v=112").catch(()=>{})}
 };
 window.App=App;
 document.addEventListener("DOMContentLoaded",()=>App.init());
