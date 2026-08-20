@@ -1,19 +1,15 @@
-V10.10 修正版
-================
-請將這 4 個檔案上傳到 GitHub realtime-translator 專案根目錄並覆蓋同名檔案：
+V10.10 當地語言與入口修正版
 
-1. index.html
-2. risk.html
-3. contacts.html
-4. location-engine.js
+覆蓋以下 4 個檔案：
+- emergency-data.js
+- local-phrases.js
+- manifest.webmanifest
+- 404.html
 
-修正內容：
-- index / risk / contacts 全部統一為 V10.10
-- 所有前端資源版本由 ?v=111 統一為 ?v=112
-- BUILD 統一為 V10.10-COUNTRY-FAST-NEAREST-20260820-01
-- 修正 GPS 定位後 syncSelectors() 觸發 change，導致 locationMode 被改回 manual 的問題
-- syncSelectors() 現在只同步下拉選單畫面，不會觸發手動位置套用
-
-注意：
-- 不要刪除其他檔案。
-- 不修改 state-core.js 的 rt_v109_state，避免舊使用者已保存的位置/狀態資料失效。
+重點：
+1. 補齊新加坡、馬來西亞、菲律賓、印尼、德國、法國、西班牙的緊急用語。
+2. 香港改用自然廣東話句型，不再直接沿用一般繁體中文。
+3. 各國使用對應語音 locale。
+4. 緊急句以「當地人容易理解、正式、直接」為原則，不做逐字翻譯。
+5. manifest 與 404 的入口從 v=111 修正為 v=112。
+6. 不改 app.js、GPS、附近搜尋等現有功能。
