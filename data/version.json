@@ -1,0 +1,3 @@
+data/location-data.json
+scripts/update_data.py
+.github/workflows/update-location-data.yml
