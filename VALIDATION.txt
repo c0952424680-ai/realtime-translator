@@ -1,7 +1,9 @@
 {
-  "languages_present": true,
-  "hk_uses_cantonese": true,
-  "manifest_112": true,
-  "404_112": true,
-  "no_111": true
+  "seed_country_count": 5,
+  "taiwan_county_city_count": 22,
+  "taiwan_22_ok": true,
+  "data_sync_present": true,
+  "scheduled_workflow_present": true,
+  "gps_does_not_overwrite_country": true,
+  "v113_all_html": true
 }
