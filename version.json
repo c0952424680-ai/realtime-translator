@@ -1,11 +1,12 @@
 {
   "schema": 1,
-  "version": "20260821-seed-001",
-  "generatedAt": "2026-08-21T00:00:00Z",
+  "version": "20260824-seed-001",
+  "generatedAt": "2026-08-24T00:00:00Z",
+  "countryCount": 13,
+  "taiwanCountyCityCount": 22,
   "sources": [
-    "NLSC Taiwan administrative APIs",
-    "GeoNames cities15000/countryInfo"
-  ],
-  "countryCount": 5,
-  "taiwanCountyCityCount": 22
+    "GeoNames cities15000.zip",
+    "GeoNames countryInfo.txt",
+    "NLSC Taiwan admin data"
+  ]
 }

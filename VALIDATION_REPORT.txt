@@ -1,4 +1,4 @@
-V10.10 VALIDATION
+V10.11 VALIDATION
 app.js: PASS 
 nearby-service.js: PASS 
 sw.js: PASS 
@@ -7,6 +7,10 @@ Checked:
 - country selection changes state immediately
 - manual country search does not call GPS
 - hospital/clinic/pharmacy are separate kinds
-- search plan is 5km -> 15km -> 40km
+- search plan is 5km -> 10km -> 15km -> 20km -> 25km -> 30km -> 35km -> 40km
 - first results render before road-distance enrichment
-- cache version = 112
+- manual and GPS coordinates are separate
+- GPS freshness uses gpsUpdatedAt only
+- road matrix checks 15 candidates before showing 6
+- stale searches are blocked by searchId
+- cache version = 113

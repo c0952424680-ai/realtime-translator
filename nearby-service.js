@@ -1,5 +1,6 @@
 
 const NearbyService = {
+  searchId: 0,
   overpassEndpoints: [
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass-api.de/api/interpreter",
@@ -38,13 +39,16 @@ const NearbyService = {
   },
 
   async resolveCenter() {
-    const s = this.state();
+    let s = this.state();
 
     // 手動選國家/城市時，搜尋中心必須跟著選擇位置，不能被台灣手機 GPS 覆蓋。
     if (s.locationMode === "manual") {
+      await window.App?.awaitManualLocation?.();
+      s = this.state();
+      if (!StateCore.validPoint(s.manualLat, s.manualLon)) throw new Error("手動位置座標無效");
       return {
-        lat: Number(s.lat),
-        lon: Number(s.lon),
+        lat: Number(s.manualLat),
+        lon: Number(s.manualLon),
         accuracy: null,
         mode: "manual",
         label: `${s.country}・${s.city}・${s.district}`
@@ -52,17 +56,16 @@ const NearbyService = {
     }
 
     // GPS 模式若最近 2 分鐘已有座標，直接使用，避免每次搜尋都卡 GPS。
-    const age = s.updatedAt ? Date.now() - Date.parse(s.updatedAt) : Infinity;
+    const age = Number.isFinite(Number(s.gpsUpdatedAt)) ? Date.now() - Number(s.gpsUpdatedAt) : Infinity;
     if (
-      Number.isFinite(Number(s.lat)) &&
-      Number.isFinite(Number(s.lon)) &&
+      StateCore.validPoint(s.gpsLat, s.gpsLon) &&
       s.locationMode === "gps" &&
       age < 120000
     ) {
       return {
-        lat: Number(s.lat),
-        lon: Number(s.lon),
-        accuracy: s.accuracy,
+        lat: Number(s.gpsLat),
+        lon: Number(s.gpsLon),
+        accuracy: s.gpsAccuracy,
         mode: "gps",
         label: "目前 GPS"
       };
@@ -71,25 +74,28 @@ const NearbyService = {
     try {
       const p = await LocationEngine.getFreshPosition(2600);
       StateCore.set({
-        lat: p.lat,
-        lon: p.lon,
-        accuracy: p.accuracy,
+        gpsLat: p.lat,
+        gpsLon: p.lon,
+        gpsAccuracy: p.accuracy,
+        gpsUpdatedAt: Date.now(),
         gpsStatus: "ok",
         locationMode: "gps"
       }, "nearby-gps");
       return { ...p, mode: "gps", label: "目前 GPS" };
     } catch {
       if (
-        Number.isFinite(Number(s.lat)) &&
-        Number.isFinite(Number(s.lon))
+        StateCore.validPoint(s.gpsLat, s.gpsLon)
       ) {
         return {
-          lat: Number(s.lat),
-          lon: Number(s.lon),
-          accuracy: s.accuracy,
-          mode: s.locationMode || "saved",
-          label: "已儲存位置"
+          lat: Number(s.gpsLat),
+          lon: Number(s.gpsLon),
+          accuracy: s.gpsAccuracy,
+          mode: "gps",
+          label: "已儲存 GPS"
         };
+      }
+      if (StateCore.validPoint(s.manualLat, s.manualLon)) {
+        return {lat:Number(s.manualLat),lon:Number(s.manualLon),accuracy:null,mode:"manual",label:`${s.country}・${s.city}・${s.district}`};
       }
       throw new Error("沒有可用位置");
     }
@@ -251,6 +257,7 @@ const NearbyService = {
   },
 
   async search(kind) {
+    const searchId = ++this.searchId;
     const box = document.getElementById("nearbyResults");
     const status = document.getElementById("nearbyStatus");
 
@@ -259,6 +266,7 @@ const NearbyService = {
     let center;
     try {
       center = await this.resolveCenter();
+      if (searchId !== this.searchId) return;
     } catch {
       if (status) status.textContent = "⚠️ 沒有可用位置。";
       return;
@@ -271,14 +279,15 @@ const NearbyService = {
           : "📍 搜尋位置：目前 GPS";
     }
 
-    // 優先只查 5 公里，真正找附近。
-    // 5 公里不足 3 筆才擴到 15 公里；仍不足才到 40 公里。
-    const plans = [5, 15, 40];
+    // 從 5 公里開始；不足 3 筆時每次只增加 5 公里，最大 40 公里。
+    const plans = Array.from({length:8},(_,i)=>(i+1)*5);
     let list = [];
     let used = 5;
+    const attempted=[];
 
     for (const radius of plans) {
       used = radius;
+      attempted.push(radius);
 
       if (status) {
         status.textContent =
@@ -292,6 +301,7 @@ const NearbyService = {
           center.lat,
           center.lon
         );
+        if (searchId !== this.searchId) return;
 
         list = this.normalize(raw, center);
 
@@ -309,17 +319,20 @@ const NearbyService = {
     }
 
     // 先立刻顯示 GPS 最近結果，不等道路 API，改善體感速度。
-    const first = list.slice(0, 6);
+    const candidates = list.slice(0, 15);
+    const first = candidates.slice(0, 6);
+    center.attempted=attempted.join("→");
     this.render(first, kind, used, center, false);
 
-    // 背景補道路距離，完成後再自動重排。
-    const road = this.roadSort(await this.roadMatrix(first, center));
+    // 背景計算直線最近 15 筆的道路距離，完成後再選出道路最近 6 筆。
+    const road = this.roadSort(await this.roadMatrix(candidates, center));
+    if (searchId !== this.searchId) return;
     this.render(road, kind, used, center, true);
 
     App.health(
       "nearby",
       "ok",
-      `${center.mode === "manual" ? "手動位置" : "GPS"}；${used}km；${road.length}筆`
+      `${center.mode === "manual" ? "手動位置" : "GPS"}；搜尋 ${attempted.join("→")}km；${road.length}筆`
     );
   },
 
@@ -358,7 +371,7 @@ const NearbyService = {
       status.textContent =
         `✅ ${center.mode === "manual" ? `依 ${center.label}` : "依目前 GPS"}｜` +
         `${roadReady ? "道路距離" : "GPS 距離"}由近到遠｜` +
-        `搜尋半徑 ${used} 公里`;
+        `搜尋 ${center.attempted || used} 公里`;
     }
 
     if (!box) return;

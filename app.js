@@ -1,8 +1,10 @@
 
-const APP_VERSION="V10.10",APP_BUILD="V10.10-COUNTRY-FAST-NEAREST-20260820-01";
+const APP_VERSION="V10.11",APP_BUILD="V10.11-GPS-SEPARATED-STEP5-20260823-01";
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 const App={
  healthState:{},
+ pendingManualLocation:null,
+ manualLocationToken:0,
  init(){StateCore.init();this.brand();this.renderStatus();this.initLocationControls();this.pageInit();this.renderHealth();window.addEventListener("state-changed",()=>this.renderStatus());window.addEventListener("online",()=>this.renderStatus());window.addEventListener("offline",()=>this.renderStatus());this.registerSW();setTimeout(()=>window.LiveEvents?.start?.(),60)},
  country(){return LOCATION_DATA[StateCore.get().countryKey]},
  brand(){document.querySelectorAll("[data-version]").forEach(e=>e.textContent=APP_VERSION);document.querySelectorAll("[data-build]").forEach(e=>e.textContent=APP_BUILD)},
@@ -24,22 +26,43 @@ const App={
   };
 
   const applyNow=()=>{
+    if(window.NearbyService)NearbyService.searchId++;
     const x=LOCATION_DATA[c.value];
     const y=x?.cities?.[ct.value];
     if(!x||!y)return;
+    const district=d.value;
+    const embedded=y.districtCoords?.[district];
+    const base=embedded||{lat:y.lat,lon:y.lon};
+    const token=++this.manualLocationToken;
 
     StateCore.set({
       countryKey:c.value,
       country:x.name,
       city:ct.value,
-      district:d.value,
-      lat:y.lat,
-      lon:y.lon,
+      district,
+      manualLat:Number(base.lat),
+      manualLon:Number(base.lon),
+      manualSource:embedded?"data-district":"city",
       locationMode:"manual"
     },"manual");
 
     const st=document.getElementById("locationStatus");
-    if(st)st.textContent=`✅ 已立即切換：${StateCore.label()}`;
+    if(st)st.textContent=`✅ 已立即切換：${StateCore.label()}${embedded||/^(全市|全區)$/.test(district)?"":"｜正在校準行政區座標…"}`;
+
+    if(embedded||/^(全市|全區)$/.test(district)){
+      this.pendingManualLocation=Promise.resolve(base);
+      return;
+    }
+
+    const selected={countryKey:c.value,city:ct.value,district};
+    this.pendingManualLocation=LocationEngine.geocodeSelection(c.value,ct.value,district,base).then(point=>{
+      const s=StateCore.get();
+      if(token!==this.manualLocationToken||s.locationMode!=="manual"||s.countryKey!==selected.countryKey||s.city!==selected.city||s.district!==selected.district)return;
+      StateCore.set({manualLat:point.lat,manualLon:point.lon,manualSource:point.source},"manual-geocoded");
+      if(st)st.textContent=point.source==="city-fallback"
+        ?`✅ 已套用：${StateCore.label()}｜行政區查詢暫時無回應，使用城市中心。`
+        :`✅ 已精確套用：${StateCore.label()}｜行政區座標完成。`;
+    });
   };
 
   const s=StateCore.get();
@@ -57,6 +80,7 @@ const App={
   document.getElementById("applyLocation")?.addEventListener("click",applyNow);
   document.getElementById("useGps")?.addEventListener("click",()=>LocationEngine.locate());
  },
+ async awaitManualLocation(){try{await this.pendingManualLocation}catch{}},
  pageInit(){const p=document.body.dataset.page;if(p==="translate")this.translationInit();if(p==="sos")this.sosInit();if(p==="trip")this.tripInit()},
  translationInit(){
   const src=document.getElementById("srcLang"),dst=document.getElementById("dstLang"),out=document.getElementById("translateOutput");
@@ -84,10 +108,10 @@ const App={
  },
  renderPhrase(){const t=document.getElementById("crisisType")?.value||"medical",s=StateCore.get(),profile=COUNTRY_LANGUAGE_PROFILE[s.countryKey],fallback=EMERGENCY_PHRASES[t]||EMERGENCY_PHRASES.medical,phraseSet=profile?LOCAL_PHRASES[profile.phrase]:null;document.getElementById("phraseZh").textContent=fallback.zh;document.getElementById("phraseTarget").textContent=phraseSet?.[t]||fallback[this.country()?.translation]||fallback.en;const lang=document.getElementById("phraseLangLabel");if(lang)lang.textContent=profile?.label||"當地語言"},
  async shareLocation(){const s=StateCore.get(),text=`我的目前位置：${StateCore.label()} ${Number(s.lat).toFixed(5)}, ${Number(s.lon).toFixed(5)} https://maps.google.com/?q=${s.lat},${s.lon}`;if(navigator.share){try{await navigator.share({title:"我的位置",text});return}catch{}}try{await navigator.clipboard.writeText(text);alert("位置已複製")}catch{location.href="sms:?&body="+encodeURIComponent(text)}},
- tripInit(){const f=["name","passport","insurance","hotel","emergencyContact","medicalNote"];try{const x=JSON.parse(localStorage.getItem("rt_v109_trip")||"{}");f.forEach(k=>document.getElementById("trip-"+k).value=x[k]||"")}catch{};document.getElementById("saveTrip").onclick=()=>{const x={};f.forEach(k=>x[k]=document.getElementById("trip-"+k).value);localStorage.setItem("rt_v109_trip",JSON.stringify(x));alert("已儲存在此裝置")};document.getElementById("toggleSensitive").onclick=()=>document.getElementById("sensitiveFields").classList.toggle("reveal")},
+ tripInit(){const f=["name","passport","insurance","hotel","emergencyContact","medicalNote"],key="rt_v1011_trip";try{const legacy=localStorage.getItem("rt_v109_trip"),x=JSON.parse(localStorage.getItem(key)||legacy||"{}");f.forEach(k=>document.getElementById("trip-"+k).value=x[k]||"");if(legacy&&!localStorage.getItem(key)){localStorage.setItem(key,JSON.stringify(x));localStorage.removeItem("rt_v109_trip")}}catch{};document.getElementById("saveTrip").onclick=()=>{const x={};f.forEach(k=>x[k]=document.getElementById("trip-"+k).value);localStorage.setItem(key,JSON.stringify(x));alert("已儲存在此裝置")};document.getElementById("toggleSensitive").onclick=()=>document.getElementById("sensitiveFields").classList.toggle("reveal")},
  health(key,status,message){this.healthState[key]={status,message,time:new Date().toISOString()};this.renderHealth()},
- renderHealth(){const el=document.getElementById("diagnosticBox");if(!el)return;const s=StateCore.get(),rows=[["GPS",s.gpsStatus==="ok"?{status:"ok",message:`已取得 GPS；精度 ${Math.round(s.accuracy||0)}m`}:{status:"idle",message:"尚未使用 GPS"}],["天氣",this.healthState.weather],["地震",this.healthState.quake],["附近設施",this.healthState.nearby]];el.innerHTML=rows.map(([n,x])=>`<div class="diag-row"><b>${n}</b><span>${x?.status==="ok"?"✅ 正常":x?.status==="error"?"⚠️ 異常":"— 尚未使用"}</span><small>${esc(x?.message||"")}</small></div>`).join("")},
- registerSW(){if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js?v=112").catch(()=>{})}
+ renderHealth(){const el=document.getElementById("diagnosticBox");if(!el)return;const s=StateCore.get(),rows=[["GPS",s.gpsStatus==="ok"?{status:"ok",message:`已取得 GPS；精度 ${Math.round(s.gpsAccuracy||0)}m`}:{status:"idle",message:"尚未使用 GPS"}],["天氣",this.healthState.weather],["地震",this.healthState.quake],["附近設施",this.healthState.nearby]];el.innerHTML=rows.map(([n,x])=>`<div class="diag-row"><b>${n}</b><span>${x?.status==="ok"?"✅ 正常":x?.status==="error"?"⚠️ 異常":"— 尚未使用"}</span><small>${esc(x?.message||"")}</small></div>`).join("")},
+ registerSW(){if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js?v=113").catch(()=>{})}
 };
 window.App=App;
 document.addEventListener("DOMContentLoaded",()=>App.init());
